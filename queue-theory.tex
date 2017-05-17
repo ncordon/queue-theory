@@ -1,0 +1,64 @@
+\documentclass[a4paper,10pt]{scrartcl}
+
+% Inclusión de paquetes
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{enumerate}
+\usepackage{verbatim}
+\usepackage{amsthm}
+
+% Definiciones
+\newtheorem*{mydef}{Definición}
+\newtheorem{mydefn}{Definición}
+\newtheorem{theorem}{Teorema}
+\everymath{\displaystyle} % Displaystyle por defecto
+
+% Comandos
+\newcommand{\Referencia}[4]{\indent #1, \textbf{#2}. \textit{#3}, \textit{#4}.\\}
+\renewcommand\refname{Referencias}
+\renewcommand\contentsname{Contenidos}
+\numberwithin{equation}{section}
+\setlength{\parindent}{0cm} % Sin sangrías
+\setlength{\parskip}{0.1cm}
+
+% Sintaxis: \Algoritmo{Elementos de entrada}{Elementos de proceso}{Elementos de salida}
+\newcommand{\Algoritmo}[3]{\textbf{Entrada} \begin{itemize} #1 \end{itemize} \textbf{Proceso} \begin{enumerate} #2 \end{enumerate} \textbf{Salida} \begin{itemize} #3 \end{itemize}}
+
+
+\title{Teoría de Colas}
+\author{
+  Marta Andrés\and
+  Ignacio Cordón\and
+  Bartolomé Ortiz\and
+}
+\date{}
+
+
+\begin{document}
+\maketitle
+\tableofcontents
+\pagebreak
+\section{Definición y aplicaciones}
+
+
+\subsection{Definiciones}
+% Incluyo las definiciones previas y la definición de matriz tridiagonal como inicio.
+Ejemplo de cita: \cite{Ciarlet}
+
+\newpage
+\begin{thebibliography}{10}
+\expandafter\ifx\csname url\endcsname\relax
+  \def\url#1{\texttt{#1}}\fi
+\expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
+\expandafter\ifx\csname href\endcsname\relax
+  \def\href#1#2{#2} \def\path#1{#1}\fi
+
+\bibitem{Ciarlet}
+Ciarlet, P. G. (1982).
+  Introduction to numerical linear algebra and optimisation.
+  Cambridge University Press
+
+\end{thebibliography}
+
+\end{document}
