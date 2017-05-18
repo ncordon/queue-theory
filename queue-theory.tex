@@ -25,7 +25,6 @@
 % Sintaxis: \Algoritmo{Elementos de entrada}{Elementos de proceso}{Elementos de salida}
 \newcommand{\Algoritmo}[3]{\textbf{Entrada} \begin{itemize} #1 \end{itemize} \textbf{Proceso} \begin{enumerate} #2 \end{enumerate} \textbf{Salida} \begin{itemize} #3 \end{itemize}}
 
-
 \title{Teoría de Colas}
 \author{
   Marta Andrés\and
@@ -42,20 +41,97 @@
 \section{Definición y aplicaciones}
 
 
-\subsection{Definiciones}
-% Incluyo las definiciones previas y la definición de matriz tridiagonal como inicio.
-Ejemplo de cita: \cite{Ciarlet}
+\subsection{El modelo de un \textit{``sistema de encolado''}}
+Un sistema de encolado es una cosa tal que así [dibujo aquí], en la que se consideran las siguientes variables:
+
+
+\begin{itemize}
+\item [$c$]
+  Número (fijo) de servidores en el sistema.
+\item [$\tau$]
+  Variable aleatoria que describe el tiempo entre llegadas (de clientes).
+\item [$s$]
+  Variable aleatoria que describe el tiempo de servicio.
+  %% o [que tarda un cliente en ser servido] ?
+\item [$q$]
+  Variable aleatoria que describe el tiempo que espera un cliente en la cola.
+  %% [incóginta?]
+\item [$N_s \lbrack t \rbrack$]
+  Variable aleatoria que describe el número de clientes siendo servidos en el instante $t$.
+  %% [dependerá de $\tau$, $s$, $c$? y de más cosas?]
+\item [$N_q \lbrack t \rbrack$]
+  Variable aleatoria que describe el número de clientes en la cola (esperando a ser servidos) en el instante $t$.
+  %% [depende también?]
+\end{itemize}
+
+%% Resaltar que $q$ no se conoce y es la que interesa conocer en general? $N_q[t]$ y $N_s[t]$ dependen también de otras cosas.
+
+De ellos se derivan las siguientes variables, también relevantes:
+\begin{itemize}
+\item [$\lambda$]
+  Frecuencia esperada de llegadas de clientes al sistema: $\lambda = 1/E[\tau]$.
+\item [$\mu$]
+  Frecuencia esperada de servicio de los servidores del sistema: $\mu = 1/E[s]$.
+\item [$\rho$]
+  Aprovechamiento de los servidores, esto es, la proporción de tiempo que los servidores están trabajando: $\rho = \frac{\lambda}{c\mu}$.
+  %% $= \frac{E[N_s]}{c} = \frac{L_s}{c}$ por qué?
+\item [$W_s$]
+  Tiempo esperado que está siendo servido un cliente: $W_s  = E[s]$.
+\item [$W_q$]
+  Tiempo esperado que está un cliente en la cola: $W_q = E[q]$.
+\item [$w$]
+  Variable aleatoria que describe el tiempo total que un cliente está en el sistema de encolado: $w = q+s$.
+\item [$W$]
+  Tiempo esperado que está un cliente en el sistema: $W = E[w]$.
+\item [$N_s$]
+  Variable aleatoria que describe el número de clientes siendo servidos con el sistema en equilibrio: $N_s = \lim_{t \rightarrow \infty} N_s[t]$.
+\item [$L_s$]
+  Número esperado de clientes siendo servidos con el sistema en equilibrio: $L_s = E[N_s]$.
+\item [$N_q$]
+  Variable aleatoria que describe el número de clientes en la cola con el sistema en equilibrio: $N_q = \lim_{t \rightarrow \infty} N_q[t]$.
+\item [$L_q$]
+  Número esperado de clientes en la cola con el sistema en equilibro: $L_q = E[N_q]$.
+\item [$N \lbrack t \rbrack$]
+  Variable aleatoria que describe el número de clientes en el sistema en el instante $t$: $N[t] = N_q[t]+N_s[t]$.
+\item [$N$]
+  Variable aleatoria que describe el número de clientes en el sistema con el sistema en equilibrio: $N = N_q+N_s$.
+\item [$L$]
+  Número esperado de clientes en el sistema en equilibrio: $L = E[N]$.
+\item [$p_n \lbrack t \rbrack$]
+  Probabilidad de que haya $n$ clientes en el sistema en el instante $t$: es la función masa de probabilidad de $N[t]$.
+\item [$p_n$]
+  Probabilidad de que haya $n$ clientes en el sistema con el sistema en equilibrio: $p_n = \lim_{t \rightarrow \infty} p_n[t]$ es la función masa de probabilidad de $N$.
+\end{itemize}
+
+%% Mas cosas
+
+%% Notación de Kendall
+%% \subsection{a}
+%% \begin{itemize}
+%%   %% Falta
+%% \item[$K$]
+%%   La capacidad del sistema (mayor número de clientes que puede haber en el sistema)
+%% \item[$m$]
+%%   El tamaño de la población.
+%% \item[$Z$]
+%%   La disciplina de la cola.
+
+%% \end{itemize}
+
+
+
+%% Ejemplo de cita: \cite{Ciarlet}
 
 \newpage
 \begin{thebibliography}{10}
-\expandafter\ifx\csname url\endcsname\relax
+  \expandafter\ifx\csname url\endcsname\relax
   \def\url#1{\texttt{#1}}\fi
-\expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
-\expandafter\ifx\csname href\endcsname\relax
+  \expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
+  \expandafter\ifx\csname href\endcsname\relax
   \def\href#1#2{#2} \def\path#1{#1}\fi
 
 \bibitem{Ciarlet}
-Ciarlet, P. G. (1982).
+  Ciarlet, P. G. (1982).
   Introduction to numerical linear algebra and optimisation.
   Cambridge University Press
 
