@@ -12,6 +12,8 @@
 \newtheorem*{mydef}{Definición}
 \newtheorem{mydefn}{Definición}
 \newtheorem{theorem}{Teorema}
+\newtheorem{fact}{Proposición}
+\newtheorem{corollary}{Corolario}
 \everymath{\displaystyle} % Displaystyle por defecto
 
 % Comandos
@@ -38,8 +40,8 @@
 \maketitle
 \tableofcontents
 \pagebreak
-\section{Definición y aplicaciones}
 
+\section{Introducción}
 
 \subsection{El modelo de un \textit{``sistema de encolado''}}
 Un sistema de encolado es una cosa tal que así [dibujo aquí], en la que se consideran las siguientes variables:
@@ -102,6 +104,64 @@ De ellos se derivan las siguientes variables, también relevantes:
 \item [$p_n$]
   Probabilidad de que haya $n$ clientes en el sistema con el sistema en equilibrio: $p_n = \lim_{t \rightarrow \infty} p_n[t]$ es la función masa de probabilidad de $N$.
 \end{itemize}
+
+\subsection{Distribución de Poisson y distribución exponencial}
+
+\subsubsection{Notación O pequeña}
+  \begin{mydefn} 
+  Una función $f$ se dice $o(h)$ (formalmente $o\in o(h)$) y lo notamos $f=o(h)$ si se verifica:
+  
+  \[\lim_{h\rightarrow 0} \frac{f(h)}{h} = 0\]
+  \end{mydefn}
+
+  Es decir, una función $f(h)$ es $o(h)$ si al compararla con $h$ suficientemente pequeño, podemos despreciar su
+  valor.
+
+  \begin{fact}
+  Dados $c_1, \ldots c_n \in \mathbb{R}$, $f_1, \ldots f_n \in o(h)$, entonces $\sum_{i=1} c_i f_i = o(h)$
+  \end{fact}
+
+  \begin{proof}
+  \[\lim_{h\rightarrow 0} \frac{\sum_{i=1} c_i f_i}{h} = \sum_{i=1}^n{c_i \lim_{h\rightarrow 0} \frac{f_i}{h}} = 0\]
+  \end{proof}
+
+\subsubsection{Proceso de Poisson}
+
+  \begin{mydefn} \textbf{Proceso de conteo}\\
+  $\{N(t), t\ge 0\}$, proceso estocástico discreto, es proceso de conteo si se verifica:
+  \begin{enumerate}
+    \item No negatividad: $N(t) \in \mathbb{N}\cup\{0\}, \quad \forall t\ge 0$. Además: $N(0)=0$
+    \item Monotonía: $N(s) \le N(t), \quad s \le t$
+  \end{enumerate}
+
+  $N(t)$ indica el número de eventos que han ocurrido en el intervalo $[0,t]$. Por tanto $N(t)- N(s)$, con $t\ge s$
+  indica el número de eventos que han ocurrido en $]s,t]$.
+  \end{mydefn}
+
+
+  \begin{mydefn} \textbf{Proceso de Poisson}\\
+  Un proceso de conteo $\{N(t), t\ge 0\}$ verifica que es de Poisson de parámetro $\lambda > 0$ si se verifica:
+  
+  \begin{enumerate}
+    \item El proceso tiene incrementos independientes: dados $0 \le t_1 < \ldots < t_n$, se verifica que
+    las variables $N(t_0), N(t_1) - N(t_0), \ldots N(t_n)- N(t_{n-1})$ son independientes. Esto es, el número de eventos
+    que se producen en intervalos disjuntos es independiente.
+    \item El proceso tiene incrementos estacionarios: $N(t+h), N(t)$ tienen la misma distribución para cualesquiera
+    $t\ge 0, h\ge 0$
+    \item $P[N(h) = 1] = \lambda h + o(h)$, es decir, la probabilidad de que ocurra un evento en un intervalo de
+    tiempo de longitud $h$ es casi proporcional a $h$, salvo por un término despreciable en comparación con dicho $h$, para
+    $h$ suficientemente pequeño.
+    \item $P[N(h) \ge 2] = o(h)$
+  \end{enumerate}
+
+  Se deduce que: 
+  \[P[N(h) = 0] = 1 - P[N(h)=1] - P[N(h) \ge 2] = 1 -\lambda h - o(h)\]
+  \end{mydefn}
+
+
+La mayoría de modelos de colas asumen una distribución exponencial para tiempos entre llegadas y tiempos 
+de servicio, o equivalentemente una distribución de Poisson, frecuencias de llegada y servicio.
+
 
 %% Mas cosas
 
