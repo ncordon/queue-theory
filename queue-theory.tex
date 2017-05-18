@@ -105,7 +105,7 @@ De ellos se derivan las siguientes variables, también relevantes:
   Probabilidad de que haya $n$ clientes en el sistema con el sistema en equilibrio: $p_n = \lim_{t \rightarrow \infty} p_n[t]$ es la función masa de probabilidad de $N$.
 \end{itemize}
 
-\subsection{Distribución de Poisson y distribución exponencial}
+\subsection{Procesos de Poisson}
 
 \subsubsection{Notación O pequeña}
   \begin{mydefn} 
@@ -128,7 +128,7 @@ De ellos se derivan las siguientes variables, también relevantes:
 \subsubsection{Proceso de Poisson}
 
   \begin{mydefn} \textbf{Proceso de conteo}\\
-  $\{N(t), t\ge 0\}$, proceso estocástico discreto, es proceso de conteo si se verifica:
+  $\{N(t)\}_{t\ge 0}$, proceso estocástico discreto, es proceso de conteo si se verifica:
   \begin{enumerate}
     \item No negatividad: $N(t) \in \mathbb{N}\cup\{0\}, \quad \forall t\ge 0$. Además: $N(0)=0$
     \item Monotonía: $N(s) \le N(t), \quad s \le t$
@@ -140,7 +140,7 @@ De ellos se derivan las siguientes variables, también relevantes:
 
 
   \begin{mydefn} \textbf{Proceso de Poisson}\\
-  Un proceso de conteo $\{N(t), t\ge 0\}$ verifica que es de Poisson de parámetro $\lambda > 0$ si se verifica:
+  Un proceso de conteo $\{N(t)\}_{t\ge 0}$ verifica que es de Poisson de parámetro $\lambda > 0$ si se verifica:
   
   \begin{enumerate}
     \item El proceso tiene incrementos independientes: dados $0 \le t_1 < \ldots < t_n$, se verifica que
@@ -160,7 +160,58 @@ De ellos se derivan las siguientes variables, también relevantes:
 
 
 La mayoría de modelos de colas asumen una distribución exponencial para tiempos entre llegadas y tiempos 
-de servicio, o equivalentemente una distribución de Poisson, frecuencias de llegada y servicio.
+de servicio, o equivalentemente una distribución de Poisson para frecuencias de llegada y servicio.
+
+\begin{theorem}
+ Sea $\{N(t)\}_{t\ge 0}$ un proceso de Poisson de parámetro $\lambda > 0$. Entonces la variable aleatoria $Y$ que
+ describe el número de eventos en cualquier intervalo de longitud $t > 0$ tiene una distribución de Poisson de parámetro
+ $\lambda t$
+ 
+ \[P[Y = k] = P[N(t) = n] = e^{-\lambda t} \frac{(\lambda t)^k}{k!}, \quad k\ge 0\]
+ 
+ %% Prueba: falta por hacer.
+\end{theorem}
+
+
+\begin{theorem}
+ Sea $\{N(t)\}_{t\ge 0}$ proceso de conteo. Sean $0 < t_n$ con $t_{n} < t_{n+1}, \quad forall n\in 
+ \mathbb{N}$ tiempos de eventos con $\tau_1= t_1, \tau_{n+1} = t_{n+1} - t_{n}, \quad \forall n\in
+ \mathbb{N}$ tiempos entre llegadas. Entonces equivalen:
+ 
+ \begin{itemize}
+  \item $\{N(t)\}_{t\ge 0}$ es proceso de Poisson
+  \item Los tiempos entre llegadas $\{\tau_n\}$ son variables exponenciales i.i.d. de media $\frac{1}{\lambda}$
+ \end{itemize}
+
+\end{theorem}
+
+%% Prueba: falta por hacer.
+
+\begin{theorem}
+ Sea $\{N(t)\}_{t\ge 0}$ proceso de Poisson donde un evento ha tenido lugar en $[0,t]$. Entonces siendo $Y$ la variable
+ describiendo el número de eventos en cualquier intervalo de longitud $t > 0$, entonces $Y \sim U([0,t])$.
+\end{theorem}
+
+%% Prueba: falta por hacer.
+
+\subsubsection{Propiedad de Markov de la distribución exponencial}
+
+
+%% ¿Qué es exactamente la propiedad de Markov?
+\begin{fact}
+ Sea $T$ variable aleatoria tal que: $T \sim exp(\lambda)$. Entonces $T$ tiene la propiedad de Markov, esto es:
+ 
+ \[P[T \le t_1 | T \ge t_0] = P[0\le T \le t_1 - t_0] \]
+\end{fact}
+
+\begin{proof}
+ \begin{align*}
+ P[T \le t_1 \mid T\ge t_0] & =  \frac{P([T\le t_1] \cap [T\ge t_0])}{P([T\ge t_0])} = \frac{e^{-\lambda t_0} - e^{-\lambda t_1}}{e^{-\lambda t_0}} = \\
+                            & =  1 - e^{-\lambda(t_1 - t_0)} = P[0\le T \le t_1-t_0]
+ \end{align*}
+\end{proof}
+
+\section{Procesos de nacimiento y muerte}
 
 
 %% Mas cosas
