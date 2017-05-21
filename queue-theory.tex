@@ -128,34 +128,34 @@ De ellos se derivan las siguientes variables, también relevantes:
 \subsubsection{Proceso de Poisson}
 
   \begin{mydefn} \textbf{Proceso de conteo}\\
-  $\{N(t)\}_{t\ge 0}$, proceso estocástico discreto, es proceso de conteo si se verifica:
+  $\{N_t\}_{t\ge 0}$, proceso estocástico discreto, es proceso de conteo si se verifica:
   \begin{enumerate}
-    \item No negatividad: $N(t) \in \mathbb{N}\cup\{0\}, \quad \forall t\ge 0$. Además: $N(0)=0$
-    \item Monotonía: $N(s) \le N(t), \quad s \le t$
+    \item No negatividad: $N_t \in \mathbb{N}\cup\{0\}, \quad \forall t\ge 0$. Además: $N(0)=0$
+    \item Monotonía: $N_s \le N_t, \quad s \le t$
   \end{enumerate}
 
-  $N(t)$ indica el número de eventos que han ocurrido en el intervalo $[0,t]$. Por tanto $N(t)- N(s)$, con $t\ge s$
+  $N_t$ indica el número de eventos que han ocurrido en el intervalo $[0,t]$. Por tanto $N_t- N_s$, con $t\ge s$
   indica el número de eventos que han ocurrido en $]s,t]$.
   \end{mydefn}
 
 
   \begin{mydefn} \textbf{Proceso de Poisson}\\
-  Un proceso de conteo $\{N(t)\}_{t\ge 0}$ verifica que es de Poisson de parámetro $\lambda > 0$ si se verifica:
+  Un proceso de conteo $\{N_t\}_{t\ge 0}$ verifica que es de Poisson de parámetro $\lambda > 0$ si se verifica:
   
   \begin{enumerate}
     \item El proceso tiene incrementos independientes: dados $0 \le t_1 < \ldots < t_n$, se verifica que
-    las variables $N(t_0), N(t_1) - N(t_0), \ldots N(t_n)- N(t_{n-1})$ son independientes. Esto es, el número de eventos
+    las variables $N_{t_0}, N_{t_1} - N_{t_0}, \ldots N_{t_n}- N_{t_{n-1}}$ son independientes. Esto es, el número de eventos
     que se producen en intervalos disjuntos es independiente.
-    \item El proceso tiene incrementos estacionarios: $N(t+h), N(t)$ tienen la misma distribución para cualesquiera
+    \item El proceso tiene incrementos estacionarios: $N_{t+h}, N_t$ tienen la misma distribución para cualesquiera
     $t\ge 0, h\ge 0$
-    \item $P[N(h) = 1] = \lambda h + o(h)$, es decir, la probabilidad de que ocurra un evento en un intervalo de
+    \item $P[N_h = 1] = \lambda h + o(h)$, es decir, la probabilidad de que ocurra un evento en un intervalo de
     tiempo de longitud $h$ es casi proporcional a $h$, salvo por un término despreciable en comparación con dicho $h$, para
     $h$ suficientemente pequeño.
     \item $P[N(h) \ge 2] = o(h)$
   \end{enumerate}
 
   Se deduce que: 
-  \[P[N(h) = 0] = 1 - P[N(h)=1] - P[N(h) \ge 2] = 1 -\lambda h - o(h)\]
+  \[P[N_h = 0] = 1 - P[N_h=1] - P[N(h) \ge 2] = 1 -\lambda h - o(h)\]
   \end{mydefn}
 
 
@@ -163,23 +163,23 @@ La mayoría de modelos de colas asumen una distribución exponencial para tiempo
 de servicio, o equivalentemente una distribución de Poisson para frecuencias de llegada y servicio.
 
 \begin{theorem}
- Sea $\{N(t)\}_{t\ge 0}$ un proceso de Poisson de parámetro $\lambda > 0$. Entonces la variable aleatoria $Y$ que
+ Sea $\{N_t\}_{t\ge 0}$ un proceso de Poisson de parámetro $\lambda > 0$. Entonces la variable aleatoria $Y$ que
  describe el número de eventos en cualquier intervalo de longitud $t > 0$ tiene una distribución de Poisson de parámetro
  $\lambda t$
  
- \[P[Y = k] = P[N(t) = n] = e^{-\lambda t} \frac{(\lambda t)^k}{k!}, \quad k\ge 0\]
+ \[P[Y = k] = P[N_t = n] = e^{-\lambda t} \frac{(\lambda t)^k}{k!}, \quad k\ge 0\]
  
  %% Prueba: falta por hacer.
 \end{theorem}
 
 
 \begin{theorem}
- Sea $\{N(t)\}_{t\ge 0}$ proceso de conteo. Sean $0 < t_n$ con $t_{n} < t_{n+1}, \quad forall n\in 
+ Sea $\{N_t\}_{t\ge 0}$ proceso de conteo. Sean $0 < t_n$ con $t_{n} < t_{n+1}, \quad forall n\in 
  \mathbb{N}$ tiempos de eventos con $\tau_1= t_1, \tau_{n+1} = t_{n+1} - t_{n}, \quad \forall n\in
  \mathbb{N}$ tiempos entre llegadas. Entonces equivalen:
  
  \begin{itemize}
-  \item $\{N(t)\}_{t\ge 0}$ es proceso de Poisson
+  \item $\{N_t\}_{t\ge 0}$ es proceso de Poisson
   \item Los tiempos entre llegadas $\{\tau_n\}$ son variables exponenciales i.i.d. de media $\frac{1}{\lambda}$
  \end{itemize}
 
@@ -188,7 +188,7 @@ de servicio, o equivalentemente una distribución de Poisson para frecuencias de
 %% Prueba: falta por hacer.
 
 \begin{theorem}
- Sea $\{N(t)\}_{t\ge 0}$ proceso de Poisson donde un evento ha tenido lugar en $[0,t]$. Entonces siendo $Y$ la variable
+ Sea $\{N_t\}_{t\ge 0}$ proceso de Poisson donde un evento ha tenido lugar en $[0,t]$. Entonces siendo $Y$ la variable
  describiendo el número de eventos en cualquier intervalo de longitud $t > 0$, entonces $Y \sim U([0,t])$.
 \end{theorem}
 
@@ -213,7 +213,83 @@ de servicio, o equivalentemente una distribución de Poisson para frecuencias de
 
 \section{Procesos de nacimiento y muerte}
 
+El parámetro $\lambda$ de un proceso de Poisson $\{N_t\}_{t\ge 0}$ puede ser visto como una tasa de nacimiento, ya que la probabilidad
+de que ocurra un evento en un intervalo de longitud $h$ es $P[N(h)-N(0)=1] = \lambda h e^{-\lambda h} = \lambda h + o(h)$.
+Cuando suponemos que el parámetro no es constante, sino que depende de $n$ (cantidad de eventos que se han producido hasta el momento), esto
+es $\lambda_n$, entonces la cantidad de nacimientos (eventos producidos) en un intervalo de longitud $h$ es $\lambda_n h + o(h)$. Si además
+establecemos que se pueden producir muertes con una tasa $\mu_n$, donde la probabilidad de que se produzca una muerte en un intervalo de longitud
+$h$ es $\mu_n h + o(h)$ tenemos un proceso de nacimiento y muerte.
 
+\begin{mydefn}
+ Sea una cadena de Markov $\{X_t\}_{t\ge 0}$ con espacio de estados $\mathbb{N}\cup \{0\}$, donde el espacio de estados representa el número de individuos
+ de un sistema (población). Entonces $\{X_t\}_{t\ge 0}$ se dice proceso de nacimiento y muerte si existen tasas no negativas de nacimiento y muerte,
+ $\{\lambda_n\}_{\mathbb{N}\cup \{0\}}$ y $\{\mu_n\}_{\mathbb{N}\cup \{0\}}$ y se verifica:
+ 
+ \begin{enumerate}
+  \item La población puede aumentar o decrecer únicamente de uno en uno.
+  \item Si el sistema está en estado $n\ge 0$ entonces el tiempo hasta que el sistema está en estado $n+1 \ge 0$ es una variable aleatoria exponencial
+  de paŕámetro $\lambda_n$
+  \item Si el sistema está en estado $n\ge 1$ entonces el tiempo hasta que el sistema está en estado $n-1 \ge 0$ es una variable aleatoria exponencial
+  de paŕámetro $\mu_n$
+ \end{enumerate}
+\end{mydefn}
+
+Llamando $P_n(t) = P[X_t = n]$ se verifica:
+
+\[P_n(t+h) = [1-\lambda_n h -\mu_n h] P_n(t) + \lambda_{n-1} h P_{n-1}(t) + \mu_{n+1} h P_{n+1}(t) + o(h)\]
+
+que diviendo por $h$ en ambos términos y operando, da lugar a:
+
+\[\frac{P_n(t+h) - P_n(t)}{h} = -(\lambda_n + \mu_n) P_n(t) + \lambda_{n-1} P_{n-1}(t) + \mu_{n+1}P_{n+1}(t) + \frac{o(h)}{h}\]
+
+Tomando límite en $h\rightarrow 0$ llegamos a:
+
+\begin{equation}
+\frac{\partial P_n(t)}{\partial t} = -(\lambda_n + \mu_n) P_n(t) + \lambda_{n-1}P_{n-1}(t) + \mu_{n+1}P_{n+1}(t)
+\label{eq:recp_n(t)}
+\end{equation}
+
+En el caso particuar $n=0$, tenemos $\mu_o = 0$ y $P_{-1}(t) = 0$. Por tanto:
+
+\begin{equation}
+ \frac{\partial P_0(t)}{\partial t} = -\lambda_0 P_0(t) \mu_{1}P_{1}(t)
+ \label{eq:recp_0(t)}
+\end{equation}
+
+
+Supongamos en lo que sigue que existe la distribución límite, esto es 
+$\lim_{t\rightarrow \infty}\{P_n(t)\} = p_n$ y haciendo $t\rightarrow \infty$ en \eqref{eq:recp_n(t)},
+y en \eqref{eq:recp_0(t)} llegamos a que:
+
+\begin{align*}
+0 &= \lambda_{n-1} p_{n-1} + \mu_{n+1} p_{n+1} - (\lambda_n + \mu_n) p_n, \quad n\ge 1\\
+0 &= \mu_1 p_1 -\lambda_0 p_0, \quad n=0
+\end{align*}
+
+Veamos por inducción que: $p_n = p_0 \prod_{i=1}^n \frac{\lambda_{i-1}}{\mu_i}, \quad n\ge 1$.
+
+\begin{proof}
+ Los casos $n=0, n=1$ cumplen trivialmente la recurrencia. Para $n>0$, aplicando hipótesis de inducción a $p_{n-1}, p_{n}$:
+ 
+ \begin{align*}
+ p_{n+1} &= \frac{\lambda_n + \mu_n}{\mu_{n+1}} p_n - \frac{\lambda_{n-1}}{\mu_{n+1}}p_{n-1} = \\
+         &= \frac{\lambda_n + \mu_n}{\mu_{n+1}} p_0 \prod_{i=1}^n \frac{\lambda_{i-1}}{\mu_i} - 
+            \frac{\lambda_{n-1}}{\mu_{n+1}} p_0 \prod_{i=1}^{n-1} \frac{\lambda_{i-1}}{\mu_i} = \\
+         &= \frac{\lambda_n}{\mu_{n+1}} p_0 \prod_{i=1}^n \frac{\lambda_{i-1}}{\mu_i} + 
+            \frac{\mu_n \lambda_{n-1}}{\mu_{n+1}\mu_n} p_0 \prod_{i=1}^{n-1} \frac{\lambda_{i-1}}{\mu_i} - 
+            \frac{\lambda_{n-1}}{\mu_{n+1}} p_0 \prod_{i=1}^{n-1} \frac{\lambda_{i-1}}{\mu_i} = \\
+         &= \frac{\lambda_n}{\mu_{n+1}} p_0 \prod_{i=1}^n \frac{\lambda_{i-1}}{\mu_i} = p_0 \prod_{i=1}^{n+1} \frac{\lambda_{i-1}}{\mu_i}
+ \end{align*}
+\end{proof}
+
+Las probabilidades deben sumar $1$, esto es $1 = \sum_{n=0}^{\infty} p_n = p_0 \underbrace{\left(1 + \sum_{n=1}^{\infty} \prod_{i=1}^n \frac{\lambda_{i-1}}{\mu_i} \right)}_{S}$
+
+Que la serie $S$ sea convergente es condición necesaria para que exista la distribución límite. 
+De hecho, también es condición suficiente. Si dicha distribución existe se tiene: \[p_0 = S^{-1}\]
+
+En el caso de los sistemas de colas, si $S$ fuese convergente, quiere decir que la cola puede procesar todos los
+eventos, mientras que si $S$ diverge, la cola no puede procesar todos los eventos, y el sistema de cola se dice
+inestable (la frecuencia de llegadas es mayor en media que la frecuencia de salida).
 %% Mas cosas
 
 %% Notación de Kendall
@@ -241,11 +317,15 @@ de servicio, o equivalentemente una distribución de Poisson para frecuencias de
   \expandafter\ifx\csname href\endcsname\relax
   \def\href#1#2{#2} \def\path#1{#1}\fi
 
-\bibitem{Ciarlet}
-  Ciarlet, P. G. (1982).
-  Introduction to numerical linear algebra and optimisation.
-  Cambridge University Press
+\bibitem{Allen}
+  Arnold O.Allen (1990)\\
+  Probability, Statistics and Queueing Theory with Computer Science Applications\\
+  Academic Press
 
+\bibitem{Gross}
+  Donald Gross, John F.Shortle, James M.Thompson, Carl M.Harris (2008)\\
+  Fundamentals of Queueing Theory\\
+  Wiley
 \end{thebibliography}
 
 \end{document}
