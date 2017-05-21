@@ -10,10 +10,10 @@
 
 % Definiciones
 \newtheorem*{mydef}{Definición}
-\newtheorem{mydefn}{Definición}
-\newtheorem{theorem}{Teorema}
-\newtheorem{fact}{Proposición}
-\newtheorem{corollary}{Corolario}
+%\newtheorem{mydefn}{Definición}
+\newtheorem*{theorem}{Teorema}
+\newtheorem*{fact}{Proposición}
+\newtheorem*{corollary}{Corolario}
 \everymath{\displaystyle} % Displaystyle por defecto
 
 % Comandos
@@ -46,11 +46,11 @@
 \subsection{Procesos de Poisson}
 
 \subsubsection{Notación O pequeña}
-  \begin{mydefn} 
+  \begin{mydef} 
   Una función $f$ se dice $o(h)$ (formalmente $o\in o(h)$) y lo notamos $f=o(h)$ si se verifica:
   
   \[\lim_{h\rightarrow 0} \frac{f(h)}{h} = 0\]
-  \end{mydefn}
+  \end{mydef}
 
   Es decir, una función $f(h)$ es $o(h)$ si al compararla con $h$ suficientemente pequeño, podemos despreciar su
   valor.
@@ -65,7 +65,7 @@
 
 \subsubsection{Proceso de Poisson}
 
-  \begin{mydefn} \textbf{Proceso de conteo}\\
+  \begin{mydef} \textbf{Proceso de conteo}\\
   $\{N_t\}_{t\ge 0}$, proceso estocástico discreto, es proceso de conteo si se verifica:
   \begin{enumerate}
     \item No negatividad: $N_t \in \mathbb{N}\cup\{0\}, \quad \forall t\ge 0$. Además: $N(0)=0$
@@ -74,10 +74,10 @@
 
   $N_t$ indica el número de eventos que han ocurrido en el intervalo $[0,t]$. Por tanto $N_t- N_s$, con $t\ge s$
   indica el número de eventos que han ocurrido en $]s,t]$.
-  \end{mydefn}
+  \end{mydef}
 
 
-  \begin{mydefn} \textbf{Proceso de Poisson}\\
+  \begin{mydef} \textbf{Proceso de Poisson}\\
   Un proceso de conteo $\{N_t\}_{t\ge 0}$ verifica que es de Poisson de parámetro $\lambda > 0$ si se verifica:
   
   \begin{enumerate}
@@ -94,7 +94,7 @@
 
   Se deduce que: 
   \[P[N_h = 0] = 1 - P[N_h=1] - P[N(h) \ge 2] = 1 -\lambda h - o(h)\]
-  \end{mydefn}
+  \end{mydef}
 
 
 La mayoría de modelos de colas asumen una distribución exponencial para tiempos entre llegadas y tiempos 
@@ -158,7 +158,7 @@ es $\lambda_n$, entonces la cantidad de nacimientos (eventos producidos) en un i
 establecemos que se pueden producir muertes con una tasa $\mu_n$, donde la probabilidad de que se produzca una muerte en un intervalo de longitud
 $h$ es $\mu_n h + o(h)$ tenemos un proceso de nacimiento y muerte.
 
-\begin{mydefn}
+\begin{mydef}
  Sea una cadena de Markov $\{N_t\}_{t\ge 0}$ con espacio de estados $\mathbb{N}\cup \{0\}$, donde el espacio de estados representa el número de individuos
  de un sistema (población). Entonces $\{N_t\}_{t\ge 0}$ se dice proceso de nacimiento y muerte si existen tasas no negativas de nacimiento y muerte,
  $\{\lambda_n\}_{\mathbb{N}\cup \{0\}}$ y $\{\mu_n\}_{\mathbb{N}\cup \{0\}}$ y se verifica:
@@ -170,7 +170,7 @@ $h$ es $\mu_n h + o(h)$ tenemos un proceso de nacimiento y muerte.
   \item Si el sistema está en estado $n\ge 1$ entonces el tiempo hasta que el sistema está en estado $n-1 \ge 0$ es una variable aleatoria exponencial
   de paŕámetro $\mu_n$
  \end{enumerate}
-\end{mydefn}
+\end{mydef}
 
 Llamando $P_n(t) = P[N_t = n]$ se verifica:
 
@@ -292,7 +292,43 @@ De ellos se derivan las siguientes variables, también relevantes:
   Probabilidad de que haya $n$ clientes en el sistema con el sistema en equilibrio: $p_n = \lim_{t \rightarrow \infty} P_n(t)$ es la función masa de probabilidad de $N$.
 \end{itemize}
 
-%% Mas cosas
+\subsection{Características de un proceso de colas}
+\subsubsection{Modelo de llegadas}
+La capacidad de un sistema de colas para poder proporcionar servicio a los clientes no depende solo de la tasa media
+de llegadas de un sistema de colas, sino también del modo en que las peticiones llegan. De esta forma, podemos
+tener que las peticiones llegan de uno en uno, o en paquetes de peticiones.
+
+Dado $0=t_0 < t_1 < t_2 < t_n < \ldots$, y $\tau_n = t_n - t_{n-1}, \tau_0$ tiempos entre llegadas, asumimos por hipótesis
+que las $\tau_n$ son variables aleatorias independientes.
+
+\begin{mydef}
+ La distribución de los tiempos de llegada $\{t_n\}$ está determinada por la distribución de los tiempos entre
+ llegadas $\{t_n\}$. LLamamos modelo de llegadas a la distribución de los $\{t_n\}$
+\end{mydef}
+ 
+\begin{mydef}
+El modelo de llegadas se dice:
+ 
+ \begin{enumerate}
+   \item Estacionario, si las $\{\tau_n\}$ están idénticamente distribuidas.
+   \item Transitorio, en caso opuesto.
+ \end{enumerate}
+\end{mydef}
+
+ 
+\begin{mydef}
+ Para un modelo de llegadas estacionario, sea $A(t)$ función de distribución de los $\tau_n$. 
+ El modelo de llegadas se dice:
+
+  \begin{enumerate}
+  \item Aleatorio o de Poisson: si $A(t) = 1 - e^{-\lambda t}$
+  \item Determinístico: si $A(t) = \left\{\begin{array}{ll}
+					0 & t<s \\
+					1 & t\ge s
+					\end{array}\right.$ con $s$ fijo.
+  
+  \end{enumerate}
+\end{mydef}
 
 %% Notación de Kendall
 %% \subsection{a}
