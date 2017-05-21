@@ -51,6 +51,25 @@
 
 \section{Preliminares}
 
+\subsection{Distribución exponencial}
+\subsubsection{Propiedad de Markov de la distribución exponencial}
+
+
+%% ¿Qué es exactamente la propiedad de Markov?
+\begin{fact}
+ Sea $T$ variable aleatoria tal que: $T \sim exp(\lambda)$. Entonces $T$ tiene la propiedad de Markov, esto es:
+ 
+ \[P[T \le t_1 | T \ge t_0] = P[0\le T \le t_1 - t_0] \]
+\end{fact}
+
+\begin{proof}
+ \begin{align*}
+ P[T \le t_1 \mid T\ge t_0] & =  \frac{P([T\le t_1] \cap [T\ge t_0])}{P([T\ge t_0])} = \frac{e^{-\lambda t_0} - e^{-\lambda t_1}}{e^{-\lambda t_0}} = \\
+                            & =  1 - e^{-\lambda(t_1 - t_0)} = P[0\le T \le t_1-t_0]
+ \end{align*}
+\end{proof}
+
+
 \subsection{Procesos de Poisson}
 
 \subsubsection{Notación O pequeña}
@@ -140,24 +159,7 @@ de servicio, o equivalentemente una distribución de Poisson para frecuencias de
 
 %% Prueba: falta por hacer.
 
-\subsubsection{Propiedad de Markov de la distribución exponencial}
-
-
-%% ¿Qué es exactamente la propiedad de Markov?
-\begin{fact}
- Sea $T$ variable aleatoria tal que: $T \sim exp(\lambda)$. Entonces $T$ tiene la propiedad de Markov, esto es:
- 
- \[P[T \le t_1 | T \ge t_0] = P[0\le T \le t_1 - t_0] \]
-\end{fact}
-
-\begin{proof}
- \begin{align*}
- P[T \le t_1 \mid T\ge t_0] & =  \frac{P([T\le t_1] \cap [T\ge t_0])}{P([T\ge t_0])} = \frac{e^{-\lambda t_0} - e^{-\lambda t_1}}{e^{-\lambda t_0}} = \\
-                            & =  1 - e^{-\lambda(t_1 - t_0)} = P[0\le T \le t_1-t_0]
- \end{align*}
-\end{proof}
-
-\section{Procesos de nacimiento y muerte}
+\subsection{Procesos de nacimiento y muerte}
 
 El parámetro $\lambda$ de un proceso de Poisson $\{N_t\}_{t\ge 0}$ puede ser visto como una tasa de nacimiento, ya que la probabilidad
 de que ocurra un evento en un intervalo de longitud $h$ es $P[N(h)-N(0)=1] = \lambda h e^{-\lambda h} = \lambda h + o(h)$.
@@ -240,7 +242,7 @@ De hecho, también es condición suficiente. Si dicha distribución existe se te
 \end{equation}
 
 
-\subsection{El modelo de un \textit{``sistema de encolado''}}
+\section{El modelo de un \textit{``sistema de encolado''}}
 Un sistema de encolado es una cosa tal que así [dibujo aquí], en la que se consideran las siguientes variables aleatorias:
 
 \begin{itemize}
