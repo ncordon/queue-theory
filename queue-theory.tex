@@ -41,69 +41,7 @@
 \tableofcontents
 \pagebreak
 
-\section{Introducción}
-
-\subsection{El modelo de un \textit{``sistema de encolado''}}
-Un sistema de encolado es una cosa tal que así [dibujo aquí], en la que se consideran las siguientes variables:
-
-
-\begin{itemize}
-\item [$c$]
-  Número (fijo) de servidores en el sistema.
-\item [$\tau$]
-  Variable aleatoria que describe el tiempo entre llegadas (de clientes).
-\item [$s$]
-  Variable aleatoria que describe el tiempo de servicio.
-  %% o [que tarda un cliente en ser servido] ?
-\item [$q$]
-  Variable aleatoria que describe el tiempo que espera un cliente en la cola.
-  %% [incóginta?]
-\item [$N_s \lbrack t \rbrack$]
-  Variable aleatoria que describe el número de clientes siendo servidos en el instante $t$.
-  %% [dependerá de $\tau$, $s$, $c$? y de más cosas?]
-\item [$N_q \lbrack t \rbrack$]
-  Variable aleatoria que describe el número de clientes en la cola (esperando a ser servidos) en el instante $t$.
-  %% [depende también?]
-\end{itemize}
-
-%% Resaltar que $q$ no se conoce y es la que interesa conocer en general? $N_q[t]$ y $N_s[t]$ dependen también de otras cosas.
-
-De ellos se derivan las siguientes variables, también relevantes:
-\begin{itemize}
-\item [$\lambda$]
-  Frecuencia esperada de llegadas de clientes al sistema: $\lambda = 1/E[\tau]$.
-\item [$\mu$]
-  Frecuencia esperada de servicio de los servidores del sistema: $\mu = 1/E[s]$.
-\item [$\rho$]
-  Aprovechamiento de los servidores, esto es, la proporción de tiempo que los servidores están trabajando: $\rho = \frac{\lambda}{c\mu}$.
-  %% $= \frac{E[N_s]}{c} = \frac{L_s}{c}$ por qué?
-\item [$W_s$]
-  Tiempo esperado que está siendo servido un cliente: $W_s  = E[s]$.
-\item [$W_q$]
-  Tiempo esperado que está un cliente en la cola: $W_q = E[q]$.
-\item [$w$]
-  Variable aleatoria que describe el tiempo total que un cliente está en el sistema de encolado: $w = q+s$.
-\item [$W$]
-  Tiempo esperado que está un cliente en el sistema: $W = E[w]$.
-\item [$N_s$]
-  Variable aleatoria que describe el número de clientes siendo servidos con el sistema en equilibrio: $N_s = \lim_{t \rightarrow \infty} N_s[t]$.
-\item [$L_s$]
-  Número esperado de clientes siendo servidos con el sistema en equilibrio: $L_s = E[N_s]$.
-\item [$N_q$]
-  Variable aleatoria que describe el número de clientes en la cola con el sistema en equilibrio: $N_q = \lim_{t \rightarrow \infty} N_q[t]$.
-\item [$L_q$]
-  Número esperado de clientes en la cola con el sistema en equilibro: $L_q = E[N_q]$.
-\item [$N \lbrack t \rbrack$]
-  Variable aleatoria que describe el número de clientes en el sistema en el instante $t$: $N[t] = N_q[t]+N_s[t]$.
-\item [$N$]
-  Variable aleatoria que describe el número de clientes en el sistema con el sistema en equilibrio: $N = N_q+N_s$.
-\item [$L$]
-  Número esperado de clientes en el sistema en equilibrio: $L = E[N]$.
-\item [$p_n \lbrack t \rbrack$]
-  Probabilidad de que haya $n$ clientes en el sistema en el instante $t$: es la función masa de probabilidad de $N[t]$.
-\item [$p_n$]
-  Probabilidad de que haya $n$ clientes en el sistema con el sistema en equilibrio: $p_n = \lim_{t \rightarrow \infty} p_n[t]$ es la función masa de probabilidad de $N$.
-\end{itemize}
+\section{Preliminares}
 
 \subsection{Procesos de Poisson}
 
@@ -221,8 +159,8 @@ establecemos que se pueden producir muertes con una tasa $\mu_n$, donde la proba
 $h$ es $\mu_n h + o(h)$ tenemos un proceso de nacimiento y muerte.
 
 \begin{mydefn}
- Sea una cadena de Markov $\{X_t\}_{t\ge 0}$ con espacio de estados $\mathbb{N}\cup \{0\}$, donde el espacio de estados representa el número de individuos
- de un sistema (población). Entonces $\{X_t\}_{t\ge 0}$ se dice proceso de nacimiento y muerte si existen tasas no negativas de nacimiento y muerte,
+ Sea una cadena de Markov $\{N_t\}_{t\ge 0}$ con espacio de estados $\mathbb{N}\cup \{0\}$, donde el espacio de estados representa el número de individuos
+ de un sistema (población). Entonces $\{N_t\}_{t\ge 0}$ se dice proceso de nacimiento y muerte si existen tasas no negativas de nacimiento y muerte,
  $\{\lambda_n\}_{\mathbb{N}\cup \{0\}}$ y $\{\mu_n\}_{\mathbb{N}\cup \{0\}}$ y se verifica:
  
  \begin{enumerate}
@@ -234,7 +172,7 @@ $h$ es $\mu_n h + o(h)$ tenemos un proceso de nacimiento y muerte.
  \end{enumerate}
 \end{mydefn}
 
-Llamando $P_n(t) = P[X_t = n]$ se verifica:
+Llamando $P_n(t) = P[N_t = n]$ se verifica:
 
 \[P_n(t+h) = [1-\lambda_n h -\mu_n h] P_n(t) + \lambda_{n-1} h P_{n-1}(t) + \mu_{n+1} h P_{n+1}(t) + o(h)\]
 
@@ -285,11 +223,75 @@ Veamos por inducción que: $p_n = p_0 \prod_{i=1}^n \frac{\lambda_{i-1}}{\mu_i},
 Las probabilidades deben sumar $1$, esto es $1 = \sum_{n=0}^{\infty} p_n = p_0 \underbrace{\left(1 + \sum_{n=1}^{\infty} \prod_{i=1}^n \frac{\lambda_{i-1}}{\mu_i} \right)}_{S}$
 
 Que la serie $S$ sea convergente es condición necesaria para que exista la distribución límite. 
-De hecho, también es condición suficiente. Si dicha distribución existe se tiene: \[p_0 = S^{-1}\]
+De hecho, también es condición suficiente. Si dicha distribución existe se tendría: 
 
-En el caso de los sistemas de colas, si $S$ fuese convergente, quiere decir que la cola puede procesar todos los
-eventos, mientras que si $S$ diverge, la cola no puede procesar todos los eventos, y el sistema de cola se dice
-inestable (la frecuencia de llegadas es mayor en media que la frecuencia de salida).
+\begin{equation}
+ p_0 = S^{-1} 
+ \label{eq:relp0}
+\end{equation}
+
+
+\subsection{El modelo de un \textit{``sistema de encolado''}}
+Un sistema de encolado es una cosa tal que así [dibujo aquí], en la que se consideran las siguientes variables aleatorias:
+
+\begin{itemize}
+\item [$c$]
+  Número (fijo) de servidores en el sistema.
+\item [$\tau$]
+  Variable aleatoria que describe el tiempo entre llegadas (de clientes).
+\item [$s$]
+  Variable aleatoria que describe el tiempo de servicio.
+  %% o [que tarda un cliente en ser servido] ?
+\item [$q$]
+  Variable aleatoria que describe el tiempo que espera un cliente en la cola.
+  %% [incóginta?]
+\item [$N_{s,t}$]
+  Variable aleatoria que describe el número de clientes que están siendo servidos en el instante $t$.
+  %% [dependerá de $\tau$, $s$, $c$? y de más cosas?]
+\item [$N_{q,t}$]
+  Variable aleatoria que describe el número de clientes en la cola (esperando a ser servidos) en el instante $t$.
+  %% [depende también?]
+\end{itemize}
+
+%% Resaltar que $q$ no se conoce y es la que interesa conocer en general? $N_q[t]$ y $N_s[t]$ dependen también de otras cosas.
+
+De ellos se derivan las siguientes variables, también relevantes:
+\begin{itemize}
+\item [$\lambda$]
+  Frecuencia esperada de llegadas de clientes al sistema: $\lambda = 1/E[\tau]$.
+\item [$\mu$]
+  Frecuencia esperada de servicio de los servidores del sistema: $\mu = 1/E[s]$.
+\item [$\rho$]
+  Aprovechamiento de los servidores, esto es, la proporción de tiempo que los servidores están trabajando: $\rho = \frac{\lambda}{c\mu}$.
+  %% $= \frac{E[N_s]}{c} = \frac{L_s}{c}$ por qué?
+\item [$W_s$]
+  Tiempo esperado que está siendo servido un cliente: $W_s  = E[s]$.
+\item [$W_q$]
+  Tiempo esperado que está un cliente en la cola: $W_q = E[q]$.
+\item [$w$]
+  Variable aleatoria que describe el tiempo total que un cliente está en el sistema de encolado: $w = q+s$.
+\item [$W$]
+  Tiempo esperado que está un cliente en el sistema: $W = E[w]$.
+\item [$N_s$]
+  Variable aleatoria que describe el número de clientes siendo servidos con el sistema en equilibrio: $N_s = \lim_{t \rightarrow \infty} N_s[t]$.
+\item [$L_s$]
+  Número esperado de clientes siendo servidos con el sistema en equilibrio: $L_s = E[N_s]$.
+\item [$N_q$]
+  Variable aleatoria que describe el número de clientes en la cola con el sistema en equilibrio: $N_q = \lim_{t \rightarrow \infty} N_{q,t}$.
+\item [$L_q$]
+  Número esperado de clientes en la cola con el sistema en equilibro: $L_q = E[N_q]$.
+\item [$N_t$]
+  Variable aleatoria que describe el número de clientes en el sistema en el instante $t$: $N_t = N_{q,t} + N_{s,t}$.
+\item [$N$]
+  Variable aleatoria que describe el número de clientes en el sistema con el sistema en equilibrio (en caso de tener sentido) $N = N_q+N_s$.
+\item [$L$]
+  Número esperado de clientes en el sistema en equilibrio (en caso de tener sentido): $L = E[N]$.
+\item [$P_n(t)$]
+  Probabilidad de que haya $n$ clientes en el sistema en el instante $t$: es la función masa de probabilidad de $N_t$.
+\item [$p_n$]
+  Probabilidad de que haya $n$ clientes en el sistema con el sistema en equilibrio: $p_n = \lim_{t \rightarrow \infty} P_n(t)$ es la función masa de probabilidad de $N$.
+\end{itemize}
+
 %% Mas cosas
 
 %% Notación de Kendall
