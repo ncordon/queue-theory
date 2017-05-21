@@ -8,3 +8,7 @@ arrival rate -> tasa de llegada
 service rate -> tasa de servicio
 queueing system -> sistema de encolado
 server utilization -> aprovechamiento del servidor/ de los servidores
+balking -> oposición
+reneging -> retirada
+jockeying -> recolocación
+priority -> priorización
