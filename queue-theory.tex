@@ -279,10 +279,10 @@ De ellos se derivan las siguientes variables, también relevantes:
   Tiempo medio que está siendo servido un cliente: $W_S  = E[S]$.
 \item [$W_Q$]
   Tiempo medio que está un cliente en la cola: $W_Q = E[Q]$.
-\item [$w$]
-  Variable aleatoria que describe el tiempo total que un cliente está en el sistema de encolado: $W = Q+S$.
 \item [$W$]
-  Tiempo medio que está un cliente en el sistema: $W = E[W]$.
+  Variable aleatoria que describe el tiempo total que un cliente está en el sistema de encolado: $W = Q+S$.
+\item [$W_W$]
+  Tiempo medio que está un cliente en el sistema: $W_W = E[W]$.
 \item [$N_S$]
   Variable aleatoria que describe el número de clientes siendo servidos con el sistema en equilibrio: $N_S = \lim_{t \rightarrow \infty} N_s[t]$.
 \item [$L_S$]
@@ -376,19 +376,60 @@ Podemos considerar que los clientes que llegan a la cola pueden efectuar:
   \item Priorización: algunos clientes pueden tener mayor prioridad que otros al ser servidos.
 \end{itemize}
 
-%% Notación de Kendall
-%% \subsection{a}
-%% \begin{itemize}
-%%   %% Falta
-%% \item[$K$]
-%%   La capacidad del sistema (mayor número de clientes que puede haber en el sistema)
-%% \item[$m$]
-%%   El tamaño de la población.
-%% \item[$Z$]
-%%   La disciplina de la cola.
+\subsubsection{Disciplina de la cola}
+Se pueden tener distintas formas de elegir de la cola el siguiente cliente a ser servido. Consideramos las siguientes estrategias:
+\begin{itemize}
+\item FIFO (First in, first out): es la cola tradicional, en la que el cliente que lleva más tiempo esperando en la cola es el siguiente en ser servido.
+\item LIFO (Last in, first out): el cliente que lleva menos tiempo esperando en la cola es el siguiente en ser servido.
+\item SIRO (Service in random order): se escoge un cliente al azar de entre todos los de la cola, con probabilidad uniforme.
+\item PRI (Priority  service): los clientes tienen asignado un nivel de prioridad y se elige el cliente con mayor prioridad de la cola. En caso de haber varios con la misma probabilidad, se usa alguna de las disciplinas anteriores para elegir entre ellos.
+\end{itemize}
 
-%% \end{itemize}
+\subsection{Notación de Kendall}
 
+Se utiliza para describir las características de una cola de forma breve la notación de Kendall, de la forma $A/B/c/K/m/Z$, donde:
+\begin{itemize}
+\item $A$ y $B$ describen $\tau$ (el tiempo entre llegadas) y $S$ (el tiempo de servicio) respectivamente, siendo los símbolos más comunes:
+  \begin{itemize}
+  \item [$G$]
+    General, sólo se asume que $\tau_n$ o $S_n$ son independientes.
+  \item [$D$]
+    Determínistica, donde $\tau$ es constante.
+  \item [$M$]
+    De Markov, esto es, se usa la distribución exponencial para dar un proceso de llegadas llamado de Poisson o aleatorio.
+  %% Estas dos no aparecen en en el apartado 2.1.1, ponerlas?
+  %% \item [$E_k$] Erlang-k
+  %% \item [$H_k$] k-stage hyperexponential
+  \end{itemize}
+\item $c$ describe el número de servidores, que puede ir desde 1 hasta infinito (aunque en teoría no se puede tener un número infinito de servidores, en la práctica se puede tener una cantidad de servidores suficientemente grande como para parecer infinita).
+\item $K$ describe la capacidad máxima del sistema, esto es, el número máximo de clientes que puede haber en el sistema entre la cola y el servicio.
+\item $m$ describe el tamaño de la población, que puede ir desde 1 hasta infinito.
+\item $Z$ describe la disciplina de la cola, con las siglas usadas anteriormente (u otras equivalentes, mientras no haya ambigüedad).
+\end{itemize}
+
+A menudo, se asume que $K$ y $m$ son infinitos y $Z$ es de tipo FIFO, y se usa una notación acortada de la forma $A/B/c$.
+
+\subsection{Medidas de efectividad}
+Se pueden considerar disintos valores como medidas de efectividad del sistema, entre ellos, los siguientes:
+%% TODO: terminar de detallar las medidas
+\begin{itemize}
+\item [$\rho$]
+  Aprovechamiento de los servidores, esto es, la proporción de tiempo que los servidores están trabajando: $\rho = \frac{\lambda}{c\mu}$. Cuanto más alta mejor es la eficiencia de los servidores, pero si $\rho > 1$ significa que el sistema esté sobrecargado y se acumularán clientes en la cola progresivamente.
+\item [$W_W$]
+  Tiempo medio de un cliente en el sistema.
+\item [$W_Q$]
+  Tiempo medio de un cliente en la cola.
+\item [$\pi_{W_W} \lbrack 90 \rbrack$]
+  Percentil 90 de el tiempo total en el sistema $W_W$.
+\item [$\pi_{W_Q} \lbrack 90 \rbrack$]
+  Percentil 90 de el tiempo de espera en la cola $W_Q$.
+\item [$L$]
+  Número medio de clientes en el sistema.
+\item [$L_Q$]
+  Número medio de clientes en la cola.
+\item [$p_n$]
+  Probabilidad de que haya $n$ clientes en el sistema.
+\end{itemize}
 
 
 %% Ejemplo de cita: \cite{Ciarlet}
