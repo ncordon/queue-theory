@@ -43,7 +43,7 @@
 \maketitle
 
 \begin{center}
-  \includegraphics[width=0.4\textwidth]{./imgs/by-nc-sa.png}
+	\includegraphics[width=0.4\textwidth]{./imgs/by-nc-sa.png}
 \end{center}
 
 \tableofcontents
@@ -429,7 +429,104 @@ Se pueden considerar disintos valores como medidas de efectividad del sistema, e
 \item [$p_n$]
   Probabilidad de que haya $n$ clientes en el sistema (en el estado de equilibrio). En general, interesa conocer su función de distribución para que la probabilidad de que haya $n$ o menos clientes en el sistema sea lo más alta posible para un $n$ adecuadamente pequeño.
 \end{itemize}
+\subsection{Leyes de Little}
+Brevemente recordamos los conceptos ya nombrado anteriormente, pues será de ayuda tenerlos a mano durante la definición de los elementos que conforman el teorema.
+Para $i \geq 1$, llamemos al cliente $c_i$, el cual llega en el instante $t_i$, nombremos $W_i$ al tiempo de espera del cliente con lo cual es inmediato deducir, que nuestro cliente abandonará la cola en el instante $t_i + W_i$, donde $t_0 \equiv 0 \leq t_1 \leq t_2 \leq... $.
+Es inmediato tambien que podemos definir una funcion indicadora que refleje si el $c_i$ está o no en el sistema:
 
+Indicador: $I_i(t) = 1 $ si $ t_i \leq t <t_i+W_i$,y $I_i (t) = 0$ en caso contrario,de donde  $\int_{0}^{\infty} I_i(t)dt=W_i$.
+
+Sea $N(t) = \sum_{i=1}^{\infty} I_i(t)$, el número de clientes en el sistema en tiempo t, y $\Delta (t) = max \{i: t_i \leq t\}$, el número de llegadas en tiempo t. Con $\Delta (t)$, reescribimos $N(t) = \sum_{i=1}^{\Delta (t)} I_i(t)$.
+
+De los datos del cliente ${t i}$ y ${W i}$ para todo i, podemos construir ${N (t)}$ para
+todo t. Visualmente podemos entender de forma sencilla estos conceptos si trazamos ${\Delta (t)}$ como una función escalonada y mostramos un tiempo de espera del cliente.
+\begin{center}
+	\includegraphics[width=\textwidth]{./imgs/fig1.png}
+\end{center}
+ A su vez podemos representar $N(t)$ como una función escalonada ( cuya información será obviamente menor que la primera figura) representando unicamente el numero de personas en la cola.
+\begin{center}
+	\includegraphics[width=\textwidth]{./imgs/fig2.png}
+\end{center}
+
+Mientras que los tiempos de espera son periodos de tiempo, también se pueden observar como rectángulos de altura 1 en la gráfica de ${\Delta(t)}$. Así, la longitud $W_i$ es también área $W_i$. Para cada t, $N (t)$ es simplemente el número de rectángulos de tiempo de espera que contienen el punto t.
+
+Tenemos por tanto un modelo de colas (estocástico), con $ t_i, W_i $y$ N(t)$ variables aleatorias; lo que nos lleva trivialmente a asumir que  $\{T i, i \geq 1\}$, $\{W i, i \geq 1\}$, y $\{N (t), t \geq 0\}$ son procesos estocásticos. Estas cantidades aleatorias se definiran en un espacio muestral cualquiera. 
+
+Por lo general, en nuestro caso se suelen hacer las siguientes suposiciones :
+\begin{itemize}
+	\item $W_i$ tiene la misma distribución para todo i.
+	\item $N (t)$ tiene la misma distribución para todo t. 
+\end{itemize} 
+
+Llegados a este punto hemos de remarcar que existen realmente dos versiones de la Ley de Little: \begin{itemize}
+	\item La versión que relaciona el tiempo de espera medio y la cantidad media de clientes en la cola: la mas conocida y a que trataremos en el trabajo.
+	\item La versión estacionaria que relaciona los valores esperados de W y N través de la esperanza. 
+\end{itemize}
+
+Damos a continuación una idea intuitiva del primer teorema, que pensamos puede ayudar enormemente a nuestros compañeros (entre los cuales nos incluimos) a captar la esencia del resultado:
+
+Nota: De ahora en adelante omitiremos el punto del espacio muestral en el que estamos. Esto no afecta en absoluto a nuestro trabajo y simplifica la notacion al no tener que acarrerar la dependencia explícita del mismo: Por ejemplo, escribimos $W_i$ en lugar de $W_i (\omega)$.
+
+El área rectangular $W_i$ es la contribución al área bajo ${N (t)}$ que es realizada por el cliente $c_i$. Ahora considerese el área bajo ${N (t)}$ en algún intervalo$(0, T)$, donde como en las figuras 1 y 2, T tiene la propiedad de que $N (T) = 0$. Para cualquier T de esa forma, esta área puede escribirse como una integral o una suma,\[\int_{0}^{T} N(t)dt=\int_{0}^{T} \sum_{i=1}^{\Delta (t)} I_i(t) dt=(permtuando)=\sum_{i=1}^{\Delta (t)} W_i(t)  \]
+
+Se puede observar en nuestras figuras en $\Delta(T) = 4$.
+
+Para cualquier T donde $N (T)> 0$, (1) no es cierto porque una porción de al menos un rectángulo en la suma contribuye al área bajo $\{N (t)\}$ después de T. En este caso, la suma - integral $\equiv$ error $\geq 0$.
+
+Entonces definimos la media de estas cantidades a largo plazo como límites, cuando existan, denominándolos como siguen
+\begin{itemize}
+	\item $L=\lim_{T\to\infty}\frac{1}{T}\int_{0}^{T} N(t)dt$
+	\item $\omega=\lim_{n\to\infty}\frac{1}{n}\sum_{i=1}^{n} W_i(t)$
+	\item $\lambda=\lim_{t\to\infty}\frac{\delta(t)}{t}$
+\end{itemize}
+
+Donde conceptualmente estamos haciendo referencia a:
+\begin{itemize}
+	\item $L$ es el número medio de clientes en el sistema,
+	\item $\omega$ es el tiempo medio de espera (de los clientes en el sistema), y
+	\item $\lambda$ es la tasa de llegada 
+\end{itemize}
+Es de destacar que  $L$ y $\omega$ son las dos medidas de rendimiento más comunes para una cola.
+
+
+Tenemos ya todos los elementos para formular el teorema de Little:
+\begin{theorem}{Teorema de Little}
+Si los límites $\lambda$ y $\omega$ existen y son finitos, $L$ existe y es finito, donde
+\begin{equation}
+L = \lambda\omega
+\end{equation} 
+\end{theorem}
+
+La idea intuitiva de este resultado es la relación que apúntabamos antes: Para cualquier T (donde ahora $N (T) \geq 0$) escribimos,
+\[ \frac{\int_{0}^{T} N(t)dt}{T}=\frac{\sum_{i=1}^{\Delta (t)} W_i(t)}{T}-\frac{error}{T}=\frac{\Delta(T)}{T}\frac{\sum_{i=1}^{\Delta (T)} W_i(t)}{\Delta(T)}-\frac{error}{T}   \]
+A medida que T se hace grande, la primera cantidad entre paréntesis a la derecha se aproxima a $\lambda$, la segunda a $\omega$, y el producto se acerca $\lambda\omega$. Por lo tanto, el teorema se obtendría si el término a la derecha se aproxima a 0 cuando $T\rightarrow\infty$. El término de error no tendría porqué hacerse pequeño, sólo crecer más lentamente que T.
+Teniendo esta idea en mente, podemos proceder a demostrar el resultado formalmente:
+\begin{proof}
+Motivados por las Figuras 1 y 2, obtenemos las siguientes desigualdades en
+\begin{equation}
+ \sum_{\{i:t_i+W_i\leq T\}}^{} W_i\leq\int_{0}^{T}N(t)dt\leq \sum_{i=1}^{\delta(T)} W_i
+ \label{DesiLi}
+ \end{equation}
+donde la suma a la izquierda está por debajo de aquellos rectángulos de espera que han terminado en T.
+Ahora dividimos la expresión por T y hacemos tender $T\rightarrow\infty$. La expresión de la derecha tiene límite $\lambda\omega$,lo que implica que la integral tiene $lim sup \leq \lambda\omega$.Si conseguimos demostrarlo para el inferior concluiremos la demostración. Con ese fin, necesitamos dos resultados preliminares. Primero, escribimos:
+\[ \frac{W_n}{n}=\frac{1}{n}\sum_{i=1}^{n}W_i-(\frac{n-1}{n})(\frac{1}{n-1})\sum_{i=1}^{n-1}W_i \]
+Para $\omega$ finito, esta expresión tiene límite 0 si $n \rightarrow \infty$. Es decir,
+\[ \lim_{n\to\infty} W_n / n = 0. \]
+
+Si, ahora, $\lambda$ es finito, esto implica $t_n \rightarrow \infty$ y, $\delta(t_n)/t_n \rightarrow  \lambda$ como $n \rightarrow \infty$. Si los tiempos de llegada son distintos escribiriamos, $\delta(t_n)=n$; de lo contrario, $\delta(t_n)\geq n$, y escribimos:
+
+\[ \frac{W_n }{t_n} = \frac{W_n }{n}\frac{n }{t_n}\leq \frac{W_n }{n}\frac{\delta(tn)}{t_n} \]
+ tenemos por tanto:
+ \[ \lim_{n\to\infty} W_n / t_n = 0. \]
+
+Para cualquier $\epsilon> 0$, el anterior limite implica que para algún $m$ finito y todo $i> m$, $W_i <t_i\epsilon$ y $t_i + W_i <t_i (1 + \epsilon)$. Así, $t_i \leq T / (1 + \epsilon) \Longrightarrow t_i + W_i \leq T$ para cada $i> m$,lo que nos da esta cota inferior en la expresión de la izquierda en \ref{DesiLi} :
+\begin{equation}\sum_{i=1}^{\delta(\frac{T}{1+\epsilon})} W_i-\sum_{i=1}^{m} W_i\leq \sum_{\{i:t_i+W_i\leq T\}}^{} W_i
+\label{DesiLi2}
+\end{equation}
+
+Ahora dividimos por T y hacemos tender T a infinito, notando que el segundo término de la izquierda es un
+constante. El lado izquierdo de \ref{DesiLi2} tiene límite $ \lambda\omega / (1 + \epsilon)$, lo que implica el lado derecho tiene lim inf $\geq \lambda\omega / (1 + \epsilon))$. Debido a que $\epsilon$ puede ser arbitrariamente pequeño, y combinando limite superior e inferior, concluimos la prueba.
+\end{proof}
 
 %% Ejemplo de cita: \cite{Ciarlet}
 
@@ -455,6 +552,11 @@ Se pueden considerar disintos valores como medidas de efectividad del sistema, e
   P.Kandasamy, K.Thilagavathi, K.Gunavathi\\
   Probability and Queueing Theory (2010)\\
   S. Chand \& Company
+
+\bibitem{Ronald}
+Ronald W. Wolff\\
+Little's law and Related Results (2011)\\
+University of California at Berkeley
 \end{thebibliography}
 
 \end{document}
