@@ -28,7 +28,7 @@
 \renewcommand\contentsname{Contenidos}
 \numberwithin{equation}{section}
 \setlength{\parindent}{0cm} % Sin sangrías
-\setlength{\parskip}{0.1cm}
+\setlength{\parskip}{0.3cm}
 
 % Sintaxis: \Algoritmo{Elementos de entrada}{Elementos de proceso}{Elementos de salida}
 \newcommand{\Algoritmo}[3]{\textbf{Entrada} \begin{itemize} #1 \end{itemize} \textbf{Proceso} \begin{enumerate} #2 \end{enumerate} \textbf{Salida} \begin{itemize} #3 \end{itemize}}
@@ -68,46 +68,41 @@ Lo notamos $X \sim exp(\lambda)$
 \subsubsection{Propiedad de Markov de la distribución exponencial}
 
 \begin{mydef}
- Decimos que una variable aleatoria $X$ tiene la propiedad de Markov (o que no tiene memoria) si se verifica:
- \[P[X \le t+s \mid X \ge t] = P[0\le X \le s] \qquad \forall t,s \in \mathbb{R}, s\ge 0\]
+ Decimos que una variable aleatoria $X$, tiene la propiedad de Markov (o que no tiene memoria) si se verifica:
+ \[P[X \ge t+h \mid X \ge t] = P[X \ge h] \qquad \forall t,h \in \mathbb{R}, h\ge 0\]
 \end{mydef}
 
-Es decir, la probabilidad de que la variable aleatoria tome un valor en un intervalo no depende del intervalo en sí,
-sino solo de la longitud del intervalo.
+En teoría de colas la propiedad de no memoria nos dice que si el tiempo entre llegadas está distribuido de forma exponencial, la siguiente ocurrencia de
+un evento es independiente del tiempo de llegada del último evento.
 
 %% ¿Qué es exactamente la propiedad de Markov?
 \begin{fact}
- Sea $X$ variable aleatoria tal que: $X \sim exp(\lambda)$. Entonces $X$ tiene la propiedad de Markov, esto es:
- 
- \[P[X \le t+s \mid X \ge t] = P[0\le X \le s] \]
+ Sea $X$ variable aleatoria tal que: $X \sim exp(\lambda)$. Entonces $X$ tiene la propiedad de no memoria.
 \end{fact}
 
 \begin{proof}
+Dados $t,h \in \mathbb{R}$ con $h\ge 0$:
+
  \begin{align*}
- P[X \le t+s \mid X\ge t] & =  \frac{P[X\le t+s, X\ge t]}{P[X\ge t]} = \frac{e^{-\lambda t+s} - e^{-\lambda t}}{e^{-\lambda t}} = \\
-                            & =  1 - e^{-\lambda s} = P[0\le X \le s]
+ P[X \ge t+h \mid X\ge t]   & = \frac{P[X\ge t+h, X\ge t]}{P[X\ge t]} =  \frac{P[X\ge t+h]}{P[X\ge t]} =\\ 
+			    & = \frac{e^{-\lambda (t+h)}}{e^{-\lambda t}} = e^{-\lambda h} = P[X\ge h] 
  \end{align*}
 \end{proof}
 
 
 
 \begin{theorem}
- La distribución exponencial es la única distribución continua que cumple la propiedad de Markov
+ La única distribución continua con la propiedad de no memoria es la exponencial
 \end{theorem}
 
 \begin{proof}
  Sea la variable aleatoria continua $X$ con función de distribución: \[F(t) = P[X\le t]\]
  
- Se tiene que cumplir por la propiedad de no memoria:
+ Se tiene que cumplir por la propiedad de no memoria ($h\ge 0$):
  
- \begin{align*}
-   &P[X \le s + t \mid X > t] = P[X \le s] \Leftrightarrow \\
-   &\Leftrightarrow 1 - P[X \le s + t \mid X > t] = 1 - P[X \le s] \Leftrightarrow\\
-   &\Leftrightarrow P[X > s + t \mid X > t] = P[X > s] \Leftrightarrow \\
-   &\Leftrightarrow \frac{P[X > s + t, X > t]} = P[X > t] P[X > s]
- \end{align*}
+ \[P[X \ge h + t \mid X \ge t] = P[X \ge h] \Leftrightarrow P[X \ge t + h, X > t] = P[X \ge t] P[X \ge h]\]
  
-  Es decir, llamando $G(x) = P[X > x]$ hemos probado $G(t+s) = G(t) G(s)$ para todo $t\in \mathbb{R}, s > 0$
+  Es decir, llamando $G(x) = P[X \ge x]$ hemos probado $G(t+h) = G(t) G(h)$ para todo $t\in \mathbb{R}, h \ge 0$
  
   Además se tiene claramente que $G$ es decreciente y no negativa.
   
@@ -134,6 +129,10 @@ sino solo de la longitud del intervalo.
   y se tiene:
   
   \[G(x) = G(1)^x = e^{ln(G(1)) x}\]
+  
+  Es decir:
+  
+  \[F(x) = 1 - G(x) = 1 - e^{ln(G(1)) x}\]
   
 \end{proof}
 
@@ -438,7 +437,7 @@ De ellos se derivan las siguientes variables, también relevantes:
 \item [$W_W$]
   Tiempo medio que está un cliente en el sistema: $W_W = E[W]$.
 \item [$N_S$]
-  Variable aleatoria que describe el número de clientes siendo servidos con el sistema en equilibrio: $N_S = \lim_{t \rightarrow \infty} N_s[t]$.
+  Variable aleatoria que describe el número de clientes siendo servidos con el sistema en equilibrio: $N_S = \lim_{t \rightarrow \infty} N_{s,t}$.
 \item [$L_S$]
   Número medio de clientes siendo servidos con el sistema en equilibrio: \\ $L_S = E[N_S]$.
 \item [$N_Q$]
