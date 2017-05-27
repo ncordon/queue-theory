@@ -52,21 +52,87 @@
 \section{Preliminares}
 
 \subsection{Distribución exponencial}
+
+Una variable aleatoria continua $X$ tiene distribución exponencial de parámetro $\lambda > 0$ si su función de distribución
+$F$ viene dada por:
+
+\[F(x) = \left\{\begin{array}{ll}
+         1- e^{-\lambda x} ,& x\ge 0\\
+         0 ,& x\le 0
+         \end{array}\right.\]
+         
+Lo notamos $X \sim exp(\lambda)$
+
 \subsubsection{Propiedad de Markov de la distribución exponencial}
 
+\begin{mydef}
+ Decimos que una variable aleatoria $X$ tiene la propiedad de Markov (o que no tiene memoria) si se verifica:
+ \[P[X \le t+s \mid X \ge t] = P[0\le X \le s] \qquad \forall t,s \in \mathbb{R}, s\ge 0\]
+\end{mydef}
+
+Es decir, la probabilidad de que la variable aleatoria tome un valor en un intervalo no depende del intervalo en sí,
+sino solo de la longitud del intervalo.
 
 %% ¿Qué es exactamente la propiedad de Markov?
 \begin{fact}
- Sea $T$ variable aleatoria tal que: $T \sim exp(\lambda)$. Entonces $T$ tiene la propiedad de Markov, esto es:
+ Sea $X$ variable aleatoria tal que: $X \sim exp(\lambda)$. Entonces $X$ tiene la propiedad de Markov, esto es:
  
- \[P[T \le t_1 | T \ge t_0] = P[0\le T \le t_1 - t_0] \]
+ \[P[X \le t+s \mid X \ge t] = P[0\le X \le s] \]
 \end{fact}
 
 \begin{proof}
  \begin{align*}
- P[T \le t_1 \mid T\ge t_0] & =  \frac{P([T\le t_1] \cap [T\ge t_0])}{P([T\ge t_0])} = \frac{e^{-\lambda t_0} - e^{-\lambda t_1}}{e^{-\lambda t_0}} = \\
-                            & =  1 - e^{-\lambda(t_1 - t_0)} = P[0\le T \le t_1-t_0]
+ P[X \le t+s \mid X\ge t] & =  \frac{P[X\le t+s, X\ge t]}{P[X\ge t]} = \frac{e^{-\lambda t+s} - e^{-\lambda t}}{e^{-\lambda t}} = \\
+                            & =  1 - e^{-\lambda s} = P[0\le X \le s]
  \end{align*}
+\end{proof}
+
+
+
+\begin{theorem}
+ La distribución exponencial es la única distribución continua que cumple la propiedad de Markov
+\end{theorem}
+
+\begin{proof}
+ Sea la variable aleatoria continua $X$ con función de distribución: \[F(t) = P[X\le t]\]
+ 
+ Se tiene que cumplir por la propiedad de no memoria:
+ 
+ \begin{align*}
+   &P[X \le s + t \mid X > t] = P[X \le s] \Leftrightarrow \\
+   &\Leftrightarrow 1 - P[X \le s + t \mid X > t] = 1 - P[X \le s] \Leftrightarrow\\
+   &\Leftrightarrow P[X > s + t \mid X > t] = P[X > s] \Leftrightarrow \\
+   &\Leftrightarrow \frac{P[X > s + t, X > t]} = P[X > t] P[X > s]
+ \end{align*}
+ 
+  Es decir, llamando $G(x) = P[X > x]$ hemos probado $G(t+s) = G(t) G(s)$ para todo $t\in \mathbb{R}, s > 0$
+ 
+  Además se tiene claramente que $G$ es decreciente y no negativa.
+  
+  \[G(0 + 0) = G(0)G(0) \implies G(0) \in \{0,1\}\]
+  
+  Pero si $G(0) = 0$ entonces $G(t) = G(t+0) = G(t)G(0)$ para todo $t\in \mathbb{R}$, contradicción por tenerse $G = 1-F$ y $F$ una función de distribución.
+  
+  Luego $G(0) = 1$
+  
+  Además desde $1 = G(0) = G(-t + t) = G(-t) G(t)$ se tiene $G(-t) = G(t)^{-1}$ para $t > 0$ (nótese que como $G$ es decreciente, $G(-t) > G(0) = 1$). De aquí se deduce también
+  que $G$ es estrictamente positiva.
+  
+  Por inducción se puede probar fácilmente:
+  
+  \[G(nt) = G((n-1)t) G(t) = \ldots = G(t)^{n}, \qquad \forall t\in \mathbb{R}, n\in \mathbb{N}\]
+
+  En particular, $G(n) = G(1)^n$ para cualquier $n\in \mathbb{N}$.
+  
+  Por último dados $p,q \in \mathbb{N}$:
+  
+  \[G\left(\frac{p}{q}\right)^q = G\left(\frac{p}{q} q\right) = G(1)^p \implies G\left(\frac{p}{q}\right) = G(1)^{\frac{p}{q}}\]
+  
+  Luego como $F$ es continua, $G$ lo es, y para cada $x \in \mathbb{R}$ podemos tomar $\{r_n\} \rightarrow x$ sucesión de racionales,
+  y se tiene:
+  
+  \[G(x) = G(1)^x = e^{ln(G(1)) x}\]
+  
 \end{proof}
 
 
@@ -139,7 +205,7 @@ de servicio, o equivalentemente una distribución de Poisson para frecuencias de
 
 
 \begin{theorem}
- Sea $\{N_t\}_{t\ge 0}$ proceso de conteo. Sean $0 < t_n$ con $t_{n} < t_{n+1}, \quad forall n\in 
+ Sea $\{N_t\}_{t\ge 0}$ proceso de conteo. Sean $0 < t_n$ con $t_{n} < t_{n+1}, \quad \forall n\in 
  \mathbb{N}$ tiempos de eventos con $\tau_1= t_1, \tau_{n+1} = t_{n+1} - t_{n}, \quad \forall n\in
  \mathbb{N}$ tiempos entre llegadas. Entonces equivalen:
  
@@ -184,8 +250,37 @@ $h$ es $\mu_n h + o(h)$ tenemos un proceso de nacimiento y muerte.
 
 Llamando $P_n(t) = P[N_t = n]$ se verifica:
 
-% Falta arreglar y transcribir la demostración de esto, que está mal en el libro
+Sea $h>0$ suficientemte pequeño. Entonces la probalidad $P_n(t+h)$ viene dada por la suma de la probabilidad de 
+los siguientes hechos disjuntos:
+
+\begin{enumerate}
+ \item En $t$ el sistema tenía población $n$ y no se han producido muertes ni nacimientos hasta $t+h$, esto es:
+ 
+ \begin{align*}
+  &P[N_{t} = n, \nexists t<s<t+h: N_{s} \neq n] =\\
+  &= P[N_{t+h}=n] \cdot (1-\lambda_n h + o(h)) \cdot (1-\mu_n h + o(h))= \\
+  &= P_n(t)[1+\mu_n h + o() -\lambda_n h + \lambda_n \mu_n h^2 - \lambda_n h o(h) + o(h)] = \\
+  &= P_n(t)(1-\lambda_n h - \mu_n h) + o(h)
+ \end{align*}
+ 
+ Donde se ha usado independencia de nacimientos y muertes y agrupación de todas las funciones que son $o(h)$
+ 
+ \item En $t$ el sistema tenía población $n-1$ y se ha producido un único nacimiento entre $t$ y $t+h$:
+ 
+ \[P_{n-1}(t) (\lambda_{n-1}h + o(h)) = P_{n-1}(t) \lambda_{n-1} h + o(h)\]
+ 
+ \item En $t$ el sistema tenía población $n+1$ y se ha producido una única muerte entre $t$ y $t+h$:
+ 
+ \[P_{n+1}(t) (\mu_{n+1} h + o(h))\]
+ 
+ \item La probabilidad de que ocurran 2 o más transiciones entre $t$ y $t+h$ es $o(h)$ por hipótesis
+\end{enumerate}
+
+
+Sumando y simplificando funciones $o(h)$:
+
 \[P_n(t+h) = [1-\lambda_n h -\mu_n h] P_n(t) + \lambda_{n-1} h P_{n-1}(t) + \mu_{n+1} h P_{n+1}(t) + o(h)\]
+
 
 que diviendo por $h$ en ambos términos y operando, da lugar a:
 
@@ -554,9 +649,9 @@ constante. El lado izquierdo de \ref{DesiLi2} tiene límite $ \lambda\omega / (1
   S. Chand \& Company
 
 \bibitem{Ronald}
-Ronald W. Wolff\\
-Little's law and Related Results (2011)\\
-University of California at Berkeley
+  Ronald W. Wolff\\
+  Little's law and Related Results (2011)\\
+  University of California at Berkeley
 \end{thebibliography}
 
 \end{document}
