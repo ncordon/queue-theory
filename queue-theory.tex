@@ -9,6 +9,8 @@
 \usepackage{amsthm}
 % Imágenes
 \usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{arrows}
 
 % Definiciones
 \theoremstyle{definition}
@@ -338,7 +340,7 @@ De hecho, también es condición suficiente. Si dicha distribución existe se te
 
 
 \section{El modelo de un \textit{``sistema de encolado''}}
-Un sistema de encolado es una cosa tal que así [dibujo aquí], en la que se consideran las siguientes variables aleatorias:
+Un sistema de encolado es un sistema como el que se muestra en la figura \ref{fig:encolado}, en la que se consideran las siguientes variables aleatorias:
 
 \begin{itemize}
 \item [$c$]
@@ -358,6 +360,63 @@ Un sistema de encolado es una cosa tal que así [dibujo aquí], en la que se con
   Variable aleatoria que describe el número de clientes en la cola (esperando a ser servidos) en el instante $t$.
   %% [depende también?]
 \end{itemize}
+
+%% Imagen del modelo (hecho con tikz por si interesa para la presentación)
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+    \draw (20,5.5) rectangle (22,6);
+    \node [above] at (21,5.5) {Servidor 1};
+    \draw (20,4.5) rectangle (22,5);
+    \node [above] at (21,4.5) {Servidor 2};
+    \draw [dotted, ultra thick] (21,4.15) -- (21,3.85);
+    \draw (20,3) rectangle (22,3.5);
+    \node [above, blue] at (21,3) {Servidor $c$};
+
+    \draw [fill] (19.5,5.75) circle [radius=0.1];
+    \draw [fill=white] (19.5,4.75) circle [radius=0.1];
+    \draw [fill] (19.5,3.25) circle [radius=0.1];
+    \draw [dashed, blue] (19.25,3) rectangle (19.75,6);
+    \node [below, blue] at (19.5,3) {$N_{S,t}$};
+
+    \draw [latex-latex, blue] (19.25,6.5) -- (22,6.5);
+    \draw [blue] (19.25,6) --(19.25,6.6);
+    \draw [blue] (22,6) --(22,6.6);
+    \node [above, blue] at (20.7,6.5) {$S$};
+
+    \draw (22.15,6) -- (22.5,6) -- (22.5,3) -- (22.15,3);
+    \draw [-latex] (22.5,4.5) -- (23.5,4.5);
+
+    \draw (19,6) -- (18.65,6) -- (18.65,3) -- (19,3);
+    \draw [-latex] (18,4.5) -- (18.65,4.5);
+    \draw [fill] (18,4.5) circle [radius=0.1];
+    \draw [fill] (17.6,4.5) circle [radius=0.1];
+    \draw [dotted, ultra thick] (17,4.5) -- (17.3,4.5);
+    \draw [fill] (16.7,4.5) circle [radius=0.1];
+    \draw (16,4.5) -- (16.6,4.5);
+    \draw [blue] (16.6,4.3) -- (16.6,4.1) -- (18.1,4.1) -- (18.1,4.3);
+    \node [below, blue] at (17.35,4.1) {$N_{Q,t}$};
+
+    \draw [latex-latex, blue] (16.05,5) -- (18.6,5);
+    \node [above, blue] at (17.34,5) {$Q$};
+
+    \draw (16,2) rectangle (23,7.5);
+    \node [above] at (19.5,7.5) {Sistema de encolado};
+
+    \draw (12,4.25) rectangle (13.6,4.75);
+    \node [above] at (12.8,4.25) {Fuente};
+    \draw [-latex] (13.6,4.5) -- (16,4.5);
+    \draw [fill] (14.25,4.5) circle [radius=0.1];
+    \draw [fill] (15.25,4.5) circle [radius=0.1];
+
+    \draw [latex-latex, blue] (14.25,5) -- (15.25,5);
+    \draw [blue] (14.25,4.65) --(14.25,5.1);
+    \draw [blue] (15.25,4.65) --(15.25,5.1);
+    \node [above, blue] at (14.75,5) {$\tau$};
+  \end{tikzpicture}
+  \caption{El modelo de un sistema de encolado.}
+  \label{fig:encolado}
+\end{figure}
 
 %% Resaltar que $q$ no se conoce y es la que interesa conocer en general? $N_q[t]$ y $N_s[t]$ dependen también de otras cosas.
 
