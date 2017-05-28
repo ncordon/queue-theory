@@ -162,7 +162,7 @@ Dados $t,h \in \mathbb{R}$ con $h\ge 0$:
   \begin{mydef} \textbf{Proceso de conteo}\\
   $\{N_t\}_{t\ge 0}$, proceso estocástico discreto, es proceso de conteo si se verifica:
   \begin{enumerate}
-    \item No negatividad: $N_t \in \mathbb{N}\cup\{0\}, \quad \forall t\ge 0$. Además: $N(0)=0$
+    \item No negatividad: $N_t \in \mathbb{N}\cup\{0\}, \quad \forall t\ge 0$. Además: $N_0=0$
     \item Monotonía: $N_s \le N_t, \quad s \le t$
   \end{enumerate}
 
@@ -176,18 +176,18 @@ Dados $t,h \in \mathbb{R}$ con $h\ge 0$:
   
   \begin{enumerate}
     \item El proceso tiene incrementos independientes: dados $0 \le t_1 < \ldots < t_n$, se verifica que
-    las variables $N_{t_0}, N_{t_1} - N_{t_0}, \ldots N_{t_n}- N_{t_{n-1}}$ son independientes. Esto es, el número de eventos
+    las variables $N_{t_1}, N_{t_2} - N_{t_1}, \ldots, N_{t_n}- N_{t_{n-1}}$ son independientes. Esto es, el número de eventos
     que se producen en intervalos disjuntos es independiente.
-    \item El proceso tiene incrementos estacionarios: $N_{t+h}, N_t$ tienen la misma distribución para cualesquiera
+    \item El proceso tiene incrementos estacionarios: $dist(N_{t+h} - N_t)$ es la misma para cualesquiera
     $t\ge 0, h\ge 0$
     \item $P[N_h = 1] = \lambda h + o(h)$, es decir, la probabilidad de que ocurra un evento en un intervalo de
     tiempo de longitud $h$ es casi proporcional a $h$, salvo por un término despreciable en comparación con dicho $h$, para
     $h$ suficientemente pequeño.
-    \item $P[N(h) \ge 2] = o(h)$
+    \item $P[N_h \ge 2] = o(h)$
   \end{enumerate}
 
   Se deduce que: 
-  \[P[N_h = 0] = 1 - P[N_h=1] - P[N(h) \ge 2] = 1 -\lambda h - o(h)\]
+  \[P[N_h = 0] = 1 - P[N_h=1] - P[N_h \ge 2] = 1 -\lambda h - o(h)\]
   \end{mydef}
 
 
@@ -195,24 +195,26 @@ La mayoría de modelos de colas asumen una distribución exponencial para tiempo
 de servicio, o equivalentemente una distribución de Poisson para frecuencias de llegada y servicio.
 
 \begin{theorem}
- Sea $\{N_t\}_{t\ge 0}$ un proceso de Poisson de parámetro $\lambda > 0$. Entonces la variable aleatoria $Y$ que
+ Sea $\{N_t\}_{t\ge 0}$ un proceso de Poisson de parámetro $\lambda > 0$. Entonces la variable aleatoria $Y_t = N_t - N_0 = N_t$ que
  describe el número de eventos en cualquier intervalo de longitud $t > 0$ tiene una distribución de Poisson de parámetro
- $\lambda t$
+ $\lambda t$:
  
- \[P[Y = k] = P[N_t = n] = e^{-\lambda t} \frac{(\lambda t)^k}{k!}, \quad k\ge 0\]
+ \[P[Y_t = k] = P[N_t = k] = e^{-\lambda t} \frac{(\lambda t)^k}{k!}, \quad k\ge 0\]
  
  %% Prueba: falta por hacer.
 \end{theorem}
 
 
 \begin{theorem}
- Sea $\{N_t\}_{t\ge 0}$ proceso de conteo. Sean $0 < t_n$ con $t_{n} < t_{n+1}, \quad \forall n\in 
- \mathbb{N}$ tiempos de eventos con $\tau_1= t_1, \tau_{n+1} = t_{n+1} - t_{n}, \quad \forall n\in
- \mathbb{N}$ tiempos entre llegadas. Entonces equivalen:
+ Sea $\{N_t\}_{t\ge 0}$ proceso de conteo. Sea $\{t_n\}_{n\ge 1}$ sucesión real estrictamente creciente y positiva, 
+ que representa los tiempos de eventos, es decir \[t_n = \min \{t \ge 0: N_t = n\}\]
+ 
+ LLamando $\tau_1= t_1, \tau_{n+1} = t_{n+1} - t_{n}, \quad \forall n\in \mathbb{N}$ tiempos entre llegadas. Entonces equivalen:
  
  \begin{itemize}
   \item $\{N_t\}_{t\ge 0}$ es proceso de Poisson
-  \item Los tiempos entre llegadas $\{\tau_n\}$ son variables exponenciales i.i.d. de media $\frac{1}{\lambda}$
+  \item Los tiempos entre llegadas $\{\tau_n\}$ son variables exponenciales i.i.d. de media $\frac{1}{\lambda}$, esto es
+  $\tau_n \sim exp(\lambda)$.
  \end{itemize}
 
 \end{theorem}
@@ -221,7 +223,7 @@ de servicio, o equivalentemente una distribución de Poisson para frecuencias de
 
 \begin{theorem}
  Sea $\{N_t\}_{t\ge 0}$ proceso de Poisson donde un evento ha tenido lugar en $[0,t]$. Entonces siendo $Y$ la variable
- describiendo el número de eventos en cualquier intervalo de longitud $t > 0$, entonces $Y \sim U([0,t])$.
+ describiendo el tiempo de ocurrencia de dicho evento en el intervalo $[0,t]$, se tiene $Y \sim U([0,t])$.
 \end{theorem}
 
 %% Prueba: falta por hacer.
@@ -229,7 +231,7 @@ de servicio, o equivalentemente una distribución de Poisson para frecuencias de
 \subsection{Procesos de nacimiento y muerte}
 
 El parámetro $\lambda$ de un proceso de Poisson $\{N_t\}_{t\ge 0}$ puede ser visto como una tasa de nacimiento, ya que la probabilidad
-de que ocurra un evento en un intervalo de longitud $h$ es $P[N(h)-N(0)=1] = \lambda h e^{-\lambda h} = \lambda h + o(h)$.
+de que ocurra un evento en un intervalo de longitud $h > 0$ es $P[N_h-N_0=1] = \lambda h e^{-\lambda h} = \lambda h + o(h)$.
 Cuando suponemos que el parámetro no es constante, sino que depende de $n$ (cantidad de eventos que se han producido hasta el momento), esto
 es $\lambda_n$, entonces la cantidad de nacimientos (eventos producidos) en un intervalo de longitud $h$ es $\lambda_n h + o(h)$. Si además
 establecemos que se pueden producir muertes con una tasa $\mu_n$, donde la probabilidad de que se produzca una muerte en un intervalo de longitud
@@ -256,11 +258,9 @@ los siguientes hechos disjuntos:
 
 \begin{enumerate}
  \item En $t$ el sistema tenía población $n$ y no se han producido muertes ni nacimientos hasta $t+h$, esto es:
- 
  \begin{align*}
-  &P[N_{t} = n, \nexists t<s<t+h: N_{s} \neq n] =\\
-  &= P[N_{t+h}=n] \cdot (1-\lambda_n h + o(h)) \cdot (1-\mu_n h + o(h))= \\
-  &= P_n(t)[1+\mu_n h + o() -\lambda_n h + \lambda_n \mu_n h^2 - \lambda_n h o(h) + o(h)] = \\
+  &  P[N_{t+h}=n] \cdot (1-\lambda_n h + o(h)) \cdot (1-\mu_n h + o(h))= \\
+  &= P_n(t)[1+\mu_n h + o(h) -\lambda_n h + \lambda_n \mu_n h^2 + o(h)] = \\
   &= P_n(t)(1-\lambda_n h - \mu_n h) + o(h)
  \end{align*}
  
@@ -274,11 +274,11 @@ los siguientes hechos disjuntos:
  
  \[P_{n+1}(t) (\mu_{n+1} h + o(h))\]
  
- \item La probabilidad de que ocurran 2 o más transiciones entre $t$ y $t+h$ es $o(h)$ por hipótesis
+ \item La probabilidad de que ocurran 2 o más transiciones entre $t$ y $t+h$ es $o(h)$ por hipótesis.
 \end{enumerate}
 
 
-Sumando y simplificando funciones $o(h)$:
+Sumando y agrupando funciones $o(h)$:
 
 \[P_n(t+h) = [1-\lambda_n h -\mu_n h] P_n(t) + \lambda_{n-1} h P_{n-1}(t) + \mu_{n+1} h P_{n+1}(t) + o(h)\]
 
@@ -302,7 +302,7 @@ En el caso particuar $n=0$, tenemos $\mu_o = 0$ y $P_{-1}(t) = 0$. Por tanto:
 \end{equation}
 
 
-Supongamos en lo que sigue que existe la distribución límite, esto es 
+Supongamos en lo que sigue que existe la distribución límite (entonces existiría la estacionaria), esto es 
 $\lim_{t\rightarrow \infty}\{P_n(t)\} = p_n$ y haciendo $t\rightarrow \infty$ en \eqref{eq:recp_n(t)},
 y en \eqref{eq:recp_0(t)} llegamos a que:
 
@@ -310,6 +310,9 @@ y en \eqref{eq:recp_0(t)} llegamos a que:
 0 &= \lambda_{n-1} p_{n-1} + \mu_{n+1} p_{n+1} - (\lambda_n + \mu_n) p_n, \quad n\ge 1\\
 0 &= \mu_1 p_1 -\lambda_0 p_0, \quad n=0
 \end{align*}
+
+Justificamos que la parte izquierda se hace cero: habríamos llegado a que $\frac{\partial P_n(t)}{\partial t}$ tiende a una constante $C$,
+pero la $P_n$ tiende a $p_n$, luego no es difícil demostrar que $C$ debe ser 0.
 
 Veamos por inducción que: $p_n = p_0 \prod_{i=1}^n \frac{\lambda_{i-1}}{\mu_i}, \quad n\ge 1$.
 
@@ -327,19 +330,33 @@ Veamos por inducción que: $p_n = p_0 \prod_{i=1}^n \frac{\lambda_{i-1}}{\mu_i},
  \end{align*}
 \end{proof}
 
-Las probabilidades deben sumar $1$, esto es $1 = \sum_{n=0}^{\infty} p_n = p_0 \underbrace{\left(1 + \sum_{n=1}^{\infty} \prod_{i=1}^n \frac{\lambda_{i-1}}{\mu_i} \right)}_{S}$
-
-Que la serie $S$ sea convergente es condición necesaria para que exista la distribución límite. 
-De hecho, también es condición suficiente. Si dicha distribución existe se tendría: 
+Además, las probabilidades deben sumar $1$, esto es:
 
 \begin{equation}
- p_0 = S^{-1} 
+1 = \sum_{n=0}^{\infty} p_n = p_0 \underbrace{\left(1 + \sum_{n=1}^{\infty} \prod_{i=1}^n \frac{\lambda_{i-1}}{\mu_i} \right)}_{Z}
+\label{eq:stabseries}
+\end{equation}
+
+Que la serie $Z$ sea convergente es condición necesaria para que exista la distribución límite. 
+De hecho, también es condición suficiente (se puede probar por teorema de ergodicidad, aunque su prueba queda
+fuera del nivel de estos apuntes). Si dicha distribución existe se tendría: 
+
+\begin{equation}
+ p_0 = Z^{-1} 
  \label{eq:relp0}
 \end{equation}
 
+Intuitivamente, cuando la serie $Z$ converge, tenemos que la probabilidad límite, cuando pasa mucho tiempo, de que el 
+sistema esté vacío y no haya clientes esperando en la cola es positiva, y por tanto el sistema de encolado es estable.
+Cuando esta serie diverge, es un indicativo de que el sistema de encolado es inestable.
+
 
 \section{El modelo de un \textit{``sistema de encolado''}}
-Un sistema de encolado es un sistema como el que se muestra en la figura \ref{fig:encolado}, en la que se consideran las siguientes variables aleatorias:
+Un sistema de encolado es un debería modelar peticiones/eventos/clientes que llegan a una cola,
+donde existe un tiempo de espera en cola, y un tiempo de servicio. Su funcionamiento básico se 
+ilustra en la figura \ref{fig:encolado}. Debemos considerar una serie de variables aleatorias que permitan
+explicar y estudiar el comportamiento de la cola. Las variables límites se definen, claro está, cuando esta 
+tenga sentido:
 
 \begin{itemize}
 \item [$c$]
@@ -419,7 +436,7 @@ Un sistema de encolado es un sistema como el que se muestra en la figura \ref{fi
 
 %% Resaltar que $q$ no se conoce y es la que interesa conocer en general? $N_q[t]$ y $N_s[t]$ dependen también de otras cosas.
 
-De ellos se derivan las siguientes variables, también relevantes:
+De ellas se derivan las siguientes variables, también relevantes:
 \begin{itemize}
 \item [$\lambda$]
   Frecuencia o tasa media de llegadas de clientes al sistema: $\lambda = 1/E[\tau]$.
@@ -447,9 +464,9 @@ De ellos se derivan las siguientes variables, también relevantes:
 \item [$N_t$]
   Variable aleatoria que describe el número de clientes en el sistema en el instante $t$: $N_t = N_{Q,t} + N_{S,t}$.
 \item [$N$]
-  Variable aleatoria que describe el número de clientes en el sistema con el sistema en equilibrio (en caso de tener sentido) $N = N_Q + N_S$.
+  Variable aleatoria que describe el número de clientes en el sistema con el sistema en equilibrio $N = N_Q + N_S$.
 \item [$L$]
-  Número medio de clientes en el sistema en equilibrio (en caso de tener sentido): $L = E[N]$.
+  Número medio de clientes en el sistema en equilibrio: $L = E[N]$.
 \item [$P_n(t)$]
   Probabilidad de que haya $n$ clientes en el sistema en el instante $t$: es la función masa de probabilidad de $N_t$.
 \item [$p_n$]
@@ -463,10 +480,11 @@ de llegadas de un sistema de colas, sino también del modo en que las peticiones
 tener que las peticiones llegan de uno en uno, o en paquetes de peticiones.
 
 Dado $0=t_0 < t_1 < t_2 < t_n < \ldots$, y $\tau_n = t_n - t_{n-1}, \tau_0$ tiempos entre llegadas, asumimos por hipótesis
-que las $\tau_n$ son variables aleatorias independientes.
+que las $\tau_n$ son variables aleatorias i.i.d. Nótese que tanto los $\{t_n\}$ como los $\{\tau_n\}$ son
+variables aleatorias.
 
 \begin{mydef}
-LLamamos modelo de llegadas a la distribución de los $\{t_n\}$
+LLamamos modelo de llegadas a la distribución $A(t)$ de los tiempos entre llegadas $\{\tau_n\}$.
 \end{mydef}
  
  La distribución de los tiempos de llegada $\{t_n\}$ está determinada por la distribución de los tiempos entre
@@ -476,15 +494,15 @@ LLamamos modelo de llegadas a la distribución de los $\{t_n\}$
 El modelo de llegadas se dice:
  
  \begin{enumerate}
-   \item Estacionario, si las $\{\tau_n\}$ están idénticamente distribuidas, y notamos $\{\tau\}$ a la variable
-   aleatoria que modela el tiempo entre llegadas.
+   \item Estacionario, cuando no depende del tiempo (por ejemplo cuando existe una distribución límite y hablamos
+   del modelo de llegadas de dicha distribución límite).
    \item Transitorio, en caso opuesto.
  \end{enumerate}
 \end{mydef}
 
  
 \begin{mydef}
- Para un modelo de llegadas estacionario, sea $A(t)$ función de distribución de los $\tau_n$. 
+ Para un modelo de llegadas, sea $A(t)$ función de distribución de los $\tau_n$. 
  El modelo de llegadas se dice:
 
   \begin{enumerate}
@@ -507,16 +525,20 @@ de servicio a las que se han hecho con el modelo de llegadas.
 
 Supongamos que el sistema de encolado tiene $k$ servidores o canales para atender peticiones, y el tiempo que 
 tarda cada uno en atender una petición $T_i, i=1,\ldots k$ sigue una distribución exponencial de parámetro $\bar{\mu}$.
-Entonces el tiempo hasta terminar de atender una petición es $T = min\{T_1, \ldots T_n\}$. Entonces $T$ sigue
-una distribución exponencial de parámetro $\mu = n \bar{\mu}$
+Entonces el tiempo hasta terminar de atender una petición es $T = min\{T_1, \ldots T_n\}$. Por propiedades de la
+distribución exponencial deducimos que $T$ sigue una distribución exponencial de parámetro $\mu = n \bar{\mu}$
 
-La función de distribución de $W_S$ por tanto sería $F(t) = P[S\le t] = 1 - e^{-\mu t}$
+La función de distribución de $W_S$ por tanto sería $F(t) = P[S\le t] = 1 - e^{-\mu t}$.
+
 \end{eg}
 
 \subsubsection{Capacidad del sistema}
-Se llama capacidad al tamaño máximo de la cola de peticiones, esto es $M = \max_t \{N_{Q,t}\}$. Por tanto no puede
+
+Supongamos que el proceso estocástico $\{N_{Q,t}\}_{t\ge 0}$ tiene espacio de estados $S\subseteq \mathbb{N}$. Se llama 
+capacidad al tamaño máximo de la cola de peticiones, esto es $M = \max S$. Por tanto no puede
 tenerse que en ningún tiempo $N_{Q,t}$ tome un valor mayor que $M$, y si llegara una petición cuando la cola tiene
-tamaño $M$, se rechazaría dicha petición.
+tamaño $M$, se rechazaría dicha petición. $M$ puede ser $+\infty$ cuando el tamaño de la cola de espera es
+ilimitado.
 
 \subsubsection{Comportamiento de los clientes}
 Podemos considerar que los clientes que llegan a la cola pueden efectuar:
@@ -556,7 +578,7 @@ Se utiliza para describir las características de una cola de forma breve la not
   \end{itemize}
 \item $c$ describe el número de servidores, que puede ir desde 1 hasta infinito (aunque en teoría no se puede tener un número infinito de servidores, en la práctica se puede tener una cantidad de servidores suficientemente grande como para parecer infinita).
 \item $K$ describe la capacidad máxima del sistema, esto es, el número máximo de clientes que puede haber en el sistema entre la cola y el servicio.
-\item $m$ describe el tamaño de la población, que puede ir desde 1 hasta infinito.
+\item $m$ describe el tamaño de la población en la fuente, que puede ir desde 1 hasta infinito.
 \item $Z$ describe la disciplina de la cola, con las siglas usadas anteriormente (u otras equivalentes, mientras no haya ambigüedad).
 \end{itemize}
 
@@ -572,17 +594,98 @@ Se pueden considerar disintos valores como medidas de efectividad del sistema, e
 \item $W_Q$:
   Tiempo medio de un cliente en la cola. Similar al anterior, pero en algunos casos puede interesar más el tiempo de espera en la cola solamente. Por ejemplo, en el caso de la cola en un supermercado, un cliente estará insatisfecho si tiene que esperar mucho tiempo en la cola, pero mientras está siendo servido está ocupado y no lo percibe como tiempo de espera.
 \item $\pi_{W_W} \lbrack 90 \rbrack$:
-  Percentil 90 de el tiempo total en el sistema $W_W$. En lugar de usar la media que puede ser afectada por casos extremos, se utiliza el tiempo de espera de una gran parte de los clientes, pudiendo variar el percentil que se considera según se desee.
+  Percentil 90 del tiempo total en el sistema $W_W$. En lugar de usar la media que puede ser afectada por casos extremos, se utiliza el tiempo de espera de una gran parte de los clientes, pudiendo variar el percentil que se considera según se desee.
 \item $\pi_{W_Q} \lbrack 90 \rbrack$:
-  Percentil 90 de el tiempo de espera en la cola $W_Q$. Análogamente al anterior, pero una vez más teniendo en cuenta únicamente el tiempo de espera en la cola y no el total.
+  Percentil 90 del tiempo de espera en la cola $W_Q$. Análogamente al anterior, pero una vez más teniendo en cuenta únicamente el tiempo de espera en la cola y no el total.
 \item $L$:
   Número medio de clientes en el sistema. En general, cuantos más clientes haya en el sistema mayor será su tiempo de espera. Sin embargo, si hay muchos servidores no necesariamente se puede optimizar el sistema, por tanto mientras $L<c$ no necesariamente es ineficiente el sistema.
 \item [$L_Q$]
   Número medio de clientes en la cola. Como se explica en el punto anterior, el número medio de clientes en el sistema no necesariamente es representativo, y puede ser más útil considerar el número medio de clientes esperando en la cola, excluyendo así los que están siendo servidos.
 \item [$p_n$]
   Probabilidad de que haya $n$ clientes en el sistema (en el estado de equilibrio). En general, interesa conocer su función de distribución para que la probabilidad de que haya $n$ o menos clientes en el sistema sea lo más alta posible para un $n$ adecuadamente pequeño.
+\item [$a$]
+  Se define como $a:= W_S/E[\tau]$ la intensidad de tráfico. Por tnto $\rho = \frac{a}{c}$
 \end{itemize}
-\subsection{Leyes de Little}
+
+\section{Modelos particulares}
+\subsection{D/D/1}
+Tenemos una frecuencia constante de llegadas $\lambda$ y una frecuencia constante de servicio $\mu$. Esto quiere
+decir que tenemos unos tiempos entre llegadas de $\frac{1}{\lambda}$ y unos tiempos de servicio constantes $S=\frac{1}{\mu}$.
+
+El aprovechamiento sería de $a=\frac{\lambda}{\mu}$, la intensidad de tráfico, $\rho = a$
+
+\subsubsection{Caso $\lambda > \mu$}
+Intuitivamente, la cola será inestable y no podrá servir todas las peticiones. 
+
+Se tiene $a > 1$, $\rho > 1$.
+
+\begin{fact}
+Notando $Q_n$ al tiempo de espera del $n$ ésimo cliente, tenemos que \[Q_1 = 0, \qquad Q_n = \left(\frac{1}{\mu} - \frac{1}{\lambda}\right)n, \quad \forall n\ge 2\]
+\end{fact}
+
+\begin{proof}
+Veámoslo por inducción:
+
+El segundo cliente, que llega en tiempo $\frac{2}{\lambda}$ al sistema, debe esperar que el cliente que entró en tiempo $\frac{1}{\lambda}$ sea servido,
+esto es $\frac{1}{\mu} - \frac{1}{\lambda}$
+
+Supuesto que $Q_{n-1}$ cumple esa relación, el $n$ ésimo cliente entra $\frac{1}{\lambda}$ unidades de tiempo
+más tarde que el $n-1$ ésimo y deberá esperar a que el $n-1$ ésimo sea servido para poder él ser servido, esto es,
+deberá esperar $Q_{n-1} + \frac{1}{\mu} - \frac{1}{\lambda} = \left(\frac{1}{\mu} - \frac{1}{\lambda}\right)n$
+\end{proof}
+
+\begin{corollary}
+ El tiempo de espera total para el $n$ ésimo cliente es:
+ 
+ \[W_1 = \frac{1}{\mu}, \qquad W_n = \left(\frac{1}{\mu} - \frac{1}{\lambda}\right)^n + \frac{1}{\mu} \quad n\in \mathbb{N}\]
+\end{corollary}
+
+\begin{fact}
+ En un instante $t$ el número de clientes en el sistema será: 
+ \[N_t = \left\{\begin{array}{lcc}
+         0, && t < \frac{1}{\lambda}\\
+         \lfloor t\lambda \rfloor - \left\lfloor\left(t-\frac{1}{\lambda}\right)\mu\right\rfloor, && \text{otro caso}
+         \end{array}\right.\]
+\end{fact}
+
+\begin{proof}
+ Trivial.
+\end{proof}
+
+
+\subsubsection{Caso $\lambda \le \mu$}
+
+Se tiene $a < 1$, $\rho < 1$.
+
+\begin{fact}
+Se tiene $\forall n\in \mathbb{N}$:
+
+\begin{align*}
+Q_n = 0\\
+W_n = \frac{1}{\mu}
+\end{align*}
+\end{fact}
+
+\begin{corollary}
+ El tiempo de espera total para el $n$ ésimo cliente es únicamente el tiempo en ser servido:
+ 
+ 
+\end{corollary}
+
+\begin{fact}
+ En un instante $t$ el número de clientes en el sistema será: 
+ \[N_t = \left\{\begin{array}{lcc}
+          0, && t < \frac{1}{\lambda}\\
+          0, && t \ge \frac{1}{\lambda}, t \in \left]\frac{n-1}{\lambda} + \frac{1}{\mu}, \frac{n-1}{\lambda} + \frac{1}{\lambda}\right[\\
+          1, && \text{otro caso}
+         \end{array}\right.\]
+\end{fact}
+
+En el caso particular $\lambda = \mu$, se tiene $N_t = 1$ constantemente para $t\ge \frac{1}{\lambda}$
+
+
+
+\section{Leyes de Little}
 Brevemente recordamos los conceptos ya nombrado anteriormente, pues será de ayuda tenerlos a mano durante la definición de los elementos que conforman el teorema.
 Para $i \geq 1$, llamemos al cliente $c_i$, el cual llega en el instante $t_i$, nombremos $W_i$ al tiempo de espera del cliente con lo cual es inmediato deducir, que nuestro cliente abandonará la cola en el instante $t_i + W_i$, donde $t_0 \equiv 0 \leq t_1 \leq t_2 \leq... $.
 Es inmediato tambien que podemos definir una funcion indicadora que refleje si el $c_i$ está o no en el sistema:
