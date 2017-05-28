@@ -599,20 +599,19 @@ Se pueden considerar disintos valores como medidas de efectividad del sistema, e
   Percentil 90 del tiempo de espera en la cola $W_Q$. Análogamente al anterior, pero una vez más teniendo en cuenta únicamente el tiempo de espera en la cola y no el total.
 \item $L$:
   Número medio de clientes en el sistema. En general, cuantos más clientes haya en el sistema mayor será su tiempo de espera. Sin embargo, si hay muchos servidores no necesariamente se puede optimizar el sistema, por tanto mientras $L<c$ no necesariamente es ineficiente el sistema.
-\item [$L_Q$]
+\item $L_Q$:
   Número medio de clientes en la cola. Como se explica en el punto anterior, el número medio de clientes en el sistema no necesariamente es representativo, y puede ser más útil considerar el número medio de clientes esperando en la cola, excluyendo así los que están siendo servidos.
-\item [$p_n$]
+\item $p_n$:
   Probabilidad de que haya $n$ clientes en el sistema (en el estado de equilibrio). En general, interesa conocer su función de distribución para que la probabilidad de que haya $n$ o menos clientes en el sistema sea lo más alta posible para un $n$ adecuadamente pequeño.
-\item [$a$]
-  Se define como $a:= W_S/E[\tau]$ la intensidad de tráfico. Por tnto $\rho = \frac{a}{c}$
+\item $a$:
+  La intensidad de tráfico se define como $a= W_S/E[\tau]$. Se da que es proporcional al aprovechamiento de los servidores, $a = \rho c$, luego ambas se pueden usar como medida de eficiencia, dependiendo si se quiere considerar el número de servidores en la medida o no.
 \end{itemize}
 
 \section{Modelos particulares}
 \subsection{D/D/1}
-Tenemos una frecuencia constante de llegadas $\lambda$ y una frecuencia constante de servicio $\mu$. Esto quiere
-decir que tenemos unos tiempos entre llegadas de $\frac{1}{\lambda}$ y unos tiempos de servicio constantes $S=\frac{1}{\mu}$.
+Tenemos un tiempo entre llegadas constante $\tau = \frac{1}{\lambda}$ y un tiempo de servicio constante $S = \frac{1}{\mu}$.
 
-El aprovechamiento sería de $a=\frac{\lambda}{\mu}$, la intensidad de tráfico, $\rho = a$
+En este caso, la intensidad de tráfico será $a=\frac{\lambda}{\mu}$, y por ser $c = 1$, el aprovechamiento del servidor es el mismo, $\rho = a$.
 
 \subsubsection{Caso $\lambda > \mu$}
 Intuitivamente, la cola será inestable y no podrá servir todas las peticiones. 
