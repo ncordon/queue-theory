@@ -55,6 +55,7 @@ function(input, output){
     queue <- plot(args$dd1, what = "resources", metric = "usage",
                   "caja del súper", items = "queue", steps = T)
     queue <- queue + xlim(0, args$sim.time)
+
     queue
   })
 
@@ -64,10 +65,16 @@ function(input, output){
     queue <- plot(args$dd1, what = "arrivals", metric = "waiting_time")
     queue <- queue + xlim(0, args$sim.time)
 
-    #plot(mm1.env, what = "resources", metric = "usage",
-    #     "caja del súper", items = "server", steps = T) +
-    #  xlim(0,40)
     queue
+  })
+
+  # Utilización del servidor
+  output$server.usage <- renderPlot({
+    args <- dataInput()
+    server <- plot(args$dd1, what = "resources", metric = "usage",
+                   "caja del súper", items = "server", steps = T)
+    server <- server + xlim(0, args$sim.time)
+    server
   })
 
 }

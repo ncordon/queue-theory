@@ -17,15 +17,16 @@ shinyUI(fluidPage(
   sidebarLayout(
     sidebarPanel(
       sliderInput("sim.time", "Run simulation until:",
-                  min = 20, max = 1000, value = 20),
-      numericInput("arrival.freq", "Arrival frequency:", value = 3, min = 0),
-      numericInput("service.freq", "Service frequency:", value = 3, min = 0)
+                  min = 20, max = 1000, value = 100),
+      numericInput("arrival.freq", "Arrival frequency:", value = 15, min = 0),
+      numericInput("service.freq", "Service frequency:", value = 7, min = 0)
     ),
 
 
     mainPanel(
       plotOutput("queue.usage"),
-      plotOutput("queue.wait")
+      plotOutput("queue.wait"),
+      plotOutput("server.usage")
     )
   )
 ))
