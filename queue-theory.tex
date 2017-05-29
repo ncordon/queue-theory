@@ -2,6 +2,8 @@
 
 % Inclusión de paquetes
 \usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{enumerate}
@@ -55,7 +57,7 @@
 
 \subsection{Distribución exponencial}
 
-Una variable aleatoria continua $X$ tiene distribución exponencial de parámetro $\lambda > 0$ si su función de distribución
+Una variable aleatoria continua $X$ tiene distribución exponencial de parámetro $\lambda \ge 0$ si su función de distribución
 $F$ viene dada por:
 
 \[F(x) = \left\{\begin{array}{ll}
@@ -68,16 +70,20 @@ Lo notamos $X \sim exp(\lambda)$
 \subsubsection{Propiedad de Markov de la distribución exponencial}
 
 \begin{mydef}
- Decimos que una variable aleatoria $X$, tiene la propiedad de Markov (o que no tiene memoria) si se verifica:
- \[P[X \ge t+h \mid X \ge t] = P[X \ge h] \qquad \forall t,h \in \mathbb{R}, h\ge 0\]
+ Decimos que una variable aleatoria $X \ge 0$ tiene la propiedad de Markov si se verifica:
+ \[P[X \ge t+h \mid X \ge t] = P[X \ge h] \qquad \forall t,h \in \mathbb{R}_0^{+}\]
 \end{mydef}
 
-En teoría de colas la propiedad de no memoria nos dice que si el tiempo entre llegadas está distribuido de forma exponencial, la siguiente ocurrencia de
-un evento es independiente del tiempo de llegada del último evento.
+Equivalentemente:
+
+\[P[X < t+h \mid X \ge t] = P[X < h] = P[ 0 \le X < h] \qquad \forall t,h \in \mathbb{R}_0^{+}\]
+
+En teoría de colas la propiedad de Markov nos dirá que si el tiempo entre llegadas está distribuido de forma exponencial, 
+la siguiente ocurrencia de un evento es independiente del tiempo de llegada del último evento.
 
 %% ¿Qué es exactamente la propiedad de Markov?
 \begin{fact}
- Sea $X$ variable aleatoria tal que: $X \sim exp(\lambda)$. Entonces $X$ tiene la propiedad de no memoria.
+ Sea $X$ variable aleatoria tal que: $X \sim exp(\lambda)$. Entonces $X$ tiene la propiedad de Markov.
 \end{fact}
 
 \begin{proof}
@@ -90,30 +96,26 @@ Dados $t,h \in \mathbb{R}$ con $h\ge 0$:
 \end{proof}
 
 
-
 \begin{theorem}
- La única distribución continua con la propiedad de no memoria es la exponencial
+ Sea $X\ge 0$ variable aleatoria continua con la propiedad de Markov. Entonces $X$ sigue una distribución exponencial.
 \end{theorem}
 
 \begin{proof}
- Sea la variable aleatoria continua $X$ con función de distribución: \[F(t) = P[X\le t]\]
+ Sea la variable aleatoria continua $X\ge 0 $ con función de distribución: \[F(t) = P[X\le t]\]
  
- Se tiene que cumplir por la propiedad de no memoria ($h\ge 0$):
+ Se tiene que cumplir por la propiedad de Markov ($t, h\ge 0$):
  
- \[P[X \ge h + t \mid X \ge t] = P[X \ge h] \Leftrightarrow P[X \ge t + h, X > t] = P[X \ge t] P[X \ge h]\]
+ \[P[X \ge t + h \mid X \ge t] = P[X \ge h]  \Leftrightarrow P[X \ge t + h, X > t] = P[X \ge t] P[X \ge h]\]
  
-  Es decir, llamando $G(x) = P[X \ge x]$ hemos probado $G(t+h) = G(t) G(h)$ para todo $t\in \mathbb{R}, h \ge 0$
+  Es decir, llamando $G(x) = P[X \ge x] = 1- F(x)$ hemos probado $G(t+h) = G(t) G(h)$ para todo $t, h \ge 0$
  
   Además se tiene claramente que $G$ es decreciente y no negativa.
   
   \[G(0 + 0) = G(0)G(0) \implies G(0) \in \{0,1\}\]
   
-  Pero si $G(0) = 0$ entonces $G(t) = G(t+0) = G(t)G(0)$ para todo $t\in \mathbb{R}$, contradicción por tenerse $G = 1-F$ y $F$ una función de distribución.
+  Pero si $G(0) = 0$ entonces $G(t) = G(t+0) = G(t)G(0)$ para todo $t\ge 0$, contradicción por tenerse $G = 1-F$ y $F$ una función de distribución.
   
   Luego $G(0) = 1$
-  
-  Además desde $1 = G(0) = G(-t + t) = G(-t) G(t)$ se tiene $G(-t) = G(t)^{-1}$ para $t > 0$ (nótese que como $G$ es decreciente, $G(-t) > G(0) = 1$). De aquí se deduce también
-  que $G$ es estrictamente positiva.
   
   Por inducción se puede probar fácilmente:
   
@@ -128,11 +130,13 @@ Dados $t,h \in \mathbb{R}$ con $h\ge 0$:
   Luego como $F$ es continua, $G$ lo es, y para cada $x \in \mathbb{R}$ podemos tomar $\{r_n\} \rightarrow x$ sucesión de racionales,
   y se tiene:
   
-  \[G(x) = G(1)^x = e^{ln(G(1)) x}\]
+  \[G(x) = G(1)^x = e^{\log(G(1)) x}\]
   
   Es decir:
   
-  \[F(x) = 1 - G(x) = 1 - e^{ln(G(1)) x}\]
+  \[F(x) = 1 - G(x) = 1 - e^{\log(G(1)) x}\]
+  
+  donde $-\lambda = \log(G(1)) \le \log(G(0)) = 0$ por el decrecimiento de $G$
   
 \end{proof}
 
@@ -141,29 +145,29 @@ Dados $t,h \in \mathbb{R}$ con $h\ge 0$:
 
 \subsubsection{Notación O pequeña}
   \begin{mydef} 
-  Una función $f$ se dice $o(h)$ (formalmente $o\in o(h)$) y lo notamos $f=o(h)$ si se verifica:
+  Una función $f$ se dice $o(h)$ (formalmente $f\in o(h)$) y lo notamos $f=o(h)$ si se verifica:
   
   \[\lim_{h\rightarrow 0} \frac{f(h)}{h} = 0\]
   \end{mydef}
 
-  Es decir, una función $f(h)$ es $o(h)$ si al compararla con $h$ suficientemente pequeño, podemos despreciar su
+  Es decir, una función $f(h)$ es $o(h)$ si al compararla con un $h$ suficientemente pequeño, podemos despreciar su
   valor.
 
   \begin{fact}
-  Dados $c_1, \ldots c_n \in \mathbb{R}$, $f_1, \ldots f_n \in o(h)$, entonces $\sum_{i=1} c_i f_i = o(h)$
+  Dados $c_1, \ldots c_n \in \mathbb{R}$, $f_1, \ldots f_n \in o(h)$, entonces $\sum_{i=1}^{n} c_i f_i = o(h)$
   \end{fact}
 
   \begin{proof}
-  \[\lim_{h\rightarrow 0} \frac{\sum_{i=1} c_i f_i}{h} = \sum_{i=1}^n{c_i \lim_{h\rightarrow 0} \frac{f_i}{h}} = 0\]
+  \[\lim_{h\rightarrow 0} \frac{\sum_{i=1}^{n} c_i f_i}{h} = \sum_{i=1}^{n}{c_i \lim_{h\rightarrow 0} \frac{f_i}{h}} = 0\]
   \end{proof}
 
 \subsubsection{Proceso de Poisson}
 
   \begin{mydef} \textbf{Proceso de conteo}\\
-  $\{N_t\}_{t\ge 0}$, proceso estocástico discreto, es proceso de conteo si se verifica:
+  Sea $\{N_t\}_{t\ge 0}$ proceso estocástico discreto. Se dice que es proceso de conteo si se verifica:
   \begin{enumerate}
     \item No negatividad: $N_t \in \mathbb{N}\cup\{0\}, \quad \forall t\ge 0$. Además: $N_0=0$
-    \item Monotonía: $N_s \le N_t, \quad s \le t$
+    \item Monotonía: $N_s \le N_t, \quad \forall s \le t$
   \end{enumerate}
 
   $N_t$ indica el número de eventos que han ocurrido en el intervalo $[0,t]$. Por tanto $N_t- N_s$, con $t\ge s$
@@ -172,18 +176,18 @@ Dados $t,h \in \mathbb{R}$ con $h\ge 0$:
 
 
   \begin{mydef} \textbf{Proceso de Poisson}\\
-  Un proceso de conteo $\{N_t\}_{t\ge 0}$ verifica que es de Poisson de parámetro $\lambda > 0$ si se verifica:
+  Un proceso de conteo $\{N_t\}_{t\ge 0}$ se dice que es de Poisson de parámetro $\lambda > 0$ si se verifica:
   
   \begin{enumerate}
     \item El proceso tiene incrementos independientes: dados $0 \le t_1 < \ldots < t_n$, se verifica que
     las variables $N_{t_1}, N_{t_2} - N_{t_1}, \ldots, N_{t_n}- N_{t_{n-1}}$ son independientes. Esto es, el número de eventos
     que se producen en intervalos disjuntos es independiente.
     \item El proceso tiene incrementos estacionarios: $dist(N_{t+h} - N_t)$ es la misma para cualesquiera
-    $t\ge 0, h\ge 0$
+    $t\ge 0, h\ge 0$.
     \item $P[N_h = 1] = \lambda h + o(h)$, es decir, la probabilidad de que ocurra un evento en un intervalo de
     tiempo de longitud $h$ es casi proporcional a $h$, salvo por un término despreciable en comparación con dicho $h$, para
     $h$ suficientemente pequeño.
-    \item $P[N_h \ge 2] = o(h)$
+    \item $P[N_h \ge 2] = o(h)$.
   \end{enumerate}
 
   Se deduce que: 
@@ -212,8 +216,8 @@ de servicio, o equivalentemente una distribución de Poisson para frecuencias de
  LLamando $\tau_1= t_1, \tau_{n+1} = t_{n+1} - t_{n}, \quad \forall n\in \mathbb{N}$ tiempos entre llegadas. Entonces equivalen:
  
  \begin{itemize}
-  \item $\{N_t\}_{t\ge 0}$ es proceso de Poisson
-  \item Los tiempos entre llegadas $\{\tau_n\}$ son variables exponenciales i.i.d. de media $\frac{1}{\lambda}$, esto es
+  \item $\{N_t\}_{t\ge 0}$ es proceso de Poisson.
+  \item Los tiempos entre llegadas $\{\tau_n\}$ son variables exponenciales i.i.d. de media $\frac{1}{\lambda}$, esto es,
   $\tau_n \sim exp(\lambda)$.
  \end{itemize}
 
@@ -245,9 +249,10 @@ $h$ es $\mu_n h + o(h)$ tenemos un proceso de nacimiento y muerte.
  \begin{enumerate}
   \item La población puede aumentar o decrecer únicamente de uno en uno.
   \item Si el sistema está en estado $n\ge 0$ entonces el tiempo hasta que el sistema está en estado $n+1 \ge 0$ es una variable aleatoria exponencial
-  de paŕámetro $\lambda_n$
+  de paŕámetro $\lambda_n$.
   \item Si el sistema está en estado $n\ge 1$ entonces el tiempo hasta que el sistema está en estado $n-1 \ge 0$ es una variable aleatoria exponencial
-  de paŕámetro $\mu_n$
+  de paŕámetro $\mu_n$.
+  \item Cualesquiera dos transiciones son independientes.
  \end{enumerate}
 \end{mydef}
 
@@ -283,7 +288,7 @@ Sumando y agrupando funciones $o(h)$:
 \[P_n(t+h) = [1-\lambda_n h -\mu_n h] P_n(t) + \lambda_{n-1} h P_{n-1}(t) + \mu_{n+1} h P_{n+1}(t) + o(h)\]
 
 
-que diviendo por $h$ en ambos términos y operando, da lugar a:
+Que diviendo por $h$ en ambos términos y operando, da lugar a:
 
 \[\frac{P_n(t+h) - P_n(t)}{h} = -(\lambda_n + \mu_n) P_n(t) + \lambda_{n-1} P_{n-1}(t) + \mu_{n+1}P_{n+1}(t) + \frac{o(h)}{h}\]
 
@@ -346,9 +351,10 @@ fuera del nivel de estos apuntes). Si dicha distribución existe se tendría:
  \label{eq:relp0}
 \end{equation}
 
-Intuitivamente, cuando la serie $Z$ converge, tenemos que la probabilidad límite, cuando pasa mucho tiempo, de que el 
-sistema esté vacío y no haya clientes esperando en la cola es positiva, y por tanto el sistema de encolado es estable.
-Cuando esta serie diverge, es un indicativo de que el sistema de encolado es inestable.
+Intuitivamente, cuando la serie $Z$ converge, tenemos que la probabilidad límite de que el 
+sistema esté vacío y no haya clientes esperando en la cola es positiva, y por tanto el sistema 
+de encolado es estable. Cuando esta serie diverge, es un indicativo de que el sistema de encolado
+es inestable.
 
 
 \section{El modelo de un \textit{``sistema de encolado''}}
@@ -607,82 +613,6 @@ Se pueden considerar disintos valores como medidas de efectividad del sistema, e
   La intensidad de tráfico se define como $a= W_S/E[\tau]$. Se da que es proporcional al aprovechamiento de los servidores, $a = \rho c$, luego ambas se pueden usar como medida de eficiencia, dependiendo si se quiere considerar el número de servidores en la medida o no.
 \end{itemize}
 
-\section{Modelos particulares}
-\subsection{D/D/1}
-Tenemos un tiempo entre llegadas constante $\tau = \frac{1}{\lambda}$ y un tiempo de servicio constante $S = \frac{1}{\mu}$.
-
-En este caso, la intensidad de tráfico será $a=\frac{\lambda}{\mu}$, y por ser $c = 1$, el aprovechamiento del servidor es el mismo, $\rho = a$.
-
-\subsubsection{Caso $\lambda > \mu$}
-Intuitivamente, la cola será inestable y no podrá servir todas las peticiones. 
-
-Se tiene $a > 1$, $\rho > 1$.
-
-\begin{fact}
-Notando $Q_n$ al tiempo de espera del $n$ ésimo cliente, tenemos que \[Q_1 = 0, \qquad Q_n = \left(\frac{1}{\mu} - \frac{1}{\lambda}\right)n, \quad \forall n\ge 2\]
-\end{fact}
-
-\begin{proof}
-Veámoslo por inducción:
-
-El segundo cliente, que llega en tiempo $\frac{2}{\lambda}$ al sistema, debe esperar que el cliente que entró en tiempo $\frac{1}{\lambda}$ sea servido,
-esto es $\frac{1}{\mu} - \frac{1}{\lambda}$
-
-Supuesto que $Q_{n-1}$ cumple esa relación, el $n$ ésimo cliente entra $\frac{1}{\lambda}$ unidades de tiempo
-más tarde que el $n-1$ ésimo y deberá esperar a que el $n-1$ ésimo sea servido para poder él ser servido, esto es,
-deberá esperar $Q_{n-1} + \frac{1}{\mu} - \frac{1}{\lambda} = \left(\frac{1}{\mu} - \frac{1}{\lambda}\right)n$
-\end{proof}
-
-\begin{corollary}
- El tiempo de espera total para el $n$ ésimo cliente es:
- 
- \[W_1 = \frac{1}{\mu}, \qquad W_n = \left(\frac{1}{\mu} - \frac{1}{\lambda}\right)^n + \frac{1}{\mu} \quad n\in \mathbb{N}\]
-\end{corollary}
-
-\begin{fact}
- En un instante $t$ el número de clientes en el sistema será: 
- \[N_t = \left\{\begin{array}{lcc}
-         0, && t < \frac{1}{\lambda}\\
-         \lfloor t\lambda \rfloor - \left\lfloor\left(t-\frac{1}{\lambda}\right)\mu\right\rfloor, && \text{otro caso}
-         \end{array}\right.\]
-\end{fact}
-
-\begin{proof}
- Trivial.
-\end{proof}
-
-
-\subsubsection{Caso $\lambda \le \mu$}
-
-Se tiene $a < 1$, $\rho < 1$.
-
-\begin{fact}
-Se tiene $\forall n\in \mathbb{N}$:
-
-\begin{align*}
-Q_n = 0\\
-W_n = \frac{1}{\mu}
-\end{align*}
-\end{fact}
-
-\begin{corollary}
- El tiempo de espera total para el $n$ ésimo cliente es únicamente el tiempo en ser servido:
- 
- 
-\end{corollary}
-
-\begin{fact}
- En un instante $t$ el número de clientes en el sistema será: 
- \[N_t = \left\{\begin{array}{lcc}
-          0, && t < \frac{1}{\lambda}\\
-          0, && t \ge \frac{1}{\lambda}, t \in \left]\frac{n-1}{\lambda} + \frac{1}{\mu}, \frac{n-1}{\lambda} + \frac{1}{\lambda}\right[\\
-          1, && \text{otro caso}
-         \end{array}\right.\]
-\end{fact}
-
-En el caso particular $\lambda = \mu$, se tiene $N_t = 1$ constantemente para $t\ge \frac{1}{\lambda}$
-
-
 
 \section{Leyes de Little}
 Brevemente recordamos los conceptos ya nombrado anteriormente, pues será de ayuda tenerlos a mano durante la definición de los elementos que conforman el teorema.
@@ -783,7 +713,80 @@ Ahora dividimos por T y hacemos tender T a infinito, notando que el segundo tér
 constante. El lado izquierdo de \ref{DesiLi2} tiene límite $ \lambda\omega / (1 + \epsilon)$, lo que implica el lado derecho tiene lim inf $\geq \lambda\omega / (1 + \epsilon))$. Debido a que $\epsilon$ puede ser arbitrariamente pequeño, y combinando limite superior e inferior, concluimos la prueba.
 \end{proof}
 
-%% Ejemplo de cita: \cite{Ciarlet}
+\section{Modelos particulares}
+\subsection{D/D/1}
+Tenemos un tiempo entre llegadas constante $\tau = \frac{1}{\lambda}$ y un tiempo de servicio constante $S = \frac{1}{\mu}$.
+
+En este caso, la intensidad de tráfico será $a=\frac{\lambda}{\mu}$, y por ser $c = 1$, el aprovechamiento del servidor es el mismo, $\rho = a$.
+
+\subsubsection{Caso $\lambda > \mu$}
+Intuitivamente, la cola será inestable y no podrá servir todas las peticiones. 
+
+Se tiene $a > 1$, $\rho > 1$.
+
+\begin{fact}
+Notando $Q_n$ al tiempo de espera del $n$ ésimo cliente, tenemos que \[Q_1 = 0, \qquad Q_n = \left(\frac{1}{\mu} - \frac{1}{\lambda}\right)n, \quad \forall n\ge 2\]
+\end{fact}
+
+\begin{proof}
+Veámoslo por inducción:
+
+El segundo cliente, que llega en tiempo $\frac{2}{\lambda}$ al sistema, debe esperar que el cliente que entró en tiempo $\frac{1}{\lambda}$ sea servido,
+esto es $\frac{1}{\mu} - \frac{1}{\lambda}$
+
+Supuesto que $Q_{n-1}$ cumple esa relación, el $n$ ésimo cliente entra $\frac{1}{\lambda}$ unidades de tiempo
+más tarde que el $n-1$ ésimo y deberá esperar a que el $n-1$ ésimo sea servido para poder él ser servido, esto es,
+deberá esperar $Q_{n-1} + \frac{1}{\mu} - \frac{1}{\lambda} = \left(\frac{1}{\mu} - \frac{1}{\lambda}\right)n$
+\end{proof}
+
+\begin{corollary}
+ El tiempo de espera total para el $n$ ésimo cliente es:
+ 
+ \[W_1 = \frac{1}{\mu}, \qquad W_n = \left(\frac{1}{\mu} - \frac{1}{\lambda}\right)^n + \frac{1}{\mu} \quad n\in \mathbb{N}\]
+\end{corollary}
+
+\begin{fact}
+ En un instante $t$ el número de clientes en el sistema será: 
+ \[N_t = \left\{\begin{array}{lcc}
+         0, && t < \frac{1}{\lambda}\\
+         \lfloor t\lambda \rfloor - \left\lfloor\left(t-\frac{1}{\lambda}\right)\mu\right\rfloor, && \text{otro caso}
+         \end{array}\right.\]
+\end{fact}
+
+\begin{proof}
+ Trivial.
+\end{proof}
+
+
+\subsubsection{Caso $\lambda \le \mu$}
+
+Se tiene $a < 1$, $\rho < 1$.
+
+\begin{fact}
+Se tiene $\forall n\in \mathbb{N}$:
+
+\begin{align*}
+Q_n = 0\\
+W_n = \frac{1}{\mu}
+\end{align*}
+\end{fact}
+
+\begin{corollary}
+ El tiempo de espera total para el $n$ ésimo cliente es únicamente el tiempo en ser servido:
+ 
+ 
+\end{corollary}
+
+\begin{fact}
+ En un instante $t$ el número de clientes en el sistema será: 
+ \[N_t = \left\{\begin{array}{lcc}
+          0, && t < \frac{1}{\lambda}\\
+          0, && t \ge \frac{1}{\lambda}, t \in \left]\frac{n-1}{\lambda} + \frac{1}{\mu}, \frac{n-1}{\lambda} + \frac{1}{\lambda}\right[\\
+          1, && \text{otro caso}
+         \end{array}\right.\]
+\end{fact}
+
+En el caso particular $\lambda = \mu$, se tiene $N_t = 1$ constantemente para $t\ge \frac{1}{\lambda}$
 
 \newpage
 \begin{thebibliography}{10}
