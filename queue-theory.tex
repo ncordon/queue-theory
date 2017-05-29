@@ -613,7 +613,6 @@ Se pueden considerar disintos valores como medidas de efectividad del sistema, e
   La intensidad de tráfico se define como $a= W_S/E[\tau]$. Se da que es proporcional al aprovechamiento de los servidores, $a = \rho c$, luego ambas se pueden usar como medida de eficiencia, dependiendo si se quiere considerar el número de servidores en la medida o no.
 \end{itemize}
 
-
 \section{Leyes de Little}
 Brevemente recordamos los conceptos ya nombrado anteriormente, pues será de ayuda tenerlos a mano durante la definición de los elementos que conforman el teorema.
 Para $i \geq 1$, llamemos al cliente $c_i$, el cual llega en el instante $t_i$, nombremos $W_i$ al tiempo de espera del cliente con lo cual es inmediato deducir, que nuestro cliente abandonará la cola en el instante $t_i + W_i$, donde $t_0 \equiv 0 \leq t_1 \leq t_2 \leq... $.
@@ -686,6 +685,7 @@ La idea intuitiva de este resultado es la relación que apúntabamos antes: Para
 \[ \frac{\int_{0}^{T} N(t)dt}{T}=\frac{\sum_{i=1}^{\Delta (t)} W_i(t)}{T}-\frac{error}{T}=\frac{\Delta(T)}{T}\frac{\sum_{i=1}^{\Delta (T)} W_i(t)}{\Delta(T)}-\frac{error}{T}   \]
 A medida que T se hace grande, la primera cantidad entre paréntesis a la derecha se aproxima a $\lambda$, la segunda a $\omega$, y el producto se acerca $\lambda\omega$. Por lo tanto, el teorema se obtendría si el término a la derecha se aproxima a 0 cuando $T\rightarrow\infty$. El término de error no tendría porqué hacerse pequeño, sólo crecer más lentamente que T.
 Teniendo esta idea en mente, podemos proceder a demostrar el resultado formalmente:
+
 \begin{proof}
 Motivados por las Figuras 1 y 2, obtenemos las siguientes desigualdades en
 \begin{equation}
@@ -712,6 +712,7 @@ Para cualquier $\epsilon> 0$, el anterior limite implica que para algún $m$ fin
 Ahora dividimos por T y hacemos tender T a infinito, notando que el segundo término de la izquierda es un
 constante. El lado izquierdo de \ref{DesiLi2} tiene límite $ \lambda\omega / (1 + \epsilon)$, lo que implica el lado derecho tiene lim inf $\geq \lambda\omega / (1 + \epsilon))$. Debido a que $\epsilon$ puede ser arbitrariamente pequeño, y combinando limite superior e inferior, concluimos la prueba.
 \end{proof}
+  
 
 \section{Modelos particulares}
 \subsection{D/D/1}
@@ -787,6 +788,107 @@ W_n = \frac{1}{\mu}
 \end{fact}
 
 En el caso particular $\lambda = \mu$, se tiene $N_t = 1$ constantemente para $t\ge \frac{1}{\lambda}$
+
+\subsection{M/M/1}
+En este modelo consideramos una patron de llegada aleatorio (Siguiendo un proceso de Poisson) y tiempo de servicio siguiendo una distribución exponencial.El tiempo de llegada no depende de los clientes en el sistema y, si tenemos en cuenta el teorema \ref{referencia del teorema aqui}, la probabilidad de llegada en un intervalo de tiempo $h>0$ viene dado por:
+\begin{equation}
+e^{-\lambda h}(\lambda h)=\lambda h (1-\lambda h+\frac{(\lambda h)^2}{2!}- \dots)=\lambda h-(\lambda h)^2+\frac{(\lambda h)^3}{2!}-\dots+(-1)^n\frac{(\lambda h)^n}{(n-1)!}= \lambda h+o(h)
+\end{equation}
+Por tanto tenemos :
+\begin{equation}
+\lambda_n=\lambda, n=0,1,2,\dots
+\end{equation}
+Por hipótesis la distribucion que sigue el tiempo de servicio viene dada por:
+\begin{equation}
+W_s[t]=P[s\leq t]=1-e^{-\mu t}, t\geq 0.
+\end{equation}
+Por tanto si cliente está recibiendo el servicio, la probailidd de que el servicio sea completado en un corto periodo de tiempo,h, vienen dada por:
+\begin{equation}
+1-e^{-\mu h}=1-(1-\mu h+\frac{(\mu h)^2}{2!}- \dots)=\mu h +o(h)
+\end{equation}
+Donde hemo usado la propiedad de falta de memoria de la distribucion exponencial omitiendo los servicios ya acabados)\\
+Por tanto:
+\begin{equation}
+\mu_n=\, n=0,1,2,\dots
+\end{equation}
+Así, podemos deducir el diagrama de estado-transición para el sistema de colas M/M/1. Además dado que $\lambda/\mu=\rho$ y cada $C^n$ es igual a $\rho^n$ podemos obtener que:
+\begin{equation}
+S=1+\rho+\rho^2+\dots+\rho^n+\dots=\frac{1}{(1-\rho)}
+\end{equation}
+Hemos asumido que $\rho<1$ por lo que una solución estacionaria existe.
+Para sumar la serie de S hemos usado la suma de la serie geométrica ampliamente conocida.
+Así por la definicion de \ref{p_0} y \ref{P_n}
+\begin{equation}
+p_n=P[N=n]=(1-\rho)\rho^n, n=0,1,2...
+\label{p_n}
+\end{equation}
+Podemos observar que \ref{p_n} es la funcion masa de probabilidad de una variable aleatoria geométrica;esto es, $N$ sigue una distribucion geométrica con $p=1-\rho$ y $q=p$. Por tanto podemos usar
+para obtener $L$ y $\sigma_n^2$:
+\begin{equation}
+L=E[N]=q/p=\frac{\rho}{(1-\rho)}
+\end{equation}
+\begin{equation}
+\sigma_n^2=\frac{\rho}{(1-\rho)^2}
+\end{equation}
+Usando la Ley de Little \ref{hacer ref al apartado}:
+\begin{equation}
+W=E[\omega]=\frac{L}{\lambda}=\frac{W_s}{(1-\rho)}
+\end{equation}
+Equvalentemente como \[ W_q=E[q]=W-W_s=\frac{\rho W_s}{(1-\rho)} \] podemos volver a usar la Ley de Little para obtener:
+\begin{equation}
+L_q=E[N_q]=\lambda W_q=\frac{\rho^2}{(1-\rho)}.
+\end{equation}
+Podemos tambien calular utilizando \ref{p_n} la probabilidad de que el servidor esté ocupado:
+\begin{equation}
+P[\textbf{Servidor ocupado }]=1-P[N=0]=1-(1-\rho)=\rho
+\end{equation}
+Por la ley de grandes números esta probabilidad puede ser interpretada como la fracción de tiempo que el servidor está ocupado; de hecho podríamos considerar llamar a $\rho$ "Utilización del servidor".
+
+Tenemos ya los cuatro parámetros más utilizados para medir la rendimiento de un sistema de colas $W, W_q, L y L_q$, así como el la funcion masa de probabilidad, $p_n$, de una cantidad en el sistema, $N$. 
+
+Para el sistema $M / M / 1$, también podemos obtener la distribución exacta de $\omega$ y q.
+
+Si un cliente que llega no encuentra clientes en el sistema, $(N = 0)$, entonces no hay cola para el servicio, por lo que $W_q [O] = P [q = 0] = P [N = 0] = 1 - \rho$.
+Así, $W_q [.]$ Tiene una concentración o masa de probabilidad en t = O. 
+Sin embargo,si un cliente llega cuando n clientes ya están en el sistema, entonces tiene que esperar a través de n tiempos de servicio (que recordemos siguen una distribución exponenciales); eso es el tiempo de espera condicional en la cola, dada una llegada a la misma con n clientes ya en el sistema, vendrá dado por
+\begin{equation}q = s_1 + s_2 + ·. . + s_n,\end{equation}
+Donde $s_n$ son n exponenciales independientes distribuidas de forma idéntica cada una con media $1 / \lambda$.  Por tanto usando un teorema de probabilidad (lo pongo/no lo pongo? XD), $q$ tiene una distribución gamma con los parámetros n y $\lambda$, que significa que la función de densidad de probabilidad ,condicionada al caso propuesto, de $q$, está dada por
+\begin{equation}
+f_{q,n}(t)=\mu e^{-\mu t} \frac{(\mu t)^{n-1}}{(n-1)!}
+\end{equation}
+Así, si n> 0,podemos calcular la probabilidad como:
+\begin{equation}
+P[q\leq t|N=n]=\int_{0}^{t}\frac{\mu^nx^{n-1}e^{-\mu x}}{(n-1)!}dx
+\end{equation}
+Siguiendo la ley de probabilidad total, ((el teorema 2.4.2)))
+\begin{equation}
+P[0<q\leq t]=\sum_{n=1}^{\infty}P[q\leq t|N=n]P[N=n]
+\end{equation}
+Operando podemos obtener, finalmente:
+\begin{equation}
+P[0<q\leq t]=\rho[1-e^{-t/W}]
+\label{finaleqP}
+\end{equation}
+
+
+Ya hemos demostrado que $W_q [O] = 1 - p$. Si t> 0, podemos usar \ref{finaleqP} para calcular \begin{equation}
+W_q [t]=P [q = 0] + P [O <q \leq t]= 1 - \rho + \rho [1 - e^{- t / W}]=1\rho[1-e^{-t/W}
+\end{equation}
+
+El tiempo medio de espera en cola es de particular interés por los sistemas de colas en los que las personas son los clientes.Es de sentido común pensar que, si las personas se mantienen esperando demasiado tiempo en la cola para un servicio, éstas puedan cansarse y abandonar la cola; es decir, abandonar la cola sin haber recibido el servicio. La gente no esperará indefinidamente por ningún tipo de servicio.
+
+De hecho podemos calcular como funciona nuestro caso ante esta idiosincrasia. Por el teorema 2.8.1,
+\begin{equation}
+W_q = P [q = 0] x E [q|q = 0] + P [q> 0] x E [q|q> 0]
+= (1 - \rho) x 0 + \rho x E [q|q> 0].
+\end{equation}
+Lo que nos lleva a:
+\begin{equation}
+\frac{W_q}{\rho}=\frac{W_s}{1-\rho}=W= E [q|q> 0].
+\end{equation}
+Este resultado, dado que $W=W_q+W_s$, se puede interpretar de la siguiente manera: De media un cliente esperando al servicio permanecerá en la cola el tiempo medio de servicio más que lo que espera un cliente medio.
+Es más, la función de distribución de $W[.]$ se puede obtener de igual forma que hicimos con $W_q[.]$. Con lo que podemos concluir que $\omega$ sigue una distribución exponencial lo que nos permite calcular los percentiles de la misma.
+
 
 \newpage
 \begin{thebibliography}{10}
