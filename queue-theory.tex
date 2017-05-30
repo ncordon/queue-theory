@@ -4,45 +4,6 @@
 \usepackage[utf8]{inputenc}
 \usepackage[spanish]{babel}
 
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{enumerate}
-\usepackage{verbatim}
-\usepackage{amsthm}
-% Imágenes
-\usepackage{graphicx}
-\usepackage{float}
-\usepackage{tikz}
-\usetikzlibrary{arrows}
-
-% Enlaces dentro del documento
-\usepackage{hyperref}
-
-% Definiciones
-\theoremstyle{definition}
-\newtheorem*{mydef}{Definición}
-%\newtheorem{mydefn}{Definición}
-\newtheorem*{theorem*}{Teorema}
-\newtheorem{theorem}{Teorema}
-\newtheorem*{fact*}{Proposición}
-\newtheorem{fact}{Proposición}
-\newtheorem*{corollary*}{Corolario}
-\newtheorem{corollary}{Corolario}
-\newtheorem*{rmk*}{Nota}
-\newtheorem*{eg}{Ejemplo}
-
-% Displaystyle por defecto
-\everymath{\displaystyle}
-
-% Comandos
-\newcommand{\Referencia}[4]{\indent #1, \textbf{#2}. \textit{#3}, \textit{#4}.\\}
-\renewcommand\refname{Referencias}
-\renewcommand\contentsname{Contenidos}
-\documentclass[a4paper,10pt]{scrartcl}
-
-% Inclusión de paquetes
-\usepackage[utf8]{inputenc}
-\usepackage[spanish]{babel}
 
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -533,18 +494,17 @@
 	variables aleatorias.
 	
 	\begin{mydef}
-		LLamamos modelo de llegadas a la distribución $A(t)$ de los tiempos entre llegadas $\{\tau_n\}$.
+		LLamamos modelo de llegadas a la distribución de los tiempos entre llegadas $\{\tau_n\}$.
 	\end{mydef}
 	
-	La distribución de los tiempos de llegada $\{t_n\}$ está determinada por la distribución de los tiempos entre
+	Nótese que la distribución de los tiempos de llegada $\{t_n\}$ está determinada por la distribución de los tiempos entre
 	llegadas $\{\tau_n\}$. 
 	
 	\begin{mydef}
 		El modelo de llegadas se dice:
 		
 		\begin{enumerate}
-			\item Estacionario, cuando no depende del tiempo (por ejemplo cuando existe una distribución límite y hablamos
-			del modelo de llegadas de dicha distribución límite).
+			\item Estacionario, cuando no depende del tiempo.
 			\item Transitorio, en caso opuesto.
 		\end{enumerate}
 	\end{mydef}
@@ -778,6 +738,7 @@
 	\begin{theorem*}{\textbf{Teorema de Little}}\\
 		Si los límites $\lambda$ y $W_W$ existen y son finitos, entonces $L$ existe y es finito, donde 
 		\[L = \lambda W_W\]
+		\label{little}
 	\end{theorem*}
 	
 	La idea intuitiva de este resultado es la relación que apúntabamos antes: para cualquier $T$ (donde ahora $N_T \geq 0$) escribimos:
@@ -863,7 +824,7 @@
 	\begin{corollary*}
 		El tiempo de espera total para el $n$ ésimo cliente es:
 		
-		\[W_1 = \frac{1}{\mu}, \qquad W_n = \left(\frac{1}{\mu} - \frac{1}{\lambda}\right)^n + \frac{1}{\mu} \quad n\in \mathbb{N}\]
+		\[W_1 = \frac{1}{\mu}, \qquad W_n = \left(\frac{1}{\mu} - \frac{1}{\lambda}\right)n + \frac{1}{\mu} \quad n\in \mathbb{N}\]
 	\end{corollary*}
 	
 	\begin{fact*}
@@ -956,7 +917,7 @@
 	\end{equation}
 	
 	Podemos observar que \ref{eq:p_n} es la funcion masa de probabilidad de una variable aleatoria geométrica;esto
-	es, $N$ sigue una distribucion geométrica con $p=1-\rho$ y $q=p$. Por tanto podemos usar para obtener $L$ 
+	es, $N$ sigue una distribucion geométrica con $p=1-\rho$ y $q=\rho$. Por tanto podemos usar para obtener $L$ 
 	y $\sigma_n^2$:
 	\begin{equation*}
 	L=E[N]=q/p=\frac{\rho}{(1-\rho)}
@@ -968,7 +929,7 @@
 	
 	Usando la Ley de Little \ref{little}:
 	\begin{equation*}
-	W=E[\omega]=\frac{L}{\lambda}=\frac{W_s}{(1-\rho)}
+	W_W=E[W]=\frac{L}{\lambda}=\frac{W_s}{(1-\rho)}
 	\end{equation*}
 	
 	Equvalentemente como \[ W_q=E[q]=W-W_s=\frac{\rho W_s}{(1-\rho)} \] podemos volver a usar la Ley de Little 
@@ -977,65 +938,74 @@
 	L_q=E[N_q]=\lambda W_q=\frac{\rho^2}{(1-\rho)}.
 	\end{equation*}
 	
-	Podemos tambien calular utilizando \ref{p_n} la probabilidad de que el servidor esté ocupado:
+	Podemos tambien calular utilizando \ref{eq:p_n} la probabilidad de que el servidor esté ocupado en estado de equilibrio:
 	\begin{equation*}
-	P[\textbf{Servidor ocupado }]=1-P[N=0]=1-(1-\rho)=\rho
+	P[\textbf{Servidor ocupado}]=1-p_0=1-(1-\rho)=\rho
 	\end{equation*}
 	Por la ley de grandes números esta probabilidad puede ser interpretada como la fracción de tiempo que el 
 	servidor está ocupado; de hecho podríamos considerar llamar a $\rho$ "Utilización del servidor".
 	
 	Tenemos ya los cuatro parámetros más utilizados para medir la rendimiento de un sistema de colas 
-	$W, W_q, L y L_q$, así como el la funcion masa de probabilidad, $p_n$, de una cantidad en el sistema, $N$. 
+	$W, W_Q, L y L_Q$, así como el la funcion masa de probabilidad, $p_n$, de una cantidad en el sistema, $N$. 
 	
-	Para el sistema $M / M / 1$, también podemos obtener la distribución exacta de $\omega$ y q.
+	Para el sistema $M/M/1$, también podemos obtener la distribución exacta de $\omega$ y q.
 	
-	Si un cliente que llega no encuentra clientes en el sistema, $(N = 0)$, entonces no hay cola para el 
-	servicio, por lo que $W_q [O] = P [q = 0] = P [N = 0] = 1 - \rho$.
+	Si un cliente que llega no encuentra clientes en el sistema, esto es $N=0$, entonces no hay cola para el 
+	servicio, por lo que $W_Q [O] = P [Q = 0] = P [N = 0] = 1 - \rho$.
 	
-	Así, $W_q [.]$ Tiene una concentración o masa de probabilidad en t = O. 
-	Sin embargo,si un cliente llega cuando n clientes ya están en el sistema, entonces tiene que esperar a
-	través de n tiempos de servicio (que recordemos siguen una distribución exponenciales); eso es el tiempo
-	de espera condicional en la cola, dada una llegada a la misma con n clientes ya en el sistema, vendrá dado por
-	\[q = s_1 + s_2 + \dots + s_n\]
+	Así, $W_Q [.]$ Tiene una concentración o masa de probabilidad en $t = O$.
 	
-	Donde $s_n$ son n exponenciales independientes distribuidas de forma idéntica cada una con media $1 / \lambda$.  Por tanto usando las propiedades de la distribución gamma, $q$ tiene una distribución gamma con los parámetros n y $\lambda$, que significa que la función de densidad de probabilidad ,condicionada al caso propuesto, de $q$, está dada por
+	Sin embargo,si un cliente llega cuando $n$ clientes ya están en el sistema, entonces tiene que esperar a
+	través de $n$ tiempos de servicio (que recordemos siguen una distribución exponencial). El tiempo
+	de espera condicional en la cola, dada una llegada a la misma con $n$ clientes ya en el sistema, vendrá dado por
+	\[A = S_1 + S_2 + \dots + S_n\]
+	
+	Donde $S_n$ son n exponenciales independientes distribuidas de forma idéntica cada una con media $1 / \lambda$.  Por tanto usando las propiedades de la distribución gamma, $q$ tiene una distribución gamma con los parámetros n y $\lambda$, que significa que la función de densidad de probabilidad ,condicionada al caso propuesto, de $q$, está dada por
 	\begin{equation*}
-	f_{q,n}(t)=\mu e^{-\mu t} \frac{(\mu t)^{n-1}}{(n-1)!}
+	f_{Q,n}(t)=\mu e^{-\mu t} \frac{(\mu t)^{n-1}}{(n-1)!}
 	\end{equation*}
 	
-	Así, si n> 0,podemos calcular la probabilidad como:
+	Así, si $n > 0$, podemos calcular la probabilidad como:
 	\begin{equation*}
-	P[q\leq t|N=n]=\int_{0}^{t}\frac{\mu^nx^{n-1}e^{-\mu x}}{(n-1)!}dx
+	P[Q \le t|N=n]=\int_{0}^{t}\frac{\mu^n x^{n-1} e^{-\mu x}}{(n-1)!}dx
 	\end{equation*}
 	
 	Siguiendo la ley de probabilidad total:
 	\begin{equation*}
-	P[0<q\leq t]=\sum_{n=1}^{\infty}P[q\leq t|N=n]P[N=n]
+	P[0 < Q \le t]=\sum_{n=1}^{\infty}P[q\le t|N=n]P[N=n]
 	\end{equation*}
 	
 	Operando podemos obtener, finalmente:
 	\begin{equation*}
-	P[0<q\leq t]=\rho[1-e^{-t/W}]
+	P[0 < Q\le t]=\rho[1-e^{-t/W}]
 	\label{finaleqP}
 	\end{equation*}
 	
 	
-	Ya hemos demostrado que $W_q [O] = 1 - p$. Si t> 0, podemos usar \ref{finaleqP} para calcular 
-	\[W_q [t]=P [q = 0] + P [O <q \leq t]= 1 - \rho + \rho [1 - e^{- t / W}]=1\rho[1-e^{-t/W}\]
+	Ya hemos demostrado que $W_Q [O] = 1 - p$. Si t> 0, podemos usar \ref{finaleqP} para calcular 
+	\[W_Q [t]=P [q = 0] + P [O < Q \leq t]= 1 - \rho + \rho [1 - e^{- t / W}]=1\rho[1-e^{-t/W}\]
 	
-	El tiempo medio de espera en cola es de particular interés por los sistemas de colas en los que las personas son los clientes.Es de sentido común pensar que, si las personas se mantienen esperando demasiado tiempo en la cola para un servicio, éstas puedan cansarse y abandonar la cola; es decir, abandonar la cola sin haber recibido el servicio. La gente no esperará indefinidamente por ningún tipo de servicio.
+	El tiempo medio de espera en cola es de particular interés por los sistemas de colas en los que las personas 
+	son los clientes.
+	
+	Es de sentido común pensar que, si las personas se mantienen esperando demasiado tiempo en la cola 
+	para un servicio, éstas puedan cansarse y abandonar la cola; es decir, abandonar la cola sin haber 
+	recibido el servicio. La gente no esperará indefinidamente por ningún tipo de servicio.
 	
 	De hecho podemos calcular como funciona nuestro caso ante esta idiosincrasia. Usando las propiedades de condicionamiento:
 	\begin{equation*}
-	W_q = P [q = 0] E [q|q = 0] + P [q> 0]E [q|q> 0] = (1 - \rho)  0 + \rho E [q|q> 0].
+	W_Q = P [Q = 0] E [Q|Q = 0] + P [Q > 0]E [Q|Q> 0] = (1 - \rho)  0 + \rho E [Q|Q> 0].
 	\end{equation*}
 	
 	Lo que nos lleva a:
 	\begin{equation*}
-	\frac{W_q}{\rho}=\frac{W_s}{1-\rho}=W= E [q|q> 0].
+	\frac{W_Q}{\rho}=\frac{W_S}{1-\rho}=W= E [Q|Q> 0].
 	\end{equation*}
-	Este resultado, dado que $W=W_q+W_s$, se puede interpretar de la siguiente manera: De media un cliente esperando al servicio permanecerá en la cola el tiempo medio de servicio más que lo que espera un cliente medio.
-	Es más, la función de distribución de $W[.]$ se puede obtener de igual forma que hicimos con $W_q[.]$. Con lo que podemos concluir que $\omega$ sigue una distribución exponencial lo que nos permite calcular los percentiles de la misma.
+	Este resultado, dado que $W=W_Q + W_S$, se puede interpretar de la siguiente manera: De media un cliente 
+	esperando al servicio permanecerá en la cola el tiempo medio de servicio más que lo que espera un cliente medio.
+	Es más, la función de distribución de $W[.]$ se puede obtener de igual forma que hicimos con $W_Q[.]$. Con lo
+	que podemos concluir que $\omega$ sigue una distribución exponencial lo que nos permite calcular los percentiles
+	de la misma.
 	
 	\section{Ejemplos y simulaciones}
 	\subsection{La paradoja del tiempo de espera}

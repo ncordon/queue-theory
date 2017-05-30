@@ -141,7 +141,7 @@
 {\texorpdfstring{
       \centering
       Marta Andrés, Ignacio Cordón, Bartolomé Ortiz\\
-      \href{http://www.github.com/ncordon/queue-theory}{@ncordon/queue-theory}
+      \href{https://www.github.com/ncordon/queue-theory}{www.github.com/ncordon/queue-theory}
 }{Marta Andrés, Ignacio Cordón, Bartolomé Ortiz}}
 
 \institute[UGR] % Your institution as it will appear on the bottom of every slide, may be shorthand to save space
@@ -313,11 +313,58 @@ de servicio, o equivalentemente una distribución de Poisson para frecuencias de
     \end{enumerate}
   \end{frame}
 
-  \begin{frame}\frametitle{Cosas de Nacho}
+  \begin{frame}\frametitle{Distribución límite}
+  Llamando $P_n(t) = P[N_t = n]$ se verifica:
+    \[P_n(t+h) = [1-\lambda_n h -\mu_n h] P_n(t) + \lambda_{n-1} h P_{n-1}(t) + \mu_{n+1} h P_{n+1}(t) + o(h)\]
+    
+    \begin{equation}
+     \frac{\partial P_n(t)}{\partial t} = -(\lambda_n + \mu_n) P_n(t) + \lambda_{n-1}P_{n-1}(t) + \mu_{n+1}P_{n+1}(t)
+     \label{eq:recpn(t)}
+    \end{equation}
+
+    Supongamos en lo que sigue que existe la distribución límite (entonces existiría la estacionaria), esto es:
+    
+    \begin{equation}
+     \lim_{t\rightarrow \infty}\{P_n(t)\} = p_n     
+    \end{equation}
+
+    y haciendo $t\rightarrow \infty$ en \eqref{eq:recpn(t)},
+	
+	\begin{align*}
+	0 &= \lambda_{n-1} p_{n-1} + \mu_{n+1} p_{n+1} - (\lambda_n + \mu_n) p_n, \quad n\ge 1\\
+	0 &= \mu_1 p_1 -\lambda_0 p_0, \quad n=0
+	\end{align*}
+	
+    Justificamos que la parte izquierda se hace cero: habríamos llegado a que $\frac{\partial P_n(t)}{\partial t}$ tiende a una constante $C$,
+    pero la $P_n$ tiende a $p_n$, luego no es difícil demostrar que $C=0$.
+  \end{frame}
+
+  \begin{frame}
+  Por inducción es fácil probar:
+  
+  \begin{equation}
+    p_n = p_0 \prod_{i=1}^n \frac{\lambda_{i-1}}{\mu_i}, \quad n\ge 1
+    \label{pn}
+  \end{equation}
+  
+   \begin{equation}
+    1 = \sum_{n=0}^{\infty} p_n = p_0 \underbrace{\left(1 + \sum_{n=1}^{\infty} \prod_{i=1}^n \frac{\lambda_{i-1}}{\mu_i} \right)}_{Z}
+    \label{eq:stabseries}
+   \end{equation}
+
+   Que la serie $Z$ sea convergente es condición necesaria para que exista la distribución límite. 
+   De hecho, también es condición suficiente (se puede probar por teorema de ergodicidad). Si dicha distribución existe se tendría que la probabilidad de
+   que en equilibrio haya $0$ peticiones en la cola será:
+   
+   \begin{equation}
+    p_0 = Z^{-1}
+    \label{p0}
+   \end{equation}
 
   \end{frame}
 
-
+  
+  
   \section{El modelo de colas}
   \subsection{Definición}
   \begin{frame}\frametitle{Ilustración de las variables clave}
@@ -406,8 +453,11 @@ de servicio, o equivalentemente una distribución de Poisson para frecuencias de
     \item [$W$]
       Tiempo de espera. Variable aleatoria que describe el tiempo total que un cliente está en el sistema
       de encolado: $W = Q+S$.
-    \item [$W_W$]
-      Tiempo medio (de espera) que está un cliente en el sistema: $W_W = E[W]$.
+    \item [$W_W$] Tiempo medio (de espera) que está un cliente en el sistema: $W_W = E[W]$.
+    \end{itemize}
+    \end{frame}
+  \begin{frame}\frametitle{Otras variables relevantes}
+    \begin{itemize}
     \item [$N_S$]
       Variable aleatoria que describe el número de clientes siendo servidos con el sistema en equilibrio: $N_S = \lim_{t \rightarrow \infty} N_{s,t}$.
     \item [$L_S$]
@@ -432,15 +482,14 @@ de servicio, o equivalentemente una distribución de Poisson para frecuencias de
   \subsection{Características}
   \begin{frame}\frametitle{Modelo de llegadas}
     \begin{block}{Definición}
-    LLamamos modelo de llegadas a la distribución $A(t)$ de los tiempos entre llegadas $\{\tau_n\}$.
+    LLamamos modelo de llegadas a la distribución de los tiempos entre llegadas $\{\tau_n\}$, variables i.i.d.
     \end{block}
     \begin{block}{Definición}
 
     El modelo de llegadas se dice:
  
     \begin{enumerate}
-    \item Estacionario, cuando no depende del tiempo (por ejemplo cuando existe una distribución límite y hablamos
-      del modelo de llegadas de dicha distribución límite).
+    \item Estacionario, cuando la distribución no depende del tiempo.
     \item Transitorio, en caso opuesto.
     \end{enumerate}
     \end{block}
@@ -622,7 +671,8 @@ de servicio, o equivalentemente una distribución de Poisson para frecuencias de
   	se aproxima a 0 cuando $T\rightarrow\infty$. 
   \end{frame}
    \begin{frame}\frametitle{Ejemplo de uso}
-   	Dados dos sistemas de colas cuyos si los procesos que describen ambas son procesos estocásticos equivalentes entonces el tiempo de espera será el mismo. 
+   	Dados dos sistemas de colas, si los procesos que describen ambas son procesos estocásticos 
+   	equivalentes entonces el tiempo de espera será el mismo. 
    \end{frame} 
   
   
@@ -708,34 +758,39 @@ en un intervalo de tiempo $h>0$ viene dada por:
 \end{frame}
 \begin{frame}
 	Así, podemos deducir el diagrama de estado-transición para el sistema de colas M/M/1. 
-	\includegraphics[width=0.9\textwidth]{./imgs/diagrama.png}
-	Además dado que $\lambda/\mu=\rho$ utilizando la serie calculada en \ref{eq:stabseries} nos queda que:
+	
+	\begin{center}
+	  \includegraphics[width=0.9\textwidth]{./imgs/diagrama.png}
+	\end{center}
+	
+	Además dado que $\lambda/\mu=\rho$ utilizando la serie calculada en (\ref{eq:stabseries}) nos queda que:
 	\begin{equation*}
 	Z=1+\rho+\rho^2+\dots+\rho^n+\dots=\frac{1}{(1-\rho)}
 	\end{equation*}
 \end{frame}
 \begin{frame}
-	Para sumar la serie de S hemos usado la suma de la serie geométrica ampliamente conocida.
-	Así por la definicion de \ref{p0} y \ref{pn}
+	Para sumar la serie de Z hemos usado la suma de la serie geométrica ampliamente conocida.
+	Así por la definicion dada en \eqref{p0} y \eqref{pn}
+	
 	\begin{equation}
 	p_n=P[N=n]=(1-\rho)\rho^n, n=0,1,2...
 	\label{eq:p_n}
 	\end{equation}
 \end{frame}
 \begin{frame}
-	Podemos observar que \ref{eq:p_n} es la funcion masa de probabilidad de una variable aleatoria geométrica;esto
-	es, $N$ sigue una distribucion geométrica con $p=1-\rho$ y $q=p$. Por tanto podemos usar para obtener $L$:
+	Podemos observar que \eqref{eq:p_n} es la función masa de probabilidad de una variable aleatoria geométrica, esto
+	es, $N$ sigue una distribucion geométrica con $p = 1-\rho$ y $q = \rho$. Por tanto podemos usar para obtener $L$:
 	\begin{equation*}
 	L=E[N]=q/p=\frac{\rho}{(1-\rho)}
 	\end{equation*}
 	
 	Usando la Ley de Little:
 	\begin{equation*}
-	W=E[\omega]=\frac{L}{\lambda}=\frac{W_s}{(1-\rho)}
+	W_W=E[W]=\frac{L}{\lambda}=\frac{W_s}{(1-\rho)}
 	\end{equation*}
-	Podemos también calcular utilizando la probabilidad de que el servidor esté ocupado:
+	Podemos también calcular utilizando la probabilidad de que el servidor esté ocupado en estado de equilibrio:
 	\begin{equation*}
-	P[\textbf{Servidor ocupado }]=1-P[N=0]=1-(1-\rho)=\rho
+	P[\textbf{Servidor ocupado}]=1-p_0=1-(1-\rho)=\rho
 	\end{equation*}
 \end{frame}
 
