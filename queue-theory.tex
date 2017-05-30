@@ -55,7 +55,7 @@
 \maketitle
 
 \begin{center}
-	\includegraphics[width=0.4\textwidth]{./imgs/by-nc-sa.png}
+\includegraphics[width=0.4\textwidth]{./imgs/by-nc-sa.png}
 \end{center}
 
 \tableofcontents
@@ -329,7 +329,7 @@ y en \eqref{eq:recp0(t)} llegamos a que:
 Justificamos que la parte izquierda se hace cero: habríamos llegado a que $\frac{\partial P_n(t)}{\partial t}$ tiende a una constante $C$,
 pero la $P_n$ tiende a $p_n$, luego no es difícil demostrar que $C$ debe ser 0.
 
-Veamos por inducción que: $p_n = p_0 \prod_{i=1}^n \frac{\lambda_{i-1}}{\mu_i}, \quad n\ge 1$.
+Veamos por inducción que: $p_n = p_0 \prod_{i=1}^n \frac{\lambda_{i-1}}{\mu_i}, \quad n\ge 1 \label{p_n=p_0*}$.
 
 \begin{proof}
  Los casos $n=0, n=1$ cumplen trivialmente la recurrencia. Para $n>0$, aplicando hipótesis de inducción a $p_{n-1}, p_{n}$:
@@ -898,20 +898,20 @@ Por tanto:
 \mu_n=\mu, \quad n=0,1,2,\dots
 \end{equation*}
 
-Así, podemos deducir el diagrama de estado-transición para el sistema de colas M/M/1. Además dado que $\lambda/\mu=\rho$ y cada $C^n$ es igual a $\rho^n$ podemos obtener que:
+Así, podemos deducir el diagrama de estado-transición para el sistema de colas M/M/1. Además dado que $\lambda/\mu=\rho$ utilizando la serie calculada en \ref{eq:stabseries} nos queda que:
 \begin{equation*}
-S=1+\rho+\rho^2+\dots+\rho^n+\dots=\frac{1}{(1-\rho)}
+Z=1+\rho+\rho^2+\dots+\rho^n+\dots=\frac{1}{(1-\rho)}
 \end{equation*}
 
 Hemos asumido que $\rho<1$ por lo que una solución estacionaria existe.
 Para sumar la serie de S hemos usado la suma de la serie geométrica ampliamente conocida.
-Así por la definicion de \ref{p_0} y \ref{P_n}
+Así por la definicion de \ref{eq:relp0} y \ref{p_n=p_0*}
 \begin{equation}
   p_n=P[N=n]=(1-\rho)\rho^n, n=0,1,2...
 \label{eq:p_n}
 \end{equation}
 
-Podemos observar que \ref{p_n} es la funcion masa de probabilidad de una variable aleatoria geométrica;esto
+Podemos observar que \ref{eq:p_n} es la funcion masa de probabilidad de una variable aleatoria geométrica;esto
 es, $N$ sigue una distribucion geométrica con $p=1-\rho$ y $q=p$. Por tanto podemos usar para obtener $L$ 
 y $\sigma_n^2$:
 \begin{equation*}
@@ -922,7 +922,7 @@ y $\sigma_n^2$:
   \sigma_n^2=\frac{\rho}{(1-\rho)^2}
 \end{equation*}
 
-Usando la Ley de Little \ref{hacer ref al apartado}:
+Usando la Ley de Little \ref{little}:
 \begin{equation*}
   W=E[\omega]=\frac{L}{\lambda}=\frac{W_s}{(1-\rho)}
 \end{equation*}
@@ -952,9 +952,9 @@ Así, $W_q [.]$ Tiene una concentración o masa de probabilidad en t = O.
 Sin embargo,si un cliente llega cuando n clientes ya están en el sistema, entonces tiene que esperar a
 través de n tiempos de servicio (que recordemos siguen una distribución exponenciales); eso es el tiempo
 de espera condicional en la cola, dada una llegada a la misma con n clientes ya en el sistema, vendrá dado por
-\[q = s_1 + s_2 + ·. . + s_n\]
+\[q = s_1 + s_2 + \dots + s_n\]
 
-Donde $s_n$ son n exponenciales independientes distribuidas de forma idéntica cada una con media $1 / \lambda$.  Por tanto usando un teorema de probabilidad (lo pongo/no lo pongo? XD), $q$ tiene una distribución gamma con los parámetros n y $\lambda$, que significa que la función de densidad de probabilidad ,condicionada al caso propuesto, de $q$, está dada por
+Donde $s_n$ son n exponenciales independientes distribuidas de forma idéntica cada una con media $1 / \lambda$.  Por tanto usando las propiedades de la distribución gamma, $q$ tiene una distribución gamma con los parámetros n y $\lambda$, que significa que la función de densidad de probabilidad ,condicionada al caso propuesto, de $q$, está dada por
 \begin{equation*}
   f_{q,n}(t)=\mu e^{-\mu t} \frac{(\mu t)^{n-1}}{(n-1)!}
 \end{equation*}
@@ -964,7 +964,7 @@ Así, si n> 0,podemos calcular la probabilidad como:
   P[q\leq t|N=n]=\int_{0}^{t}\frac{\mu^nx^{n-1}e^{-\mu x}}{(n-1)!}dx
 \end{equation*}
 
-Siguiendo la ley de probabilidad total, ((el teorema 2.4.2)))
+Siguiendo la ley de probabilidad total:
 \begin{equation*}
   P[0<q\leq t]=\sum_{n=1}^{\infty}P[q\leq t|N=n]P[N=n]
 \end{equation*}
@@ -981,9 +981,9 @@ Ya hemos demostrado que $W_q [O] = 1 - p$. Si t> 0, podemos usar \ref{finaleqP} 
 
 El tiempo medio de espera en cola es de particular interés por los sistemas de colas en los que las personas son los clientes.Es de sentido común pensar que, si las personas se mantienen esperando demasiado tiempo en la cola para un servicio, éstas puedan cansarse y abandonar la cola; es decir, abandonar la cola sin haber recibido el servicio. La gente no esperará indefinidamente por ningún tipo de servicio.
 
-De hecho podemos calcular como funciona nuestro caso ante esta idiosincrasia. Por el teorema 2.8.1,
+De hecho podemos calcular como funciona nuestro caso ante esta idiosincrasia. Usando las propiedades de condicionamiento:
 \begin{equation*}
-  W_q = P [q = 0] x E [q|q = 0] + P [q> 0] x E [q|q> 0] = (1 - \rho) x 0 + \rho x E [q|q> 0].
+  W_q = P [q = 0] E [q|q = 0] + P [q> 0]E [q|q> 0] = (1 - \rho)  0 + \rho E [q|q> 0].
 \end{equation*}
 
 Lo que nos lleva a:
