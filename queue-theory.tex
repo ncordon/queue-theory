@@ -647,13 +647,13 @@ Indicador: $I_n(t) = \left\{\begin{array}{cc}
                       0, & \textrm{en otro caso}
                      \end{array}\right.$, de donde  $\int_{0}^{\infty} I_n(t)dt=W_n$.
 
-Sea $\Delta(t) = max \{i: t_n \leq t\}$ el número de llegadas en tiempo t. El número de clientes en el sistema
+Sea $\Delta(t) = max \{i: t_n \leq t\}$ el número de llegadas en tiempo $t$. El número de clientes en el sistema
 viene dado por:
 
 \[N_t = \sum_{i=1}^{\Delta(t)} I_n(t)\]
 
-A partir del tiempo de llegada ${t_n}$ y del tiempo de servicio ${W i}$ del cliente $i$-ésimo, podemos 
-construir ${N_t}$ paratodo $t$. Visualmente podemos entender de forma sencilla estos conceptos si trazamos 
+A partir del tiempo de llegada ${t_n}$ y del tiempo de servicio ${W_n}$ del cliente $n$-ésimo, podemos 
+construir ${N_t}$ para todo $t$. Visualmente podemos entender de forma sencilla estos conceptos si trazamos 
 ${\Delta (t)}$ como una función escalonada y mostramos un tiempo de espera del cliente.
 
 \begin{figure}[H]
@@ -723,7 +723,7 @@ como siguen:
 \begin{itemize}
  \item $L = \lim_{T\to \infty}\frac{1}{T} \int_{0}^{T} N_t dt$
  \item $W_W = \lim_{n\to \infty}\frac{1}{n} \sum_{i=1}^{n} W_i$
- \item $\lambda = \lim_{t\to \infty}\frac{\delta(t)}{t}$
+ \item $\lambda = \lim_{t\to \infty}\frac{\Delta(t)}{t}$
 \end{itemize}
 
 Donde conceptualmente estamos haciendo referencia a:
@@ -741,36 +741,52 @@ Si los límites $\lambda$ y $W_W$ existen y son finitos, entonces $L$ existe y e
 \[L = \lambda W_W\]
 \end{theorem*}
 
-La idea intuitiva de este resultado es la relación que apúntabamos antes: Para cualquier T (donde ahora $N (T) \geq 0$) escribimos,
-\[ \frac{\int_{0}^{T} N(t)dt}{T}=\frac{\sum_{i=1}^{\Delta (t)} W_i(t)}{T}-\frac{error}{T}=\frac{\Delta(T)}{T}\frac{\sum_{i=1}^{\Delta (T)} W_i(t)}{\Delta(T)}-\frac{error}{T}   \]
-A medida que T se hace grande, la primera cantidad entre paréntesis a la derecha se aproxima a $\lambda$, la segunda a $\omega$, y el producto se acerca $\lambda\omega$. Por lo tanto, el teorema se obtendría si el término a la derecha se aproxima a 0 cuando $T\rightarrow\infty$. El término de error no tendría porqué hacerse pequeño, sólo crecer más lentamente que T.
+La idea intuitiva de este resultado es la relación que apúntabamos antes: para cualquier $T$ (donde ahora $N_T \geq 0$) escribimos:
+\[ \frac{\int_{0}^{T} N_t dt}{T}=\frac{\sum_{i=1}^{\Delta (t)} W_i(t)}{T}-\frac{error}{T}=\frac{\Delta(t)}{T}\frac{\sum_{i=1}^{\Delta (T)} W_i(t)}{\Delta(T)}-\frac{error}{T}   \]
+A medida que T se hace grande, la primera cantidad entre paréntesis a la derecha se aproxima a $\lambda$, la segunda a $\omega$, 
+y el producto se acerca $\lambda\omega$. Por lo tanto, el teorema se obtendría si el término a la derecha 
+se aproxima a 0 cuando $T\rightarrow\infty$. El término de error no tendría porqué hacerse pequeño, 
+sólo crecer más lentamente que T.
 Teniendo esta idea en mente, podemos proceder a demostrar el resultado formalmente:
 
 \begin{proof}
-Motivados por las figuras \ref{fig:deltat} y \ref{fig:enet}, obtenemos las siguientes desigualdades en
+Motivados por las figuras \ref{fig:deltat} y \ref{fig:enet}, encontramos obvias las siguientes desigualdades:
 \begin{equation}
- \sum_{\{i:t_i+W_i\leq T\}}^{} W_i\leq\int_{0}^{T}N(t)dt\leq \sum_{i=1}^{\delta(T)} W_i
+ \sum_{\{i:t_i+W_i\leq T\}}^{} W_i\leq\int_{0}^{T}N_t dt\leq \sum_{i=1}^{\Delta(T)} W_i
  \label{DesiLi}
  \end{equation}
-donde la suma a la izquierda está por debajo de aquellos rectángulos de espera que han terminado en T.
-Ahora dividimos la expresión por T y hacemos tender $T\rightarrow\infty$. La expresión de la derecha tiene límite $\lambda\omega$,lo que implica que la integral tiene $lim sup \leq \lambda\omega$.Si conseguimos demostrarlo para el inferior concluiremos la demostración. Con ese fin, necesitamos dos resultados preliminares. Primero, escribimos:
-\[ \frac{W_n}{n}=\frac{1}{n}\sum_{i=1}^{n}W_i-(\frac{n-1}{n})(\frac{1}{n-1})\sum_{i=1}^{n-1}W_i \]
-Para $\omega$ finito, esta expresión tiene límite 0 si $n \rightarrow \infty$. Es decir,
+donde la suma a la izquierda está por debajo de aquellos rectángulos de espera que han terminado en $T$.
+Ahora dividimos la expresión por $T$ y hacemos tender $T\rightarrow\infty$. La expresión de la derecha 
+tiene límite $\lambda W_W$, lo que implica que la integral tiene $\lim_{sup} \leq \lambda W_W$. Si conseguimos 
+demostrarlo para el inferior concluiremos la demostración. Con ese fin, necesitamos dos resultados 
+preliminares. Primero, escribimos: 
+
+\[ \frac{W_n}{n}=\frac{1}{n}\sum_{i=1}^{n}W_i-\left(\frac{n-1}{n}\right) \left(\frac{1}{n-1}\right)\sum_{i=1}^{n-1}W_i \] 
+
+Para $W_W$ finito, esta expresión tiene límite $0$ si $n \rightarrow \infty$. Es decir,
+
 \[ \lim_{n\to\infty} W_n / n = 0. \]
 
-Si, ahora, $\lambda$ es finito, esto implica $t_n \rightarrow \infty$ y, $\delta(t_n)/t_n \rightarrow  \lambda$ como $n \rightarrow \infty$. Si los tiempos de llegada son distintos escribiriamos, $\delta(t_n)=n$; de lo contrario, $\delta(t_n)\geq n$, y escribimos:
+Si, ahora, $\lambda$ es finito, esto implica $t_n \rightarrow \infty$ y, $\Delta(t_n)/t_n \rightarrow  \lambda$ como $n \rightarrow \infty$. Si los tiempos 
+de llegada son distintos escribiríamos, $\Delta(t_n)=n$; de lo contrario, $\Delta(t_n)\geq n$, y escribimos:
 
-\[ \frac{W_n }{t_n} = \frac{W_n }{n}\frac{n }{t_n}\leq \frac{W_n }{n}\frac{\delta(tn)}{t_n} \]
+\[ \frac{W_n }{t_n} = \frac{W_n }{n}\frac{n }{t_n}\leq \frac{W_n }{n}\frac{\Delta(tn)}{t_n} \]
  tenemos por tanto:
  \[ \lim_{n\to\infty} W_n / t_n = 0. \]
 
-Para cualquier $\epsilon> 0$, el anterior limite implica que para algún $m$ finito y todo $i> m$, $W_i <t_i\epsilon$ y $t_i + W_i <t_i (1 + \epsilon)$. Así, $t_i \leq T / (1 + \epsilon) \Longrightarrow t_i + W_i \leq T$ para cada $i> m$,lo que nos da esta cota inferior en la expresión de la izquierda en \ref{DesiLi} :
-\begin{equation}\sum_{i=1}^{\delta(\frac{T}{1+\epsilon})} W_i-\sum_{i=1}^{m} W_i\leq \sum_{\{i:t_i+W_i\leq T\}}^{} W_i
-\label{DesiLi2}
+Para cualquier $\epsilon> 0$, el anterior limite implica que para algún $m$ finito y todo $i > m$, $W_i < t_i \epsilon$ 
+y $t_i + W_i <t_i (1 + \epsilon)$. Así, $t_i \leq T / (1 + \epsilon) \Longrightarrow t_i + W_i \leq T$ para 
+cada $i> m$,lo que nos da esta cota inferior en la expresión de la izquierda en \ref{DesiLi}:
+
+\begin{equation}
+\sum_{i=1}^{\Delta\left(\frac{T}{1+\epsilon}\right)} W_i-\sum_{i=1}^{m} W_i\leq \sum_{\{i:t_i+W_i\leq T\}}^{} W_i
+\label{eq:desiLi2}
 \end{equation}
 
-Ahora dividimos por T y hacemos tender T a infinito, notando que el segundo término de la izquierda es un
-constante. El lado izquierdo de \ref{DesiLi2} tiene límite $ \lambda\omega / (1 + \epsilon)$, lo que implica el lado derecho tiene lim inf $\geq \lambda\omega / (1 + \epsilon))$. Debido a que $\epsilon$ puede ser arbitrariamente pequeño, y combinando limite superior e inferior, concluimos la prueba.
+Ahora dividimos por $T$ y hacemos $T\rightarrow +\infty$, notando que el segundo término de la izquierda es una
+constante. El lado izquierdo de \ref{eq:desiLi2} tiene límite $ \lambda W_W / (1 + \epsilon)$, lo que implica 
+el lado derecho tiene $\lim_{inf} \ge \lambda W_W / (1 + \epsilon))$. Debido a que $\epsilon$ puede ser arbitrariamente 
+pequeño, y combinando limite superior e inferior, concluimos la prueba.
 \end{proof}
   
 
