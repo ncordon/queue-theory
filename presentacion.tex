@@ -1,0 +1,242 @@
+%%%
+% Plantilla de Presentación
+% Modificación de una plantilla de Latex de LaTeXTemplates para adaptarla 
+% al castellano y a las necesidades de escribir informática y matemáticas.
+%
+% Editada por: Mario Román
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Beamer Presentation
+% LaTeX Template
+% Version 1.0 (10/11/12)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PAQUETES Y CONFIGURACIÓN DEL DOCUMENTO
+%----------------------------------------------------------------------------------------
+
+\documentclass[8pt]{beamer}
+%\geometry{paperwidth=140mm,paperheight=105mm}
+
+%% Configuración de la presentación
+\mode<presentation> {
+  %%% Selección de estilo
+  % The Beamer class comes with a number of default slide themes
+  % which change the colors and layouts of slides. Below this is a list
+  % of all the themes, uncomment each in turn to see what they look like.
+
+  %\usetheme{default}
+  %\usetheme{AnnArbor}
+  %\usetheme{Antibes}
+  %\usetheme{Bergen}
+  %\usetheme{Berkeley}
+  %\usetheme{Berlin}
+  %\usetheme{Boadilla}
+  %\usetheme{CambridgeUS}
+  %\usetheme{Copenhagen}
+  %\usetheme{Darmstadt}
+  \usetheme[compress]{Dresden}
+  %\usetheme{Frankfurt}
+  %\usetheme{Goettingen}
+  %\usetheme{Hannover}
+  %\usetheme{Ilmenau}
+  %\usetheme{JuanLesPins}
+  %\usetheme{Luebeck}
+  %\usetheme{Madrid}
+  %\usetheme{Malmoe}
+  %\usetheme{Marburg}
+  %\usetheme{Montpellier}
+  %\usetheme{PaloAlto}
+  %\usetheme{Pittsburgh}
+  %\usetheme{Rochester}
+  %\usetheme{Singapore}
+  %\usetheme{Szeged}
+  %\usetheme{Warsaw}
+
+  %% Selección de color
+  % As well as themes, the Beamer class has a number of color themes
+  % for any slide theme. Uncomment each of these in turn to see how it
+  % changes the colors of your current slide theme.
+
+  %\usecolortheme{albatross}
+  %\usecolortheme{beaver}
+  %\usecolortheme{beetle}
+  %\usecolortheme{crane}
+  %\usecolortheme{dolphin}
+  %\usecolortheme{dove}
+  %\usecolortheme{fly}
+  \usecolortheme{lily}
+  %\usecolortheme{orchid}
+  %\usecolortheme{rose}
+  %\usecolortheme{seagull}
+  %\usecolortheme{seahorse}
+  %\usecolortheme{whale}
+  %\usecolortheme{wolverine}
+
+  %% Configuración del pie de línea
+  %\setbeamertemplate{footline} % To remove the footer line in all slides uncomment this line
+  %\setbeamertemplate{footline}[page number] % To replace the footer line in all slides with a simple slide count uncomment this line
+  %\setbeamertemplate{navigation symbols}{} % To remove the navigation symbols from the bottom of all slides uncomment this line
+}
+
+\setbeamertemplate{section in toc}[sections numbered]
+\setbeamertemplate{subsection in toc}[subsections numbered]
+
+%% Fuentes de tamaño arbitrario
+\usepackage{lmodern}
+
+\usepackage{listings}
+\lstset{language=C++,
+                basicstyle=\ttfamily,
+                keywordstyle=\color{blue}\ttfamily,
+                stringstyle=\color{red}\ttfamily,
+                commentstyle=\color{green}\ttfamily,
+                morecomment=[l][\color{magenta}]{\#}
+}
+
+%% Gráficos
+\usepackage{graphicx} % Allows including images
+\usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
+
+\newcommand{\hlink}[2]{{\color{blue}\href{#1}{#2}}}
+%%% Castellano.
+% noquoting: Permite uso de comillas no españolas.
+% lcroman: Permite la enumeración con numerales romanos en minúscula.
+% fontenc: Usa la fuente completa para que pueda copiarse correctamente del pdf.
+\usepackage[spanish,es-noquoting,es-lcroman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\selectlanguage{spanish}
+
+%% Justificación del texto
+\usepackage{ragged2e}
+\usepackage{etoolbox}
+\addtobeamertemplate{block begin}{}{\justifying}
+\apptocmd{\frame}{\justifying}{}{}
+%\apptocmd{\column}{\justifying}{}{}
+
+%----------------------------------------------------------------------------------------
+%	TÍTULO
+%----------------------------------------------------------------------------------------
+
+\title[]{Procesos estocásticos: } % The short title appears at the bottom of every slide, the full title is only on the title page
+\subtitle[]{Modelos de colas}
+
+\author[Marta Andrés, Ignacio Cordón, Bartolomé Ortiz] % Your name
+{\texorpdfstring{
+      \centering
+      Marta Andrés, Ignacio Cordón, Bartolomé Ortiz\\
+      \href{http://www.github.com/ncordon/queue-theory}{@ncordon/queue-theory}
+}{Marta Andrés, Ignacio Cordón, Bartolomé Ortiz}}
+
+\institute[UGR] % Your institution as it will appear on the bottom of every slide, may be shorthand to save space
+{
+  Universidad de Granada \\ % Your institution for the title page
+  \medskip
+  %\textit{autor@ugr.correo.es} % Your email address
+}
+\date{\today} % Date, can be changed to a custom date
+
+% \subtitle{Y a la programación funcional}   % Subtítulo
+% \author[@pbaeyens \and @M42]    % Autores (tex.stackexchange.com/questions/63259)
+% {\texorpdfstring{
+%     \begin{columns}
+%       \column{.45\linewidth}
+%       \centering
+%       Pablo Baeyens\\
+%       \href{http://www.github.com/pbaeyens}{@pbaeyens}
+%       \column{.45\linewidth}
+%       \centering
+%       Mario Román\\
+%       \href{http://www.github.com/M42}{@M42}
+%     \end{columns}
+% }{Pablo Baeyens \and Mario Román}}
+% \date{OSL 2015}
+
+\usepackage{scalerel}
+\newcommand*\bigcdot{\mathpalette\bigcdot@{.5}}
+
+\DeclareMathOperator*{\Bigcdot}{\scalerel*{\cdot}{\bigodot}}
+
+\begin{document}
+
+%% Diapositiva de título.
+\begin{frame}
+\titlepage % Print the title page as the first slide
+\end{frame}
+
+%% Diapositiva de contenidos.
+% Throughout your presentation, if you choose to use \section{} and \subsection{} commands, 
+% these will automatically be printed on this slide as an overview of your presentation
+\begin{frame}
+  \frametitle{Contenidos} % Table of contents slide, comment this block out to remove it
+  \tableofcontents
+\end{frame}
+
+
+
+%----------------------------------------------------------------------------------------
+%	PRESENTACIÓN
+%----------------------------------------------------------------------------------------
+
+  \section{Introducción}
+  \subsection{Distribución exponencial}
+  \begin{frame}\frametitle{Definición y propiedad de Markov}
+    
+  \end{frame}
+
+
+  \subsection{Procesos de Poisson}
+  \begin{frame}\frametitle{Procesos de conteo}
+
+  \end{frame}
+
+  \begin{frame}\frametitle{Procesos de Poisson}
+
+  \end{frame}
+
+  
+  
+  \subsection{Procesos de nacimiento y muerte}
+  \begin{frame}\frametitle{Procesos de nacimiento y muerte}
+  \end{frame}
+  
+  
+
+%% Bibliografía
+\section {Referencias}
+\begin{frame}
+\frametitle{Referencias}
+\footnotesize{
+  \begin{thebibliography}{99} % Beamer does not support BibTeX so references must be inserted manually as below
+    \bibitem[Allen, 1990]{allen} Arnold O.Allen
+      \newblock Probability, Statistics and Queueing Theory with Computer Science Applications\\
+      \newblock \emph{Academic Press}
+    
+    \bibitem[Gross, 2008]{gross} Donald Gross, John F.Shortle, James M.Thompson, Carl M.Harris
+      \newblock Fundamentals of Queueing Theory\\
+      \newblock \emph{Wiley}
+      
+    \bibitem[Gunavathi, 2010]{gunavathi} P.Kandasamy, K.Thilagavathi, K.Gunavathi
+      \newblock Probability and Queueing Theory (2010)\\
+      \newblock \emph{S. Chand \& Company}
+    
+    \bibitem[Wolff, 2011]{wolff} Ronald W. Wolff
+      \newblock Little's law and Related Results\\
+      \newblock \emph{University of California at Berkeley}
+    
+  \end{thebibliography}
+}
+\end{frame}
+\end{document} 
