@@ -12,21 +12,38 @@ library('simmer.plot')
 library('ggplot2')
 library('shiny')
 library('shinythemes')
+library('mgcv')
 
 shinyUI(fluidPage(
-  sidebarLayout(
-    sidebarPanel(
-      sliderInput("sim.time", "Run simulation until:",
-                  min = 20, max = 1000, value = 100),
-      numericInput("arrival.freq", "Arrival frequency:", value = 15, min = 0),
-      numericInput("service.freq", "Service frequency:", value = 7, min = 0)
-    ),
+  navbarPage("Simulaciones de colas",
+    tabPanel("D/D/1",
+             sidebarLayout(
+               sidebarPanel(
+                 sliderInput("sim.dd1.time", "Simular hasta:",
+                             min = 20, max = 3000, value = 100),
+                 numericInput("arrival.dd1.freq", "Frecuencia de llegada:", value = 15, min = 0),
+                 numericInput("service.dd1.freq", "Frecuencia de servicio:", value = 7, min = 0)
+               ),
 
 
-    mainPanel(
-      plotOutput("queue.usage"),
-      plotOutput("queue.wait"),
-      plotOutput("server.usage")
-    )
-  )
+               mainPanel(
+                 plotOutput("dd1.queue.usage"),
+                 plotOutput("dd1.queue.wait"),
+                 plotOutput("dd1.server.usage")
+               ))
+             ),
+    tabPanel("M/M/1",
+             sidebarLayout(
+               sidebarPanel(
+                 sliderInput("sim.mm1.time", "Simular hasta:",
+                             min = 20, max = 3000, value = 100),
+                 numericInput("arrival.mm1.freq", "Frecuencia de llegada:", value = 15, min = 0),
+                 numericInput("service.mm1.freq", "Frecuencia de servicio:", value = 7, min = 0)
+               ),
+                mainPanel(
+                  plotOutput("mm1.queue.usage"),
+                  plotOutput("mm1.queue.wait"),
+                  plotOutput("mm1.server.usage")
+               ))
+             ))
 ))

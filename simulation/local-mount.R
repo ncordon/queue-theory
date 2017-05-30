@@ -3,7 +3,7 @@
 
 
 ### Paquetes a instalar
-pkgs = c('simmer', 'simmer.plot', 'ggplot2', 'shiny', 'shinythemes')
+pkgs = c('simmer', 'simmer.plot', 'ggplot2', 'shiny', 'shinythemes', 'mgcv')
 
 cat("###################################################################\n")
 cat("Instalando paquetes necesarios\n")
