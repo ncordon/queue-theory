@@ -11,18 +11,28 @@
 \usepackage{amsthm}
 % Imágenes
 \usepackage{graphicx}
+\usepackage{float}
 \usepackage{tikz}
 \usetikzlibrary{arrows}
+
+% Enlaces dentro del documento
+\usepackage{hyperref}
 
 % Definiciones
 \theoremstyle{definition}
 \newtheorem*{mydef}{Definición}
 %\newtheorem{mydefn}{Definición}
-\newtheorem*{theorem}{Teorema}
-\newtheorem*{fact}{Proposición}
-\newtheorem*{corollary}{Corolario}
+\newtheorem*{theorem*}{Teorema}
+\newtheorem{theorem}{Teorema}
+\newtheorem*{fact*}{Proposición}
+\newtheorem{fact}{Proposición}
+\newtheorem*{corollary*}{Corolario}
+\newtheorem{corollary}{Corolario}
+\newtheorem*{rmk*}{Nota}
 \newtheorem*{eg}{Ejemplo}
-\everymath{\displaystyle} % Displaystyle por defecto
+
+% Displaystyle por defecto
+\everymath{\displaystyle}
 
 % Comandos
 \newcommand{\Referencia}[4]{\indent #1, \textbf{#2}. \textit{#3}, \textit{#4}.\\}
@@ -32,8 +42,6 @@
 \setlength{\parindent}{0cm} % Sin sangrías
 \setlength{\parskip}{0.3cm}
 
-% Sintaxis: \Algoritmo{Elementos de entrada}{Elementos de proceso}{Elementos de salida}
-\newcommand{\Algoritmo}[3]{\textbf{Entrada} \begin{itemize} #1 \end{itemize} \textbf{Proceso} \begin{enumerate} #2 \end{enumerate} \textbf{Salida} \begin{itemize} #3 \end{itemize}}
 
 \title{Teoría de Colas}
 \author{
@@ -81,9 +89,11 @@ Equivalentemente:
 En teoría de colas la propiedad de Markov nos dirá que si el tiempo entre llegadas está distribuido de forma exponencial, 
 la siguiente ocurrencia de un evento es independiente del tiempo de llegada del último evento.
 
-%% ¿Qué es exactamente la propiedad de Markov?
+
 \begin{fact}
  Sea $X$ variable aleatoria tal que: $X \sim exp(\lambda)$. Entonces $X$ tiene la propiedad de Markov.
+ 
+ \label{fact:exp-markov}
 \end{fact}
 
 \begin{proof}
@@ -96,9 +106,9 @@ Dados $t,h \in \mathbb{R}$ con $h\ge 0$:
 \end{proof}
 
 
-\begin{theorem}
+\begin{theorem*}
  Sea $X\ge 0$ variable aleatoria continua con la propiedad de Markov. Entonces $X$ sigue una distribución exponencial.
-\end{theorem}
+\end{theorem*}
 
 \begin{proof}
  Sea la variable aleatoria continua $X\ge 0 $ con función de distribución: \[F(t) = P[X\le t]\]
@@ -153,9 +163,9 @@ Dados $t,h \in \mathbb{R}$ con $h\ge 0$:
   Es decir, una función $f(h)$ es $o(h)$ si al compararla con un $h$ suficientemente pequeño, podemos despreciar su
   valor.
 
-  \begin{fact}
+  \begin{fact*}
   Dados $c_1, \ldots c_n \in \mathbb{R}$, $f_1, \ldots f_n \in o(h)$, entonces $\sum_{i=1}^{n} c_i f_i = o(h)$
-  \end{fact}
+  \end{fact*}
 
   \begin{proof}
   \[\lim_{h\rightarrow 0} \frac{\sum_{i=1}^{n} c_i f_i}{h} = \sum_{i=1}^{n}{c_i \lim_{h\rightarrow 0} \frac{f_i}{h}} = 0\]
@@ -205,11 +215,11 @@ de servicio, o equivalentemente una distribución de Poisson para frecuencias de
  
  \[P[Y_t = k] = P[N_t = k] = e^{-\lambda t} \frac{(\lambda t)^k}{k!}, \quad k\ge 0\]
  
- %% Prueba: falta por hacer.
+ \label{th:poisson-probs}
 \end{theorem}
 
 
-\begin{theorem}
+\begin{theorem*}
  Sea $\{N_t\}_{t\ge 0}$ proceso de conteo. Sea $\{t_n\}_{n\ge 1}$ sucesión real estrictamente creciente y positiva, 
  que representa los tiempos de eventos, es decir \[t_n = \min \{t \ge 0: N_t = n\}\]
  
@@ -221,14 +231,14 @@ de servicio, o equivalentemente una distribución de Poisson para frecuencias de
   $\tau_n \sim exp(\lambda)$.
  \end{itemize}
 
-\end{theorem}
+\end{theorem*}
 
 %% Prueba: falta por hacer.
 
-\begin{theorem}
+\begin{theorem*}
  Sea $\{N_t\}_{t\ge 0}$ proceso de Poisson donde un evento ha tenido lugar en $[0,t]$. Entonces siendo $Y$ la variable
  describiendo el tiempo de ocurrencia de dicho evento en el intervalo $[0,t]$, se tiene $Y \sim U([0,t])$.
-\end{theorem}
+\end{theorem*}
 
 %% Prueba: falta por hacer.
 
@@ -296,20 +306,20 @@ Tomando límite en $h\rightarrow 0$ llegamos a:
 
 \begin{equation}
 \frac{\partial P_n(t)}{\partial t} = -(\lambda_n + \mu_n) P_n(t) + \lambda_{n-1}P_{n-1}(t) + \mu_{n+1}P_{n+1}(t)
-\label{eq:recp_n(t)}
+\label{eq:recpn(t)}
 \end{equation}
 
 En el caso particuar $n=0$, tenemos $\mu_o = 0$ y $P_{-1}(t) = 0$. Por tanto:
 
 \begin{equation}
  \frac{\partial P_0(t)}{\partial t} = -\lambda_0 P_0(t) \mu_{1}P_{1}(t)
- \label{eq:recp_0(t)}
+ \label{eq:recp0(t)}
 \end{equation}
 
 
 Supongamos en lo que sigue que existe la distribución límite (entonces existiría la estacionaria), esto es 
-$\lim_{t\rightarrow \infty}\{P_n(t)\} = p_n$ y haciendo $t\rightarrow \infty$ en \eqref{eq:recp_n(t)},
-y en \eqref{eq:recp_0(t)} llegamos a que:
+$\lim_{t\rightarrow \infty}\{P_n(t)\} = p_n$ y haciendo $t\rightarrow \infty$ en \eqref{eq:recpn(t)},
+y en \eqref{eq:recp0(t)} llegamos a que:
 
 \begin{align*}
 0 &= \lambda_{n-1} p_{n-1} + \mu_{n+1} p_{n+1} - (\lambda_n + \mu_n) p_n, \quad n\ge 1\\
@@ -353,12 +363,12 @@ fuera del nivel de estos apuntes). Si dicha distribución existe se tendría:
 
 Intuitivamente, cuando la serie $Z$ converge, tenemos que la probabilidad límite de que el 
 sistema esté vacío y no haya clientes esperando en la cola es positiva, y por tanto el sistema 
-de encolado es estable. Cuando esta serie diverge, es un indicativo de que el sistema de encolado
+de encolado es estable. Cuando esta serie diverge, es un indicativo de que el modelo de colas
 es inestable.
 
 
-\section{El modelo de un \textit{``sistema de encolado''}}
-Un sistema de encolado es un debería modelar peticiones/eventos/clientes que llegan a una cola,
+\section{El modelo de un ``modelo de colas''}
+Un modelo de colas es un debería modelar peticiones/eventos/clientes que llegan a una cola,
 donde existe un tiempo de espera en cola, y un tiempo de servicio. Su funcionamiento básico se 
 ilustra en la figura \ref{fig:encolado}. Debemos considerar una serie de variables aleatorias que permitan
 explicar y estudiar el comportamiento de la cola. Las variables límites se definen, claro está, cuando esta 
@@ -384,7 +394,7 @@ tenga sentido:
 \end{itemize}
 
 %% Imagen del modelo (hecho con tikz por si interesa para la presentación)
-\begin{figure}
+\begin{figure}[h]
   \centering
   \begin{tikzpicture}
     \draw (20,5.5) rectangle (22,6);
@@ -436,7 +446,7 @@ tenga sentido:
     \draw [blue] (15.25,4.65) --(15.25,5.1);
     \node [above, blue] at (14.75,5) {$\tau$};
   \end{tikzpicture}
-  \caption{El modelo de un sistema de encolado.}
+  \caption{El modelo de un modelo de colas.}
   \label{fig:encolado}
 \end{figure}
 
@@ -456,9 +466,10 @@ De ellas se derivan las siguientes variables, también relevantes:
 \item [$W_Q$]
   Tiempo medio que está un cliente en la cola: $W_Q = E[Q]$.
 \item [$W$]
-  Variable aleatoria que describe el tiempo total que un cliente está en el sistema de encolado: $W = Q+S$.
+  Tiempo de espera. Variable aleatoria que describe el tiempo total que un cliente está en el sistema 
+  de encolado: $W = Q+S$.
 \item [$W_W$]
-  Tiempo medio que está un cliente en el sistema: $W_W = E[W]$.
+  Tiempo medio (de espera) que está un cliente en el sistema: $W_W = E[W]$.
 \item [$N_S$]
   Variable aleatoria que describe el número de clientes siendo servidos con el sistema en equilibrio: $N_S = \lim_{t \rightarrow \infty} N_{s,t}$.
 \item [$L_S$]
@@ -485,7 +496,7 @@ La capacidad de un sistema de colas para poder proporcionar servicio a los clien
 de llegadas de un sistema de colas, sino también del modo en que las peticiones llegan. De esta forma, podemos
 tener que las peticiones llegan de uno en uno, o en paquetes de peticiones.
 
-Dado $0=t_0 < t_1 < t_2 < t_n < \ldots$, y $\tau_n = t_n - t_{n-1}, \tau_0$ tiempos entre llegadas, asumimos por hipótesis
+Dados $0=t_0 < t_1 < t_2 < t_n < \ldots$, y $\tau_n = t_n - t_{n-1}, \tau_0$ tiempos entre llegadas, asumimos por hipótesis
 que las $\tau_n$ son variables aleatorias i.i.d. Nótese que tanto los $\{t_n\}$ como los $\{\tau_n\}$ son
 variables aleatorias.
 
@@ -512,7 +523,7 @@ El modelo de llegadas se dice:
  El modelo de llegadas se dice:
 
   \begin{enumerate}
-  \item Aleatorio o de Poisson: si $A(t) = 1 - e^{-\lambda t}$
+  \item Aleatorio o de Poisson: si $A(t) = 1 - e^{-\lambda t}$.
   \item Determinístico: si $A(t) = \left\{\begin{array}{ll}
 					0 & t<s \\
 					1 & t\ge s
@@ -529,22 +540,21 @@ de servicio a las que se han hecho con el modelo de llegadas.
 
 \begin{eg} \textbf{Caso particular, modelo de Poisson de servicio}
 
-Supongamos que el sistema de encolado tiene $k$ servidores o canales para atender peticiones, y el tiempo que 
+Supongamos que el modelo de colas tiene $k$ servidores o canales para atender peticiones, y el tiempo que 
 tarda cada uno en atender una petición $T_i, i=1,\ldots k$ sigue una distribución exponencial de parámetro $\bar{\mu}$.
 Entonces el tiempo hasta terminar de atender una petición es $T = min\{T_1, \ldots T_n\}$. Por propiedades de la
 distribución exponencial deducimos que $T$ sigue una distribución exponencial de parámetro $\mu = n \bar{\mu}$
 
-La función de distribución de $W_S$ por tanto sería $F(t) = P[S\le t] = 1 - e^{-\mu t}$.
+La función de distribución de $W_S$ por tanto sería $W_S[t] = P[S\le t] = 1 - e^{-\mu t}$.
 
 \end{eg}
 
 \subsubsection{Capacidad del sistema}
 
-Supongamos que el proceso estocástico $\{N_{Q,t}\}_{t\ge 0}$ tiene espacio de estados $S\subseteq \mathbb{N}$. Se llama 
-capacidad al tamaño máximo de la cola de peticiones, esto es $M = \max S$. Por tanto no puede
-tenerse que en ningún tiempo $N_{Q,t}$ tome un valor mayor que $M$, y si llegara una petición cuando la cola tiene
-tamaño $M$, se rechazaría dicha petición. $M$ puede ser $+\infty$ cuando el tamaño de la cola de espera es
-ilimitado.
+Sea $S\subseteq \mathbb{N}$ el menor espacio de estados sobre el que está definido el proceso estocástico $\{N_{Q,t}\}_{t\ge 0}$ . 
+Se llama capacidad al tamaño máximo de la cola de peticiones, esto es $M = \max S \in \mathbb{N} \cup \{+\infty\}$. 
+Por tanto no puede tenerse que en ningún tiempo $N_{Q,t}$ tome un valor mayor que $M$, y si llegara una
+petición cuando la cola tiene tamaño $M$, se rechazaría dicha petición.
 
 \subsubsection{Comportamiento de los clientes}
 Podemos considerar que los clientes que llegan a la cola pueden efectuar:
@@ -594,92 +604,149 @@ A menudo, se asume que $K$ y $m$ son infinitos y $Z$ es de tipo FIFO, y se usa u
 Se pueden considerar disintos valores como medidas de efectividad del sistema, entre ellos, los siguientes:
 \begin{itemize}
 \item $\rho$:
-  Aprovechamiento de los servidores, esto es, la proporción de tiempo que los servidores están trabajando: $\rho = \frac{\lambda}{c\mu}$. Cuanto más alta mayor es la eficiencia de los servidores, pero si $\rho > 1$ significa que el sistema está sobrecargado y aumentará el número de clientes en la cola, ya que entran clientes al sistema más rápido que salen.
+  Aprovechamiento de los servidores, esto es, la proporción de tiempo que los servidores están trabajando: 
+  $\rho = \frac{\lambda}{c\mu}$. Cuanto más alta mayor es la eficiencia de los servidores, pero 
+  si $\rho > 1$ significa que el sistema está sobrecargado y aumentará el número de clientes en la cola, 
+  ya que entran clientes al sistema más rápido que salen.
 \item $W_W$:
-  Tiempo medio de un cliente en el sistema. Naturalmente, se desea minimizar el tiempo que tarda un cliente en ser servido.
+  Tiempo medio de un cliente en el sistema. Naturalmente, se desea minimizar el tiempo que tarda un 
+  cliente en ser servido.
 \item $W_Q$:
-  Tiempo medio de un cliente en la cola. Similar al anterior, pero en algunos casos puede interesar más el tiempo de espera en la cola solamente. Por ejemplo, en el caso de la cola en un supermercado, un cliente estará insatisfecho si tiene que esperar mucho tiempo en la cola, pero mientras está siendo servido está ocupado y no lo percibe como tiempo de espera.
+  Tiempo medio de un cliente en la cola. Similar al anterior, pero en algunos casos puede interesar más 
+  el tiempo de espera en la cola solamente. Por ejemplo, en el caso de la cola en un supermercado, un 
+  cliente estará insatisfecho si tiene que esperar mucho tiempo en la cola, pero mientras está siendo 
+  servido está ocupado y no lo percibe como tiempo de espera.
 \item $\pi_{W_W} \lbrack 90 \rbrack$:
-  Percentil 90 del tiempo total en el sistema $W_W$. En lugar de usar la media que puede ser afectada por casos extremos, se utiliza el tiempo de espera de una gran parte de los clientes, pudiendo variar el percentil que se considera según se desee.
+  Percentil 90 del tiempo total en el sistema $W_W$. En lugar de usar la media que puede ser afectada por 
+  casos extremos, se utiliza el tiempo de espera de una gran parte de los clientes, pudiendo variar el 
+  percentil que se considera según se desee.
 \item $\pi_{W_Q} \lbrack 90 \rbrack$:
-  Percentil 90 del tiempo de espera en la cola $W_Q$. Análogamente al anterior, pero una vez más teniendo en cuenta únicamente el tiempo de espera en la cola y no el total.
+  Percentil 90 del tiempo de espera en la cola $W_Q$. Análogamente al anterior, pero una vez más teniendo en
+  cuenta únicamente el tiempo de espera en la cola y no el total.
 \item $L$:
-  Número medio de clientes en el sistema. En general, cuantos más clientes haya en el sistema mayor será su tiempo de espera. Sin embargo, si hay muchos servidores no necesariamente se puede optimizar el sistema, por tanto mientras $L<c$ no necesariamente es ineficiente el sistema.
+  Número medio de clientes en el sistema. En general, cuantos más clientes haya en el sistema mayor será su
+  tiempo de espera. Sin embargo, si hay muchos servidores no necesariamente se puede optimizar el sistema,
+  por tanto mientras $L<c$ no necesariamente es ineficiente el sistema.
 \item $L_Q$:
-  Número medio de clientes en la cola. Como se explica en el punto anterior, el número medio de clientes en el sistema no necesariamente es representativo, y puede ser más útil considerar el número medio de clientes esperando en la cola, excluyendo así los que están siendo servidos.
+  Número medio de clientes en la cola. Como se explica en el punto anterior, el número medio de clientes en 
+  el sistema no necesariamente es representativo, y puede ser más útil considerar el número medio de clientes
+  esperando en la cola, excluyendo así los que están siendo servidos.
 \item $p_n$:
-  Probabilidad de que haya $n$ clientes en el sistema (en el estado de equilibrio). En general, interesa conocer su función de distribución para que la probabilidad de que haya $n$ o menos clientes en el sistema sea lo más alta posible para un $n$ adecuadamente pequeño.
+  Probabilidad de que haya $n$ clientes en el sistema (en el estado de equilibrio). En general, interesa 
+  conocer su función de distribución para que la probabilidad de que haya $n$ o menos clientes en el sistema
+  sea lo más alta posible para un $n$ adecuadamente pequeño.
 \item $a$:
-  La intensidad de tráfico se define como $a= W_S/E[\tau]$. Se da que es proporcional al aprovechamiento de los servidores, $a = \rho c$, luego ambas se pueden usar como medida de eficiencia, dependiendo si se quiere considerar el número de servidores en la medida o no.
+  La intensidad de tráfico se define como $a= W_S/E[\tau]$. Se da que es proporcional al aprovechamiento de
+  los servidores, $a = \rho c$, luego ambas se pueden usar como medida de eficiencia, dependiendo si se 
+  quiere considerar el número de servidores en la medida o no.
 \end{itemize}
 
 \section{Leyes de Little}
-Brevemente recordamos los conceptos ya nombrado anteriormente, pues será de ayuda tenerlos a mano durante la definición de los elementos que conforman el teorema.
-Para $i \geq 1$, llamemos al cliente $c_i$, el cual llega en el instante $t_i$, nombremos $W_i$ al tiempo de espera del cliente con lo cual es inmediato deducir, que nuestro cliente abandonará la cola en el instante $t_i + W_i$, donde $t_0 \equiv 0 \leq t_1 \leq t_2 \leq... $.
-Es inmediato tambien que podemos definir una funcion indicadora que refleje si el $c_i$ está o no en el sistema:
+Para $n \geq 1$, llamemos al cliente $n$-ésimo, el cual llega en el instante $t_n$, nombremos $W_n$ al tiempo 
+de espera del cliente con lo cual es inmediato deducir, que nuestro cliente abandonará la cola en el instante
+$t_n + W_n$, donde $0 = t_0 \leq t_1 \leq t_2 \leq... $.
 
-Indicador: $I_i(t) = 1 $ si $ t_i \leq t <t_i+W_i$,y $I_i (t) = 0$ en caso contrario,de donde  $\int_{0}^{\infty} I_i(t)dt=W_i$.
+Es inmediato tambien que podemos definir una función indicadora que refleje si el $c_n$ está o no en el
+sistema:
 
-Sea $N(t) = \sum_{i=1}^{\infty} I_i(t)$, el número de clientes en el sistema en tiempo t, y $\Delta (t) = max \{i: t_i \leq t\}$, el número de llegadas en tiempo t. Con $\Delta (t)$, reescribimos $N(t) = \sum_{i=1}^{\Delta (t)} I_i(t)$.
+Indicador: $I_n(t) = \left\{\begin{array}{cc}
+                      1, & t_n \leq t <t_n + W_n\\
+                      0, & \textrm{en otro caso}
+                     \end{array}\right.$, de donde  $\int_{0}^{\infty} I_n(t)dt=W_n$.
 
-De los datos del cliente ${t i}$ y ${W i}$ para todo i, podemos construir ${N (t)}$ para
-todo t. Visualmente podemos entender de forma sencilla estos conceptos si trazamos ${\Delta (t)}$ como una función escalonada y mostramos un tiempo de espera del cliente.
+Sea $\Delta(t) = max \{i: t_n \leq t\}$ el número de llegadas en tiempo t. El número de clientes en el sistema
+viene dado por:
+
+\[N_t = \sum_{i=1}^{\Delta(t)} I_n(t)\]
+
+A partir del tiempo de llegada ${t_n}$ y del tiempo de servicio ${W i}$ del cliente $i$-ésimo, podemos 
+construir ${N_t}$ paratodo $t$. Visualmente podemos entender de forma sencilla estos conceptos si trazamos 
+${\Delta (t)}$ como una función escalonada y mostramos un tiempo de espera del cliente.
+
+\begin{figure}[H]
 \begin{center}
-	\includegraphics[width=\textwidth]{./imgs/fig1.png}
+  \includegraphics[width=\textwidth]{./imgs/fig1.png}
+  \caption{Trayectoria de $\Delta(t)$}
+  \label{fig:deltat}
 \end{center}
- A su vez podemos representar $N(t)$ como una función escalonada ( cuya información será obviamente menor que la primera figura) representando unicamente el numero de personas en la cola.
+\end{figure}
+ 
+A su vez podemos representar $N_t$ como una función escalonada (cuya información será obviamente menor que la primera figura) 
+representando únicamente el número de personas en el sistema.
+
+\begin{figure}[H]
 \begin{center}
-	\includegraphics[width=\textwidth]{./imgs/fig2.png}
+  \includegraphics[width=\textwidth]{./imgs/fig2.png}
+  \caption{Trayectoria de $N_t$}
+  \label{fig:enet}
 \end{center}
+\end{figure}
 
-Mientras que los tiempos de espera son periodos de tiempo, también se pueden observar como rectángulos de altura 1 en la gráfica de ${\Delta(t)}$. Así, la longitud $W_i$ es también área $W_i$. Para cada t, $N (t)$ es simplemente el número de rectángulos de tiempo de espera que contienen el punto t.
+Mientras que los tiempos de espera son períodos de tiempo, también se pueden observar como rectángulos 
+de altura 1 en la gráfica de ${\Delta(t)}$. Así, la longitud $W_n$ es también área $W_n$. Para cada $t$, 
+$N_t$ es simplemente el número de rectángulos de tiempo de espera que contienen el punto $t$.
 
-Tenemos por tanto un modelo de colas (estocástico), con $ t_i, W_i $y$ N(t)$ variables aleatorias; lo que nos lleva trivialmente a asumir que  $\{T i, i \geq 1\}$, $\{W i, i \geq 1\}$, y $\{N (t), t \geq 0\}$ son procesos estocásticos. Estas cantidades aleatorias se definiran en un espacio muestral cualquiera. 
+Tenemos por tanto un modelo de colas, con $t_n, W_n $ y $ N_t$ variables aleatorias; lo que nos lleva
+trivialmente a asumir que  $\{t_n\}_{n\ge 1}, \{W_n\}_{n\ge 1}, \{N_t\}_{t\ge 0}$ son procesos estocásticos.
 
 Por lo general, en nuestro caso se suelen hacer las siguientes suposiciones :
 \begin{itemize}
-	\item $W_i$ tiene la misma distribución para todo i.
-	\item $N (t)$ tiene la misma distribución para todo t. 
+  \item $W_n$ tiene la misma distribución para todo $n$.
+  \item $N_t$ tiene la misma distribución para todo $t$.
 \end{itemize} 
 
-Llegados a este punto hemos de remarcar que existen realmente dos versiones de la Ley de Little: \begin{itemize}
-	\item La versión que relaciona el tiempo de espera medio y la cantidad media de clientes en la cola: la mas conocida y a que trataremos en el trabajo.
-	\item La versión estacionaria que relaciona los valores esperados de W y N través de la esperanza. 
+Llegados a este punto hemos de remarcar que existen realmente dos versiones de la Ley de Little: 
+
+\begin{itemize}
+  \item La versión que relaciona el tiempo de espera medio y la cantidad media de clientes en la cola: 
+  la más conocida y a que trataremos en el trabajo.
+  \item La versión estacionaria que relaciona los valores esperados de $W_W$ y $N$ través de la esperanza. 
 \end{itemize}
 
-Damos a continuación una idea intuitiva del primer teorema, que pensamos puede ayudar enormemente a nuestros compañeros (entre los cuales nos incluimos) a captar la esencia del resultado:
+Damos a continuación una idea intuitiva del primer teorema, que puede contribuir a su comprensión.
 
-Nota: De ahora en adelante omitiremos el punto del espacio muestral en el que estamos. Esto no afecta en absoluto a nuestro trabajo y simplifica la notacion al no tener que acarrerar la dependencia explícita del mismo: Por ejemplo, escribimos $W_i$ en lugar de $W_i (\omega)$.
+\begin{rmk*}
+De ahora en adelante omitiremos el punto del espacio muestral en el que estamos. Esto no afecta 
+en absoluto a nuestro trabajo y simplifica la notación al no tener que acarrerar la dependencia 
+explícita del mismo: Por ejemplo, escribimos $W_n$ en lugar de $W_n(\omega)$. 
+\end{rmk*}
 
-El área rectangular $W_i$ es la contribución al área bajo ${N (t)}$ que es realizada por el cliente $c_i$. Ahora considerese el área bajo ${N (t)}$ en algún intervalo$(0, T)$, donde como en las figuras 1 y 2, T tiene la propiedad de que $N (T) = 0$. Para cualquier T de esa forma, esta área puede escribirse como una integral o una suma,\[\int_{0}^{T} N(t)dt=\int_{0}^{T} \sum_{i=1}^{\Delta (t)} I_i(t) dt=(permtuando)=\sum_{i=1}^{\Delta (t)} W_i(t)  \]
+El área rectangular $W_n$ es la contribución al área bajo $N_t$ que es realizada por el cliente $n$-ésimo. 
+Ahora considerese el área bajo $N_t$ en algún intervalo $]0,T[$, donde como en las figuras \ref{fig:deltat}
+y \ref{fig:enet}, $T$ tiene la propiedad de que $N_T = 0$. Para cualquier $T$ de esa forma, este área puede 
+escribirse como una integral o una suma:
 
-Se puede observar en nuestras figuras en $\Delta(T) = 4$.
+\[\int_{0}^{T} N_t dt=\int_{0}^{T} \sum_{i=1}^{\Delta (t)} I_i(t) dt \underset{permutando}{=}\sum_{i=1}^{\Delta (t)} W_i\]
 
-Para cualquier T donde $N (T)> 0$, (1) no es cierto porque una porción de al menos un rectángulo en la suma contribuye al área bajo $\{N (t)\}$ después de T. En este caso, la suma - integral $\equiv$ error $\geq 0$.
+Se puede observar en la figura \ref{fig:deltat} en $\Delta(T) = 4$.
 
-Entonces definimos la media de estas cantidades a largo plazo como límites, cuando existan, denominándolos como siguen
+Para cualquier $T$ donde $N_T > 0$, la anterior igualdad no es cierta porque una porción de al menos un 
+rectángulo en la suma contribuye al área bajo $N_t$ después de $T$. 
+%En este caso, la suma - integral $\equiv$ error $\geq 0$.
+
+Entonces definimos la media de estas cantidades a largo plazo como límites, cuando existan, denominándolos
+como siguen:
+
 \begin{itemize}
-	\item $L=\lim_{T\to\infty}\frac{1}{T}\int_{0}^{T} N(t)dt$
-	\item $\omega=\lim_{n\to\infty}\frac{1}{n}\sum_{i=1}^{n} W_i(t)$
-	\item $\lambda=\lim_{t\to\infty}\frac{\delta(t)}{t}$
+ \item $L = \lim_{T\to \infty}\frac{1}{T} \int_{0}^{T} N_t dt$
+ \item $W_W = \lim_{n\to \infty}\frac{1}{n} \sum_{i=1}^{n} W_i$
+ \item $\lambda = \lim_{t\to \infty}\frac{\delta(t)}{t}$
 \end{itemize}
 
 Donde conceptualmente estamos haciendo referencia a:
 \begin{itemize}
-	\item $L$ es el número medio de clientes en el sistema,
-	\item $\omega$ es el tiempo medio de espera (de los clientes en el sistema), y
-	\item $\lambda$ es la tasa de llegada 
+ \item $L$ es el número medio de clientes en el sistema,
+ \item $W_W$ es el tiempo medio de espera (de los clientes en el sistema), y
+ \item $\lambda$ es la tasa de llegada 
 \end{itemize}
-Es de destacar que  $L$ y $\omega$ son las dos medidas de rendimiento más comunes para una cola.
+Es de destacar que  $L$ y $W_W$ son las dos medidas de rendimiento más comunes para una cola.
 
 
 Tenemos ya todos los elementos para formular el teorema de Little:
-\begin{theorem}{Teorema de Little}
-Si los límites $\lambda$ y $\omega$ existen y son finitos, $L$ existe y es finito, donde
-\begin{equation}
-L = \lambda\omega
-\end{equation} 
-\end{theorem}
+\begin{theorem*}{\bf{Teorema de Little}}\\
+Si los límites $\lambda$ y $W_W$ existen y son finitos, entonces $L$ existe y es finito, donde 
+\[L = \lambda W_W\]
+\end{theorem*}
 
 La idea intuitiva de este resultado es la relación que apúntabamos antes: Para cualquier T (donde ahora $N (T) \geq 0$) escribimos,
 \[ \frac{\int_{0}^{T} N(t)dt}{T}=\frac{\sum_{i=1}^{\Delta (t)} W_i(t)}{T}-\frac{error}{T}=\frac{\Delta(T)}{T}\frac{\sum_{i=1}^{\Delta (T)} W_i(t)}{\Delta(T)}-\frac{error}{T}   \]
@@ -725,9 +792,9 @@ Intuitivamente, la cola será inestable y no podrá servir todas las peticiones.
 
 Se tiene $a > 1$, $\rho > 1$.
 
-\begin{fact}
+\begin{fact*}
 Notando $Q_n$ al tiempo de espera del $n$ ésimo cliente, tenemos que \[Q_1 = 0, \qquad Q_n = \left(\frac{1}{\mu} - \frac{1}{\lambda}\right)n, \quad \forall n\ge 2\]
-\end{fact}
+\end{fact*}
 
 \begin{proof}
 Veámoslo por inducción:
@@ -740,19 +807,19 @@ más tarde que el $n-1$ ésimo y deberá esperar a que el $n-1$ ésimo sea servi
 deberá esperar $Q_{n-1} + \frac{1}{\mu} - \frac{1}{\lambda} = \left(\frac{1}{\mu} - \frac{1}{\lambda}\right)n$
 \end{proof}
 
-\begin{corollary}
+\begin{corollary*}
  El tiempo de espera total para el $n$ ésimo cliente es:
  
  \[W_1 = \frac{1}{\mu}, \qquad W_n = \left(\frac{1}{\mu} - \frac{1}{\lambda}\right)^n + \frac{1}{\mu} \quad n\in \mathbb{N}\]
-\end{corollary}
+\end{corollary*}
 
-\begin{fact}
+\begin{fact*}
  En un instante $t$ el número de clientes en el sistema será: 
  \[N_t = \left\{\begin{array}{lcc}
          0, && t < \frac{1}{\lambda}\\
          \lfloor t\lambda \rfloor - \left\lfloor\left(t-\frac{1}{\lambda}\right)\mu\right\rfloor, && \text{otro caso}
          \end{array}\right.\]
-\end{fact}
+\end{fact*}
 
 \begin{proof}
  Trivial.
@@ -763,129 +830,157 @@ deberá esperar $Q_{n-1} + \frac{1}{\mu} - \frac{1}{\lambda} = \left(\frac{1}{\m
 
 Se tiene $a < 1$, $\rho < 1$.
 
-\begin{fact}
+\begin{fact*}
 Se tiene $\forall n\in \mathbb{N}$:
 
 \begin{align*}
 Q_n = 0\\
 W_n = \frac{1}{\mu}
 \end{align*}
-\end{fact}
+\end{fact*}
 
-\begin{corollary}
+\begin{corollary*}
  El tiempo de espera total para el $n$ ésimo cliente es únicamente el tiempo en ser servido:
  
  
-\end{corollary}
+\end{corollary*}
 
-\begin{fact}
+\begin{fact*}
  En un instante $t$ el número de clientes en el sistema será: 
  \[N_t = \left\{\begin{array}{lcc}
           0, && t < \frac{1}{\lambda}\\
           0, && t \ge \frac{1}{\lambda}, t \in \left]\frac{n-1}{\lambda} + \frac{1}{\mu}, \frac{n-1}{\lambda} + \frac{1}{\lambda}\right[\\
           1, && \text{otro caso}
          \end{array}\right.\]
-\end{fact}
+\end{fact*}
 
 En el caso particular $\lambda = \mu$, se tiene $N_t = 1$ constantemente para $t\ge \frac{1}{\lambda}$
 
 \subsection{M/M/1}
-En este modelo consideramos una patron de llegada aleatorio (Siguiendo un proceso de Poisson) y tiempo de servicio siguiendo una distribución exponencial.El tiempo de llegada no depende de los clientes en el sistema y, si tenemos en cuenta el teorema \ref{referencia del teorema aqui}, la probabilidad de llegada en un intervalo de tiempo $h>0$ viene dado por:
-\begin{equation}
-e^{-\lambda h}(\lambda h)=\lambda h (1-\lambda h+\frac{(\lambda h)^2}{2!}- \dots)=\lambda h-(\lambda h)^2+\frac{(\lambda h)^3}{2!}-\dots+(-1)^n\frac{(\lambda h)^n}{(n-1)!}= \lambda h+o(h)
-\end{equation}
+
+En este modelo consideramos un patrón de llegadas aleatorio y tiempo de servicio siguiendo una distribución 
+exponencial. El tiempo de llegada no depende de los clientes en el sistema, por proposición \ref{fact:exp-markov}
+y, si tenemos en cuenta el teorema \ref{th:poisson-probs}, la probabilidad de que se produzca una llegada 
+en un intervalo de tiempo $h>0$ viene dada por:
+
+\begin{align*}
+& e^{-\lambda h}(\lambda h)= \left(1-\lambda h+\frac{(\lambda h)^2}{2!}- \dots\right) \lambda h = \\
+& =\lambda h-(\lambda h)^2+\frac{(\lambda h)^3}{2!}-\dots+(-1)^n\frac{(\lambda h)^n}{(n-1)!} + \ldots = \lambda h+o(h)
+\end{align*}
+
 Por tanto tenemos :
-\begin{equation}
-\lambda_n=\lambda, n=0,1,2,\dots
-\end{equation}
+\begin{equation*}
+  \lambda_n=\lambda, \quad n=0,1,2,\dots
+\end{equation*}
+
 Por hipótesis la distribucion que sigue el tiempo de servicio viene dada por:
-\begin{equation}
-W_s[t]=P[s\leq t]=1-e^{-\mu t}, t\geq 0.
-\end{equation}
-Por tanto si cliente está recibiendo el servicio, la probailidd de que el servicio sea completado en un corto periodo de tiempo,h, vienen dada por:
-\begin{equation}
-1-e^{-\mu h}=1-(1-\mu h+\frac{(\mu h)^2}{2!}- \dots)=\mu h +o(h)
-\end{equation}
-Donde hemo usado la propiedad de falta de memoria de la distribucion exponencial omitiendo los servicios ya acabados)\\
+\begin{equation*}
+  W_S[t] = P[S\leq t] = 1-e^{-\mu t}, \quad t\ge 0.
+\end{equation*}
+
+Por tanto si un cliente está recibiendo el servicio, la probabilidad de que el servicio sea completado en un corto periodo de tiempo, $h$, viene dada por:
+\begin{equation*}
+1-e^{-\mu h} = 1 - \left(1-\mu h+\frac{(\mu h)^2}{2!}- \dots\right)=\mu h +o(h)
+\end{equation*}
+
+Donde hemos usado la propiedad de falta de memoria de la distribucion exponencial, omitiendo los servicios ya acabados)\\
 Por tanto:
-\begin{equation}
-\mu_n=\, n=0,1,2,\dots
-\end{equation}
+\begin{equation*}
+\mu_n=\mu, \quad n=0,1,2,\dots
+\end{equation*}
+
 Así, podemos deducir el diagrama de estado-transición para el sistema de colas M/M/1. Además dado que $\lambda/\mu=\rho$ y cada $C^n$ es igual a $\rho^n$ podemos obtener que:
-\begin{equation}
+\begin{equation*}
 S=1+\rho+\rho^2+\dots+\rho^n+\dots=\frac{1}{(1-\rho)}
-\end{equation}
+\end{equation*}
+
 Hemos asumido que $\rho<1$ por lo que una solución estacionaria existe.
 Para sumar la serie de S hemos usado la suma de la serie geométrica ampliamente conocida.
 Así por la definicion de \ref{p_0} y \ref{P_n}
 \begin{equation}
-p_n=P[N=n]=(1-\rho)\rho^n, n=0,1,2...
-\label{p_n}
+  p_n=P[N=n]=(1-\rho)\rho^n, n=0,1,2...
+\label{eq:p_n}
 \end{equation}
-Podemos observar que \ref{p_n} es la funcion masa de probabilidad de una variable aleatoria geométrica;esto es, $N$ sigue una distribucion geométrica con $p=1-\rho$ y $q=p$. Por tanto podemos usar
-para obtener $L$ y $\sigma_n^2$:
-\begin{equation}
-L=E[N]=q/p=\frac{\rho}{(1-\rho)}
-\end{equation}
-\begin{equation}
-\sigma_n^2=\frac{\rho}{(1-\rho)^2}
-\end{equation}
-Usando la Ley de Little \ref{hacer ref al apartado}:
-\begin{equation}
-W=E[\omega]=\frac{L}{\lambda}=\frac{W_s}{(1-\rho)}
-\end{equation}
-Equvalentemente como \[ W_q=E[q]=W-W_s=\frac{\rho W_s}{(1-\rho)} \] podemos volver a usar la Ley de Little para obtener:
-\begin{equation}
-L_q=E[N_q]=\lambda W_q=\frac{\rho^2}{(1-\rho)}.
-\end{equation}
-Podemos tambien calular utilizando \ref{p_n} la probabilidad de que el servidor esté ocupado:
-\begin{equation}
-P[\textbf{Servidor ocupado }]=1-P[N=0]=1-(1-\rho)=\rho
-\end{equation}
-Por la ley de grandes números esta probabilidad puede ser interpretada como la fracción de tiempo que el servidor está ocupado; de hecho podríamos considerar llamar a $\rho$ "Utilización del servidor".
 
-Tenemos ya los cuatro parámetros más utilizados para medir la rendimiento de un sistema de colas $W, W_q, L y L_q$, así como el la funcion masa de probabilidad, $p_n$, de una cantidad en el sistema, $N$. 
+Podemos observar que \ref{p_n} es la funcion masa de probabilidad de una variable aleatoria geométrica;esto
+es, $N$ sigue una distribucion geométrica con $p=1-\rho$ y $q=p$. Por tanto podemos usar para obtener $L$ 
+y $\sigma_n^2$:
+\begin{equation*}
+  L=E[N]=q/p=\frac{\rho}{(1-\rho)}
+\end{equation*}
+
+\begin{equation*}
+  \sigma_n^2=\frac{\rho}{(1-\rho)^2}
+\end{equation*}
+
+Usando la Ley de Little \ref{hacer ref al apartado}:
+\begin{equation*}
+  W=E[\omega]=\frac{L}{\lambda}=\frac{W_s}{(1-\rho)}
+\end{equation*}
+
+Equvalentemente como \[ W_q=E[q]=W-W_s=\frac{\rho W_s}{(1-\rho)} \] podemos volver a usar la Ley de Little 
+para obtener:
+\begin{equation*}
+  L_q=E[N_q]=\lambda W_q=\frac{\rho^2}{(1-\rho)}.
+\end{equation*}
+
+Podemos tambien calular utilizando \ref{p_n} la probabilidad de que el servidor esté ocupado:
+\begin{equation*}
+  P[\textbf{Servidor ocupado }]=1-P[N=0]=1-(1-\rho)=\rho
+\end{equation*}
+Por la ley de grandes números esta probabilidad puede ser interpretada como la fracción de tiempo que el 
+servidor está ocupado; de hecho podríamos considerar llamar a $\rho$ "Utilización del servidor".
+
+Tenemos ya los cuatro parámetros más utilizados para medir la rendimiento de un sistema de colas 
+$W, W_q, L y L_q$, así como el la funcion masa de probabilidad, $p_n$, de una cantidad en el sistema, $N$. 
 
 Para el sistema $M / M / 1$, también podemos obtener la distribución exacta de $\omega$ y q.
 
-Si un cliente que llega no encuentra clientes en el sistema, $(N = 0)$, entonces no hay cola para el servicio, por lo que $W_q [O] = P [q = 0] = P [N = 0] = 1 - \rho$.
+Si un cliente que llega no encuentra clientes en el sistema, $(N = 0)$, entonces no hay cola para el 
+servicio, por lo que $W_q [O] = P [q = 0] = P [N = 0] = 1 - \rho$.
+
 Así, $W_q [.]$ Tiene una concentración o masa de probabilidad en t = O. 
-Sin embargo,si un cliente llega cuando n clientes ya están en el sistema, entonces tiene que esperar a través de n tiempos de servicio (que recordemos siguen una distribución exponenciales); eso es el tiempo de espera condicional en la cola, dada una llegada a la misma con n clientes ya en el sistema, vendrá dado por
-\begin{equation}q = s_1 + s_2 + ·. . + s_n,\end{equation}
+Sin embargo,si un cliente llega cuando n clientes ya están en el sistema, entonces tiene que esperar a
+través de n tiempos de servicio (que recordemos siguen una distribución exponenciales); eso es el tiempo
+de espera condicional en la cola, dada una llegada a la misma con n clientes ya en el sistema, vendrá dado por
+\[q = s_1 + s_2 + ·. . + s_n\]
+
 Donde $s_n$ son n exponenciales independientes distribuidas de forma idéntica cada una con media $1 / \lambda$.  Por tanto usando un teorema de probabilidad (lo pongo/no lo pongo? XD), $q$ tiene una distribución gamma con los parámetros n y $\lambda$, que significa que la función de densidad de probabilidad ,condicionada al caso propuesto, de $q$, está dada por
-\begin{equation}
-f_{q,n}(t)=\mu e^{-\mu t} \frac{(\mu t)^{n-1}}{(n-1)!}
-\end{equation}
+\begin{equation*}
+  f_{q,n}(t)=\mu e^{-\mu t} \frac{(\mu t)^{n-1}}{(n-1)!}
+\end{equation*}
+
 Así, si n> 0,podemos calcular la probabilidad como:
-\begin{equation}
-P[q\leq t|N=n]=\int_{0}^{t}\frac{\mu^nx^{n-1}e^{-\mu x}}{(n-1)!}dx
-\end{equation}
+\begin{equation*}
+  P[q\leq t|N=n]=\int_{0}^{t}\frac{\mu^nx^{n-1}e^{-\mu x}}{(n-1)!}dx
+\end{equation*}
+
 Siguiendo la ley de probabilidad total, ((el teorema 2.4.2)))
-\begin{equation}
-P[0<q\leq t]=\sum_{n=1}^{\infty}P[q\leq t|N=n]P[N=n]
-\end{equation}
+\begin{equation*}
+  P[0<q\leq t]=\sum_{n=1}^{\infty}P[q\leq t|N=n]P[N=n]
+\end{equation*}
+
 Operando podemos obtener, finalmente:
-\begin{equation}
-P[0<q\leq t]=\rho[1-e^{-t/W}]
+\begin{equation*}
+  P[0<q\leq t]=\rho[1-e^{-t/W}]
 \label{finaleqP}
-\end{equation}
+\end{equation*}
 
 
-Ya hemos demostrado que $W_q [O] = 1 - p$. Si t> 0, podemos usar \ref{finaleqP} para calcular \begin{equation}
-W_q [t]=P [q = 0] + P [O <q \leq t]= 1 - \rho + \rho [1 - e^{- t / W}]=1\rho[1-e^{-t/W}
-\end{equation}
+Ya hemos demostrado que $W_q [O] = 1 - p$. Si t> 0, podemos usar \ref{finaleqP} para calcular 
+\[W_q [t]=P [q = 0] + P [O <q \leq t]= 1 - \rho + \rho [1 - e^{- t / W}]=1\rho[1-e^{-t/W}\]
 
 El tiempo medio de espera en cola es de particular interés por los sistemas de colas en los que las personas son los clientes.Es de sentido común pensar que, si las personas se mantienen esperando demasiado tiempo en la cola para un servicio, éstas puedan cansarse y abandonar la cola; es decir, abandonar la cola sin haber recibido el servicio. La gente no esperará indefinidamente por ningún tipo de servicio.
 
 De hecho podemos calcular como funciona nuestro caso ante esta idiosincrasia. Por el teorema 2.8.1,
-\begin{equation}
-W_q = P [q = 0] x E [q|q = 0] + P [q> 0] x E [q|q> 0]
-= (1 - \rho) x 0 + \rho x E [q|q> 0].
-\end{equation}
+\begin{equation*}
+  W_q = P [q = 0] x E [q|q = 0] + P [q> 0] x E [q|q> 0] = (1 - \rho) x 0 + \rho x E [q|q> 0].
+\end{equation*}
+
 Lo que nos lleva a:
-\begin{equation}
+\begin{equation*}
 \frac{W_q}{\rho}=\frac{W_s}{1-\rho}=W= E [q|q> 0].
-\end{equation}
+\end{equation*}
 Este resultado, dado que $W=W_q+W_s$, se puede interpretar de la siguiente manera: De media un cliente esperando al servicio permanecerá en la cola el tiempo medio de servicio más que lo que espera un cliente medio.
 Es más, la función de distribución de $W[.]$ se puede obtener de igual forma que hicimos con $W_q[.]$. Con lo que podemos concluir que $\omega$ sigue una distribución exponencial lo que nos permite calcular los percentiles de la misma.
 
