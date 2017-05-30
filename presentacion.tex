@@ -587,17 +587,46 @@ de servicio, o equivalentemente una distribución de Poisson para frecuencias de
 
     \begin{figure}[H]
       \begin{center}
-        \includegraphics[width=\textwidth]{./imgs/fig2.png}
+        \includegraphics[width=0.9\textwidth]{./imgs/fig2.png}
       \end{center}
     \end{figure}
   \end{frame}
-  \begin{frame}\frametitle{Cosas de Bart}
-  \end{frame}
 
+  \begin{frame}
+  	Entonces definimos la media de estas cantidades a largo plazo como límites, cuando existan, denominándolos
+  	como siguen:
+  	
+  	\begin{itemize}
+  		\item $L = \lim_{T\to \infty}\frac{1}{T} \int_{0}^{T} N_t dt$
+  		\item $W_W = \lim_{n\to \infty}\frac{1}{n} \sum_{i=1}^{n} W_i$
+  		\item $\lambda = \lim_{t\to \infty}\frac{\Delta(t)}{t}$
+  	\end{itemize}
+  	
+  	Donde conceptualmente estamos haciendo referencia a:
+  	\begin{itemize}
+  		\item $L$ es el número medio de clientes en el sistema,
+  		\item $W_W$ es el tiempo medio de espera (de los clientes en el sistema), y
+  		\item $\lambda$ es la tasa de llegada 
+  	\end{itemize}
+  \end{frame}
+  
   \begin{frame}\frametitle{Teorema de Little}
     Si los límites $\lambda$ y $W_W$ existen y son finitos, entonces $L$ existe y es finito, donde 
     \[L = \lambda W_W\]
   \end{frame}
+  \begin{frame}\frametitle{Idea de la demostración}
+  	La idea intuitiva de este resultado es la relación que apúntabamos antes: para cualquier $T$ (donde ahora $N_T \geq 0$) escribimos:
+  	\[ \frac{\int_{0}^{T} N_t dt}{T}=\frac{\sum_{i=1}^{\Delta (t)} W_i(t)}{T}-\frac{error}{T}=\frac{\Delta(t)}{T}\frac{\sum_{i=1}^{\Delta (T)} W_i(t)}{\Delta(T)}-\frac{error}{T}   \]
+  	A medida que T se hace grande, la primera cantidad entre paréntesis a la derecha se aproxima a $\lambda$, la segunda a $\omega$, 
+  	y el producto se acerca $\lambda\omega$. Por lo tanto, el teorema se obtendría si el término a la derecha 
+  	se aproxima a 0 cuando $T\rightarrow\infty$. 
+  \end{frame}
+   \begin{frame}\frametitle{Ejemplo de uso}
+   	Dados dos sistemas de colas cuyos si los procesos que describen ambas son procesos estocásticos equivalentes entonces el tiempo de espera será el mismo. 
+   \end{frame} 
+  
+  
+  
 \section{Modelos particulares}
 
   \subsection{Modelo D/D/1}
@@ -653,9 +682,63 @@ W_n = \frac{1}{\mu}
   \end{frame}
 
   \subsection{Modelo M/M/1}
-  \begin{frame}\frametitle{Chino mandarín}
-    
+  \begin{frame}En este modelo consideramos un patrón de llegadas aleatorio y tiempo de servicio siguiendo una distribución 
+  	exponencial.
   \end{frame}
+
+\begin{frame}
+la probabilidad de que se produzca una llegada 
+en un intervalo de tiempo $h>0$ viene dada por:
+\begin{align*}
+& e^{-\lambda h}(\lambda h)= \left(1-\lambda h+\frac{(\lambda h)^2}{2!}- \dots\right) \lambda h = \\
+& =\lambda h-(\lambda h)^2+\frac{(\lambda h)^3}{2!}-\dots+(-1)^n\frac{(\lambda h)^n}{(n-1)!} + \ldots = \lambda h+o(h)
+\end{align*}
+\end{frame}
+
+\begin{frame}
+	Por hipótesis la distribucion que sigue el tiempo de servicio viene dada por:
+	\begin{equation*}
+	W_S[t] = P[S\leq t] = 1-e^{-\mu t}, \quad t\ge 0.
+	\end{equation*}
+	
+	Por tanto si un cliente está recibiendo el servicio, la probabilidad de que el servicio sea completado en un corto periodo de tiempo, $h$, viene dada por:
+	\begin{equation*}
+	1-e^{-\mu h} = 1 - \left(1-\mu h+\frac{(\mu h)^2}{2!}- \dots\right)=\mu h +o(h)
+	\end{equation*}
+\end{frame}
+\begin{frame}
+	Así, podemos deducir el diagrama de estado-transición para el sistema de colas M/M/1. 
+	\includegraphics[width=0.9\textwidth]{./imgs/diagrama.png}
+	Además dado que $\lambda/\mu=\rho$ utilizando la serie calculada en \ref{eq:stabseries} nos queda que:
+	\begin{equation*}
+	Z=1+\rho+\rho^2+\dots+\rho^n+\dots=\frac{1}{(1-\rho)}
+	\end{equation*}
+\end{frame}
+\begin{frame}
+	Para sumar la serie de S hemos usado la suma de la serie geométrica ampliamente conocida.
+	Así por la definicion de \ref{p0} y \ref{pn}
+	\begin{equation}
+	p_n=P[N=n]=(1-\rho)\rho^n, n=0,1,2...
+	\label{eq:p_n}
+	\end{equation}
+\end{frame}
+\begin{frame}
+	Podemos observar que \ref{eq:p_n} es la funcion masa de probabilidad de una variable aleatoria geométrica;esto
+	es, $N$ sigue una distribucion geométrica con $p=1-\rho$ y $q=p$. Por tanto podemos usar para obtener $L$:
+	\begin{equation*}
+	L=E[N]=q/p=\frac{\rho}{(1-\rho)}
+	\end{equation*}
+	
+	Usando la Ley de Little:
+	\begin{equation*}
+	W=E[\omega]=\frac{L}{\lambda}=\frac{W_s}{(1-\rho)}
+	\end{equation*}
+	Podemos también calcular utilizando la probabilidad de que el servidor esté ocupado:
+	\begin{equation*}
+	P[\textbf{Servidor ocupado }]=1-P[N=0]=1-(1-\rho)=\rho
+	\end{equation*}
+\end{frame}
+
 
   \section{Ejemplos}
   \begin{frame}\frametitle{Paradoja del tiempo de espera}
