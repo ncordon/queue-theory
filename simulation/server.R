@@ -14,7 +14,7 @@ library('shiny')
 library('shinythemes')
 library('mgcv')
 
-seed <- 12345678
+
 
 ##########################################################################
 # Resultados
@@ -22,23 +22,22 @@ seed <- 12345678
 function(input, output){
   dd1Input <- reactive({
     sim.time <- input$sim.dd1.time
-
-    lambda <- input$arrival.dd1.freq
-    mu <- input$service.dd1.freq
+    inter.arrival <- input$arrival.dd1
+    inter.service <- input$service.dd1
 
     # Parametros no vacios y no nulos
-    req(lambda > 0)
-    req(mu > 0)
+    req(inter.arrival > 0)
+    req(inter.service > 0)
 
     dd1.trajectory <- trajectory() %>%
       seize("donación de sangre", amount=1) %>%
-      timeout(function(){ mu }) %>%
+      timeout(function(){ inter.service }) %>%
       release("donación de sangre", amount=1)
 
 
     dd1.env <- simmer() %>%
       add_resource("donación de sangre", capacity=1, queue_size=Inf) %>%
-      add_generator("llegadas", dd1.trajectory, function(){ lambda })
+      add_generator("llegadas", dd1.trajectory, function(){ inter.arrival })
 
 
     dd1.env %>% run(until=sim.time)
@@ -49,8 +48,11 @@ function(input, output){
 
 
   mm1Input <- reactive({
-    sim.time <- input$sim.mm1.time
+    seed <- input$mm1.seed
+    req(seed > 0)
+    set.seed(seed)
 
+    sim.time <- input$sim.mm1.time
     lambda <- input$arrival.mm1.freq
     mu <- input$service.mm1.freq
 
@@ -66,7 +68,7 @@ function(input, output){
 
     mm1.env <- simmer() %>%
       add_resource("caja del súper", capacity=1, queue_size=Inf) %>%
-      add_generator("llegadas", mm1.trajectory, function(){ rexp(1, mu) })
+      add_generator("llegadas", mm1.trajectory, function(){ rexp(1, lambda) })
 
 
     mm1.env %>% run(until=sim.time)
@@ -81,15 +83,21 @@ function(input, output){
   ############################################################
   # Cola D/D/1
   ############################################################
-  # Utilizacion de la cola
-  output$dd1.queue.usage <- renderPlot({
+  # Media de clientes en el sistema
+  output$dd1.queue.server.usage <- renderPlot({
     args <- dd1Input()
+    server <- plot(args$dd1, what = "resources", metric = "usage",
+                   "donación de sangre", items=c("queue", "server"), steps = T)
+    server <- server + xlim(0, args$sim.time)
+    server
+  })
 
-    queue <- plot(args$dd1, what = "resources", metric = "usage",
-                  "donación de sangre", items = "queue", steps = T)
-    queue <- queue + xlim(0, args$sim.time)
-
-    queue
+  output$dd1.system.usage <- renderPlot({
+    args <- dd1Input()
+    server <- plot(args$dd1, what = "resources", metric = "usage",
+                   "donación de sangre", items=c("system"), steps = T)
+    server <- server + xlim(0, args$sim.time)
+    server
   })
 
   # Tiempo de espera en cola
@@ -101,28 +109,18 @@ function(input, output){
     queue
   })
 
-  # Utilización del servidor
-  output$dd1.server.usage <- renderPlot({
-    args <- dd1Input()
-    server <- plot(args$dd1, what = "resources", metric = "usage",
-                   "donación de sangre", items = "server", steps = T)
+  ############################################################
+  # Cola M/M/1
+  ############################################################
+  # Media de clientes en el sistema
+  output$mm1.system.usage <- renderPlot({
+    args <- mm1Input()
+    server <- plot(args$mm1, what = "resources", metric = "usage",
+                   names = "caja del súper", items=c("queue", "server", "system"))
     server <- server + xlim(0, args$sim.time)
     server
   })
 
-  ############################################################
-  # Cola M/M/1
-  ############################################################
-    # Utilizacion de la cola
-  output$mm1.queue.usage <- renderPlot({
-    args <- mm1Input()
-
-    queue <- plot(args$mm1, what = "resources", metric = "usage",
-                  "caja del súper", items = "queue", steps = T)
-    queue <- queue + xlim(0, args$sim.time)
-
-    queue
-  })
 
   # Tiempo de espera en cola
   output$mm1.queue.wait <- renderPlot({
@@ -132,14 +130,4 @@ function(input, output){
 
     queue
   })
-
-  # Utilización del servidor
-  output$mm1.server.usage <- renderPlot({
-    args <- mm1Input()
-    server <- plot(args$mm1, what = "resources", metric = "usage",
-                   "caja del súper", items = "server", steps = T)
-    server <- server + xlim(0, args$sim.time)
-    server
-  })
-
 }
