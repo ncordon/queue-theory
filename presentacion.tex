@@ -512,7 +512,7 @@ de servicio, o equivalentemente una distribución de Poisson para frecuencias de
     Se pueden efectuar unas definiciones análogas para modelo determinístico, aleatorio y régimen estacionario y transitorio
     de servicio a las que se han hecho con el modelo de llegadas.
 
-    \begin{block}{Caso particular, modelo de Poisson de servicio}
+    \begin{block}{Ejemplo: modelo de Poisson de servicio}
 
       Supongamos que el modelo de colas tiene $k$ servidores o canales para atender peticiones, y el tiempo que 
       tarda cada uno en atender una petición $T_i, i=1,\ldots k$ sigue una distribución exponencial de parámetro $\bar{\mu}$.
@@ -795,11 +795,14 @@ en un intervalo de tiempo $h>0$ viene dada por:
 \end{frame}
 
 
-  \section{Ejemplos}
+  \subsection{Paradoja del tiempo de espera}
   \begin{frame}\frametitle{Paradoja del tiempo de espera}
     El autobús pasa cada $\alpha$ minutos por la parada, y llegamos en un momento aleatorio. ¿Cuánto tiempo esperamos que tarde en llegar el autobús?
 
-    Intuición:  $\frac{\alpha}{2} \Rightarrow$  FALSO!
+    Intuición:  $\frac{\alpha}{2} $
+    \pause
+    \begin{alertblock}{FALSO}
+    \end{alertblock}
 
     Respuesta correcta: depende de la varianza del tiempo entre llegadas
     \begin{itemize}
@@ -829,6 +832,10 @@ en un intervalo de tiempo $h>0$ viene dada por:
     \bibitem[Wolff, 2011]{wolff} Ronald W. Wolff
       \newblock Little's law and Related Results\\
       \newblock \emph{University of California at Berkeley}
+
+    \bibitem[Takács, 1962]{takacs} Lajos Takákcs
+      \newblock Introduction to the Theory of Queues\\
+      \newblock \emph{Oxford University Press}
 
   \end{thebibliography}
 }
